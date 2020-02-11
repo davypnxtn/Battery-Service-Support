@@ -7,7 +7,8 @@ namespace Model
     public class ModDatum
     {
         public int Id { get; set; }
-        public DateTime BatterijModDatum { get; set; }
+        public DateTime XjoBasisAppModDatum { get; set; }
+        public DateTime XjoBasisApp2ModDatum { get; set; }
         public DateTime InstallatieModDatum { get; set; }
         public DateTime OpmerkingModDatum { get; set; }
         public DateTime InstallatieTypeModDatum { get; set; }
