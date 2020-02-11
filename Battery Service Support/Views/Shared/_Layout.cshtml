@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome-free-5.12.0-web/css/all.css" rel="stylesheet" />
+
+    <title>Battery Service Support</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 64px; margin-top: 0px;">
+        <div class="navbar-brand">Battery Service Support @ViewData["NavTitle"]</div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                @*<li class="nav-item active">
+                    <a class="nav-link" asp-controller="Product" asp-action="Index">
+                        Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>*@
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Customer" asp-action="Login" asp-route-id="1">
+                        <div class="fas fa-user" style="width: 24px; height: 24px;"></div>
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <div class="fas fa-times" style="width: 24px; height: 24px;"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="sidebar-container">
+        <div class="sidebar-logo">
+            <b>JOJO</b> Systems
+        </div>
+        <ul class="sidebar-navigation">
+            <li class="header">Navigation</li>
+            <li>
+                <a asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home" aria-hidden="true"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-file-pdf" aria-hidden="true"></i> Exporteer PDF
+                </a>
+            </li>
+            <li class="header">Admin Menu</li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-users" aria-hidden="true"></i> Gebruikers
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-file-alt" aria-hidden="true"></i> Exporteer CSV
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> Information
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="content-container">
+        @RenderBody()
+    </div>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/fontawesome-free-5.12.0-web/js/all.js"></script>
+</body>
+</html>
