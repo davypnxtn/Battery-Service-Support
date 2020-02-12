@@ -2,6 +2,7 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Data
@@ -39,6 +40,12 @@ namespace DAL.Data
             modelBuilder.Entity<ModDatum>().ToTable("ModDatum");
             modelBuilder.Entity<Opmerking>().ToTable("Opmerking");
             modelBuilder.Entity<Relatie>().ToTable("Relatie");
+
+            foreach (var foreignkey in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignkey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
     }
 }
