@@ -22,6 +22,11 @@ namespace DAL
             return _context.Artikels.Where(a => a.Id == id).Single();
         }
 
+        public Artikel FindByXjoArtikelId(int id)
+        {
+            return _context.Artikels.Where(a => a.XjoArtikelId == id).Single();
+        }
+
         public List<Artikel> GetArtikels()
         {
             return _context.Artikels.ToList();

@@ -8,7 +8,7 @@ namespace Model
     {
         public int Id { get; set; }
         public string Naam { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public bool Aktief { get; set; }
         public int GebruikerTypeID { get; set; }
         public GebruikerType GebruikerType { get; set; }

@@ -8,12 +8,12 @@ namespace Model
     {
         public int BatterijID { get; set; }
         public string Naam { get; set; }
-        public string Locatie { get; set; }
+        public string? Locatie { get; set; }
         public DateTime Datum { get; set; }
         public string ArtikelNr { get; set; }
-        public int XjoBasisAppID { get; set; }
-        public int XjoBasisApp2Id { get; set; }
-        public int VervangenDoor { get; set; }
+        public int? XjoBasisAppID { get; set; }
+        public int? XjoBasisApp2Id { get; set; }
+        public int? VervangenDoor { get; set; }
         public bool Vervangen { get; set; }
         public DateTime ModDatum { get; set; }
         public int InstallatieId { get; set; }

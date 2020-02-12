@@ -4,14 +4,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200212195616_add-xjoartikelid-to-artikel")]
+    partial class addxjoartikelidtoartikel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,16 +185,11 @@ namespace DAL.Migrations
                     b.Property<DateTime>("ModDatum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RelatieId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("InstallatieTypeID");
 
                     b.HasIndex("LeveradresID");
-
-                    b.HasIndex("RelatieId");
 
                     b.ToTable("Installatie");
                 });
@@ -419,12 +416,6 @@ namespace DAL.Migrations
                     b.HasOne("Model.Leveradres", "Leveradres")
                         .WithMany("Installaties")
                         .HasForeignKey("LeveradresID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Model.Relatie", "Relatie")
-                        .WithMany("Installaties")
-                        .HasForeignKey("RelatieId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

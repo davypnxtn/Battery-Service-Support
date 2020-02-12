@@ -7,7 +7,7 @@ namespace Model
     public class Opmerking
     {
         public int Id { get; set; }
-        public string Notitie { get; set; }
+        public string? Notitie { get; set; }
         public DateTime ModDatum { get; set; }
         public int InstallatieID { get; set; }
         public int GebruikerID { get; set; }

@@ -21,6 +21,11 @@ namespace BLL
             return repository.FindById(id);
         }
 
+        public Artikel FindByXjoArtikelId(int id)
+        {
+            return repository.FindByXjoArtikelId(id);
+        }
+
         public List<Artikel> GetArtikels()
         {
             return repository.GetArtikels();

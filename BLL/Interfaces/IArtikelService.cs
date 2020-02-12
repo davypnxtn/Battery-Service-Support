@@ -9,5 +9,6 @@ namespace BLL.Interfaces
     {
         List<Artikel> GetArtikels();
         Artikel FindById(int id);
+        Artikel FindByXjoArtikelId(int id);
     }
 }
