@@ -4,14 +4,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200213124343_revamp-test-db")]
+    partial class revamptestdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +49,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Model.Batterij", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BatterijID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -82,7 +84,7 @@ namespace DAL.Migrations
                     b.Property<int?>("XjoBasisAppID")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("BatterijID");
 
                     b.HasIndex("ArtikelId");
 
@@ -329,10 +331,10 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BatterijID")
+                    b.Property<int>("GebruikerID")
                         .HasColumnType("int");
 
-                    b.Property<int>("GebruikerID")
+                    b.Property<int>("InstallatieID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModDatum")
@@ -344,9 +346,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BatterijID");
-
                     b.HasIndex("GebruikerID");
+
+                    b.HasIndex("InstallatieID");
 
                     b.ToTable("Opmerking");
                 });
@@ -462,15 +464,15 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Model.Opmerking", b =>
                 {
-                    b.HasOne("Model.Batterij", "Batterij")
-                        .WithMany("Opmerkingen")
-                        .HasForeignKey("BatterijID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Model.Gebruiker", "Gebruiker")
                         .WithMany("Opmerkingen")
                         .HasForeignKey("GebruikerID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Model.Installatie", "Installatie")
+                        .WithMany("Opmerkingen")
+                        .HasForeignKey("InstallatieID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

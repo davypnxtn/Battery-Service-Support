@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Model
 {
     public class Batterij
     {
-        public int BatterijID { get; set; }
-        public string Naam { get; set; }
+        public int Id { get; set; }
         public string? Locatie { get; set; }
+        [Required]
         public DateTime Datum { get; set; }
-        public string ArtikelNr { get; set; }
+        [Display(Name ="Basisapplicatie id")]
         public int? XjoBasisAppID { get; set; }
+        [Display(Name ="Basisapplicatie2 id")]
         public int? XjoBasisApp2Id { get; set; }
+        [Display(Name ="Vervangen door")]
         public int? VervangenDoor { get; set; }
+        [Required]
         public bool Vervangen { get; set; }
+        [Required]
         public DateTime ModDatum { get; set; }
         public int InstallatieId { get; set; }
         public int GebruikerId { get; set; }
@@ -22,6 +27,7 @@ namespace Model
         public Installatie Installatie { get; set; }
         public Gebruiker Gebruiker { get; set; }
         public Artikel Artikel { get; set; }
+        public List<Opmerking> Opmerkingen { get; set; }
 
     }
 }

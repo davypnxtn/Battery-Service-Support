@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Model
@@ -7,9 +8,15 @@ namespace Model
     public class Relatie
     {
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Relatiecode")]
+        public string XjoRelatieCode { get; set; }
+        [Required]
         public string Naam { get; set; }
         public string? Roepnaam { get; set; }
+        [Required]
         public string Adres { get; set; }
+        [Required]
         public DateTime ModDatum { get; set; }
         public int GemeenteId { get; set; }
         public Gemeente Gemeente { get; set; }

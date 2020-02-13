@@ -19,7 +19,7 @@ namespace DAL
 
         public Opmerking FindByInstallatieId(int id)
         {
-            return _context.Opmerkingen.Where(o => o.InstallatieID == id).Single();
+            return _context.Opmerkingen.Where(o => o.BatterijID == id).Single();
         }
     }
 }
