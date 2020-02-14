@@ -17,7 +17,7 @@ namespace DAL
             _context = context;
         }
 
-        public GebruikerType GetById(int id)
+        public GebruikerType FindById(int id)
         {
             return _context.GebruikerTypes.Where(g => g.Id == id).Single();
         }

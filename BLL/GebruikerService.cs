@@ -16,6 +16,11 @@ namespace BLL
             repository = _repository;
         }
 
+        public Gebruiker FindByCode(string code)
+        {
+            return repository.FindByCode(code);
+        }
+
         public Gebruiker FindById(int id)
         {
             return repository.FindById(id);

@@ -10,5 +10,6 @@ namespace BLL.Interfaces
         List<Gebruiker> GetGebruikers();
         Gebruiker FindByNaam(string naam);
         Gebruiker FindById(int id);
+        Gebruiker FindByCode(string code);
     }
 }

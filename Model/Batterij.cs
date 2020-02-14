@@ -8,12 +8,14 @@ namespace Model
     public class Batterij
     {
         public int Id { get; set; }
+        [Display(Name = "Geplaatst in")]
+        public string? GeplaatstIn { get; set; }
         public string? Locatie { get; set; }
         [Required]
         public DateTime Datum { get; set; }
         [Display(Name ="Basisapplicatie id")]
         public int? XjoBasisAppID { get; set; }
-        [Display(Name ="Basisapplicatie2 id")]
+        [Display(Name ="Basisapplicatie 2 id")]
         public int? XjoBasisApp2Id { get; set; }
         [Display(Name ="Vervangen door")]
         public int? VervangenDoor { get; set; }

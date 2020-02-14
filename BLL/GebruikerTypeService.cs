@@ -18,7 +18,7 @@ namespace BLL
 
         public GebruikerType GetById(int id)
         {
-            return repository.GetById(id);
+            return repository.FindById(id);
         }
 
         public List<GebruikerType> GetGebruikerTypes()

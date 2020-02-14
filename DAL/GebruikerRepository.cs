@@ -16,6 +16,11 @@ namespace DAL
             _context = context;
         }
 
+        public Gebruiker FindByCode(string code)
+        {
+            return _context.Gebruikers.Where(g => g.XjoGebruikerCode == code).Single();
+        }
+
         public Gebruiker FindById(int id)
         {
             return _context.Gebruikers.Where(g => g.Id == id).Single();

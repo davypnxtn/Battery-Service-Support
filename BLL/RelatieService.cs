@@ -35,5 +35,7 @@ namespace BLL
         {
             return repository.GetRelaties();
         }
+
+
     }
 }

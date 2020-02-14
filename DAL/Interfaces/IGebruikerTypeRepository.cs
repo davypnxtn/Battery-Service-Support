@@ -8,6 +8,6 @@ namespace DAL.Interfaces
     public interface IGebruikerTypeRepository
     {
         List<GebruikerType> GetGebruikerTypes();
-        GebruikerType GetById(int id);
+        GebruikerType FindById(int id);
     }
 }
