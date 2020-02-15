@@ -4,6 +4,7 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ViewModel;
 
 namespace BLL
 {
@@ -14,6 +15,24 @@ namespace BLL
         public RelatieService(IRelatieRepository _repository)
         {
             repository = _repository;
+        }
+
+        public RelatieDetailViewModel CreateRelatieDetailViewModel(int id)
+        {
+            var relatieDetailVM = new RelatieDetailViewModel
+            {
+                Relatie = FindById(id)
+            };
+            return relatieDetailVM;
+        }
+
+        public RelatieIndexViewModel CreateRelatieIndexViewModel()
+        {
+            var relatieIndexVM = new RelatieIndexViewModel
+            {
+                Relaties = GetRelaties()
+            };
+            return relatieIndexVM;
         }
 
         public Relatie FindByAdres(string adres)
@@ -31,11 +50,9 @@ namespace BLL
             return repository.FindByNaam(naam);
         }
 
-        public List<Relatie> GetKlanten()
+        public List<Relatie> GetRelaties()
         {
             return repository.GetRelaties();
         }
-
-
     }
 }

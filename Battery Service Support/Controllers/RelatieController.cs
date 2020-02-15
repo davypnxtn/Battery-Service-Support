@@ -20,10 +20,16 @@ namespace Battery_Service_Support.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Search()
+        public IActionResult Index()
         {
+            var relatieIndexVM = service.CreateRelatieIndexViewModel();
+            return View(relatieIndexVM);
+        }
 
-            return View();
+        public IActionResult Detail(int id)
+        {
+            var relatieDetailVM = service.CreateRelatieDetailViewModel(id);
+            return View(relatieDetailVM);
         }
     }
 }

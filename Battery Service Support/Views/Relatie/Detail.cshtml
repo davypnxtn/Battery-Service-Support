@@ -1,0 +1,55 @@
+﻿@model ViewModel.RelatieDetailViewModel
+@{
+    ViewData["NavTitle"] = "Dashboard";
+}
+    <div class="container-fluid">
+        <div class="card border-0 shadow">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form asp-controller="Relatie" asp-action="Index" method="post">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input class="form-control" type="text" name="naam" id="naam" placeholder="Zoek op naam" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <form asp-controller="Relatie" asp-action="Index" method="post">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input class="form-control" type="text" name="adres" id="adres" placeholder="Zoek op adres" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="card-text">
+                                <th>@Html.DisplayNameFor(model => Model.Relatie.XjoRelatieCode)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relatie.Naam)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relatie.Roepnaam)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relatie.Adres)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relatie.Gemeente)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Relaties)
+                            {
+                                <tr onclick="window.Location='\Relatie\Detail\@item.Id'">
+                                    <td>@Html.DisplayFor(modelItem => item.XjoRelatieCode)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Naam)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Roepnaam)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Adres)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Gemeente.Naam)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

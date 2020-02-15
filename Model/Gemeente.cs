@@ -11,6 +11,7 @@ namespace Model
         [Required]
         public string Postcode { get; set; }
         [Required]
+        [Display(Name = "Gemeente")]
         public string Naam { get; set; }
         [Required]
         public DateTime ModDatum { get; set; }

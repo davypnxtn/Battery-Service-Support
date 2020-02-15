@@ -15,6 +15,7 @@ namespace Model
         public string Naam { get; set; }
         public string? Roepnaam { get; set; }
         [Required]
+        [Display(Name = "Straat")]
         public string Adres { get; set; }
         [Required]
         public DateTime ModDatum { get; set; }

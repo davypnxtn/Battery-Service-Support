@@ -1,5 +1,6 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,9 @@ namespace DAL
 
         public List<Relatie> GetRelaties()
         {
-            return _context.Relaties.ToList();
+            return _context.Relaties
+                .Include(r => r.Gemeente)
+                .ToList();
         }
     }
 }

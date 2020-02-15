@@ -14,6 +14,7 @@ namespace Model
         [Required]
         public string Naam { get; set; }
         [Required]
+        [Display(Name = "Straat")]
         public string Adres { get; set; }
         [Required]
         public DateTime ModDatum { get; set; }

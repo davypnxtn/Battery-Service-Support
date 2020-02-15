@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class RelatieSearchViewModel
+    public class RelatieIndexViewModel
     {
         public List<Relatie> Relaties { get; set; }
     }
