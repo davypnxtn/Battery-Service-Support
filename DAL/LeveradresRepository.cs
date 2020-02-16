@@ -1,5 +1,6 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,9 @@ namespace DAL
 
         public List<Leveradres> FindByKlantId(int id)
         {
-            return _context.Leveradressen.Where(l => l.RelatieId == id).ToList();
+            return _context.Leveradressen.Where(l => l.RelatieId == id)
+                .Include(l => l.Gemeente)
+                .ToList();
         }
     }
 }

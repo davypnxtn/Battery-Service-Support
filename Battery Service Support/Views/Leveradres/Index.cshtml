@@ -1,8 +1,8 @@
-﻿@model ViewModel.RelatieDetailViewModel
+﻿@model ViewModel.LeveradresIndexViewModel
 @{
     ViewData["NavTitle"] = "Dashboard";
 }
-    @*<div class="container-fluid">
+    <div class="container-fluid">
         <div class="card border-0 shadow">
             <div class="row">
                 <div class="col-lg-6">
@@ -37,12 +37,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Relaties)
+                            @foreach (var item in Model.Leveradressen)
                             {
                                 <tr onclick="window.Location='\Relatie\Detail\@item.Id'">
-                                    <td>@Html.DisplayFor(modelItem => item.XjoRelatieCode)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Relatie.XjoRelatieCode)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Naam)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Roepnaam)</td>
+                                    <td></td>
                                     <td>@Html.DisplayFor(modelItem => item.Adres)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Gemeente.Naam)</td>
                                 </tr>
@@ -52,4 +52,4 @@
                 </div>
             </div>
         </div>
-    </div>*@
+    </div>
