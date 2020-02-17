@@ -39,7 +39,7 @@
                             <tbody>
                                 @foreach (var item in Model.Relaties)
                                 {
-                                    <tr onclick="window.Location='\Relatie\Detail\@item.Id'">
+                                    <tr data-href="\Relatie\Detail\@item.Id">
                                         <td>@Html.DisplayFor(modelItem => item.XjoRelatieCode)</td>
                                         <td>@Html.DisplayFor(modelItem => item.Naam)</td>
                                         <td>@Html.DisplayFor(modelItem => item.Roepnaam)</td>
