@@ -8,5 +8,6 @@ namespace DAL.Interfaces
     public interface IInstallatieRepository
     {
         List<Installatie> FindByLeveradresId(int id);
+        List<Installatie> FindByRelatieId(int id);
     }
 }

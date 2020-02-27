@@ -7,7 +7,7 @@ namespace ViewModel
 {
     public class LeveradresIndexViewModel
     {
-        public List<Leveradres> Leveradressen { get; set; }
-        public Relatie Relatie { get; set; }
+        //public List<Leveradres> Leveradressen { get; set; }
+        //public Relatie Relatie { get; set; }
     }
 }

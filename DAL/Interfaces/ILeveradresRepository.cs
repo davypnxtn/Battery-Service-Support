@@ -9,5 +9,6 @@ namespace DAL.Interfaces
     {
         List<Leveradres> FindByKlantId(int id);
         Leveradres FindByAdres(string adres);
+        Leveradres FindById(int id);
     }
 }

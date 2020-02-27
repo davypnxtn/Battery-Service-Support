@@ -1,0 +1,42 @@
+﻿@model ViewModel.RelatieDetailViewModel
+    <table class="table table-hover">
+        <thead>
+            <tr class="card-text">
+                <th>
+                    <div class="h3 text-xl-center">
+                        @Model.Relatie.Naam<br />
+                        <div class="h4">Leveradressen</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Leveradressen.Count > 0)
+            {
+                @foreach (var item in Model.Leveradressen)
+                {
+                    <tr data-href="/Leveradres/Detail/@item.Id">
+                        <td>
+                            <div class="card-text">
+                                <div class="h5">@item.Naam</div>
+                                @item.Adres<br />
+                                @item.Gemeente.Postcode @item.Gemeente.Naam
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr data-href="/Relatie/Installatie/@Model.Relatie.Id">
+                    <td>
+                        <div class="card-text">
+                            <div class="h5">@Model.Relatie.Naam</div>
+                            @Model.Relatie.Adres<br />
+                            @Model.Relatie.Gemeente.Postcode @Model.Relatie.Gemeente.Naam
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

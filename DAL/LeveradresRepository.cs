@@ -23,6 +23,11 @@ namespace DAL
             return _context.Leveradressen.Where(l => l.Adres == adres).Single();
         }
 
+        public Leveradres FindById(int id)
+        {
+            return _context.Leveradressen.Where(l => l.Id == id).Single();
+        }
+
         public List<Leveradres> FindByKlantId(int id)
         {
             return _context.Leveradressen.Where(l => l.RelatieId == id)

@@ -14,5 +14,6 @@ namespace BLL.Interfaces
         Relatie FindByAdres(string adres);
         RelatieIndexViewModel CreateRelatieIndexViewModel();
         RelatieDetailViewModel CreateRelatieDetailViewModel(int id);
+        RelatieInstallatieViewModel CreateRelatieInstallatieViewModel(int id);
     }
 }

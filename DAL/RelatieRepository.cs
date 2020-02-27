@@ -25,7 +25,9 @@ namespace DAL
 
         public Relatie FindById(int id)
         {
-            return _context.Relaties.Where(r => r.Id == id).Single();
+            return _context.Relaties.Where(r => r.Id == id)
+                .Include(r => r.Gemeente)
+                .Single();
         }
 
         public Relatie FindByNaam(string naam)

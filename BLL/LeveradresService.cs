@@ -12,26 +12,43 @@ namespace BLL
     {
         private readonly ILeveradresRepository repository;
         private readonly IRelatieRepository relatieRepository;
-
-        public LeveradresService(ILeveradresRepository _repository, IRelatieRepository _relatieRepository)
+        private readonly IInstallatieRepository installatieRepository;
+    
+        public LeveradresService(ILeveradresRepository _repository, IRelatieRepository _relatieRepository, IInstallatieRepository _installatieRepository)
         {
             repository = _repository;
             relatieRepository = _relatieRepository;
+            installatieRepository = _installatieRepository;
         }
 
-        public LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id)
+        public LeveradresDetailViewModel CreateLeveradresDetailViewModel(int id)
         {
-            var leveradresIndexVM = new LeveradresIndexViewModel
+            var leveradresDetailVM = new LeveradresDetailViewModel
             {
-                Leveradressen = FindByKlantId(id),
-                Relatie = relatieRepository.FindById(id)
+                Leveradres = FindById(id),
+                Installaties = installatieRepository.FindByLeveradresId(id)
             };
-            return leveradresIndexVM;
+            return leveradresDetailVM;
         }
+
+        //public LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id)
+        //{
+        //    var leveradresIndexVM = new LeveradresIndexViewModel
+        //    {
+        //        Leveradressen = FindByKlantId(id),
+        //        Relatie = relatieRepository.FindById(id)
+        //    };
+        //    return leveradresIndexVM;
+        //}
 
         public Leveradres FindByAdres(string adres)
         {
             return repository.FindByAdres(adres);
+        }
+
+        public Leveradres FindById(int id)
+        {
+            return repository.FindById(id);
         }
 
         public List<Leveradres> FindByKlantId(int id)

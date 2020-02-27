@@ -11,18 +11,33 @@ namespace BLL
     public class RelatieService : IRelatieService
     {
         private readonly IRelatieRepository repository;
+        private readonly ILeveradresRepository leveradresRepository;
+        private readonly IInstallatieRepository installatieRepository;
 
-        public RelatieService(IRelatieRepository _repository)
+        public RelatieService(IRelatieRepository _repository, ILeveradresRepository _leveradresRepository, IInstallatieRepository _installatieRepository)
         {
             repository = _repository;
+            leveradresRepository = _leveradresRepository;
+            installatieRepository = _installatieRepository;
         }
 
         public RelatieDetailViewModel CreateRelatieDetailViewModel(int id)
         {
             var relatieDetailVM = new RelatieDetailViewModel
             {
-                Relatie = FindById(id)
+                Relatie = FindById(id),
+                Leveradressen = leveradresRepository.FindByKlantId(id)
             };
+            //if (relatieDetailVM.Leveradressen.Count == 0)
+            //{
+            //    Leveradres leveradres = new Leveradres()
+            //    {
+            //        Naam = relatieDetailVM.Relatie.Naam,
+            //        Adres = relatieDetailVM.Relatie.Adres,
+            //        Gemeente = gemeenteRepository.FindById(relatieDetailVM.Relatie.GemeenteId)
+            //    };
+            //    relatieDetailVM.Leveradressen.Add(leveradres);
+            //}
             return relatieDetailVM;
         }
 
@@ -33,6 +48,16 @@ namespace BLL
                 Relaties = GetRelaties()
             };
             return relatieIndexVM;
+        }
+
+        public RelatieInstallatieViewModel CreateRelatieInstallatieViewModel(int id)
+        {
+            var relatieInstallatieVM = new RelatieInstallatieViewModel()
+            {
+                Relatie = FindById(id),
+                Installaties = installatieRepository.FindByRelatieId(id)
+            };
+            return (relatieInstallatieVM);
         }
 
         public Relatie FindByAdres(string adres)

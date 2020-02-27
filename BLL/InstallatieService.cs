@@ -20,5 +20,10 @@ namespace BLL
         {
             return repository.FindByLeveradresId(id);
         }
+
+        public List<Installatie> FindByRelatieId(int id)
+        {
+            return repository.FindByRelatieId(id);
+        }
     }
 }

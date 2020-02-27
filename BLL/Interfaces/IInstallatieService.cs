@@ -8,5 +8,6 @@ namespace BLL.Interfaces
     public interface IInstallatieService
     {
         List<Installatie> FindByLeveradresId(int id);
+        List<Installatie> FindByRelatieId(int id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,16 @@ namespace DAL
 
         public List<Installatie> FindByLeveradresId(int id)
         {
-            return _context.Installaties.Where(i => i.LeveradresID == id).ToList();
+            return _context.Installaties.Where(i => i.LeveradresID == id)
+                .Include(i => i.InstallatieType)
+                .ToList();
+        }
+
+        public List<Installatie> FindByRelatieId(int id)
+        {
+            return _context.Installaties.Where(i => i.RelatieId == id)
+                .Include(i => i.InstallatieType)
+                .ToList();
         }
     }
 }

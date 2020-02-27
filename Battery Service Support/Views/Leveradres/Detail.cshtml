@@ -1,0 +1,14 @@
+﻿@model ViewModel.LeveradresDetailViewModel
+@{
+    ViewData["NavTitle"] = "Dashboard";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="card border-0 shadow col-lg-3 col-md-6">
+            <vc:relatie-detail id="@Model.Leveradres.RelatieId"></vc:relatie-detail>
+        </div>
+        <div class="card border-0 shadow col-lg-3 col-md-6">
+            <vc:leveradres-detail id="@Model.Leveradres.Id"></vc:leveradres-detail>
+        </div>
+    </div>
+</div>

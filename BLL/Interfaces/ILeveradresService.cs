@@ -10,6 +10,8 @@ namespace BLL.Interfaces
     {
         List<Leveradres> FindByKlantId(int id);
         Leveradres FindByAdres(string adres);
-        LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id);
+        Leveradres FindById(int id);
+        //LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id);
+        LeveradresDetailViewModel CreateLeveradresDetailViewModel(int id);
     }
 }

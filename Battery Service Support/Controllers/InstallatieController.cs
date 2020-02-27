@@ -9,16 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Battery_Service_Support.Controllers
 {
-    public class LeveradresController : Controller
+    public class InstallatieController : Controller
     {
         private readonly ILeveradresService service;
 
-        public LeveradresController(ILeveradresService _service)
+        public InstallatieController(ILeveradresService _service)
         {
             service = _service;
         }
+
         // GET: /<controller>/
-        public IActionResult Detail(int id)
+        public IActionResult Index(int id)
         {
             var leveradresDetailVM = service.CreateLeveradresDetailViewModel(id);
             return View(leveradresDetailVM);
