@@ -7,6 +7,6 @@ namespace DAL.Interfaces
 {
     public interface IOpmerkingRepository
     {
-        Opmerking FindByBatterijId(int id);
+        List<Opmerking> FindByBatterijId(int id);
     }
 }

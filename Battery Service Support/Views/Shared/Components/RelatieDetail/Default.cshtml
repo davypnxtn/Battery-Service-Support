@@ -4,8 +4,8 @@
             <tr class="card-text">
                 <th>
                     <div class="h3 text-xl-center">
-                        @Model.Relatie.Naam<br />
-                        <div class="h4">Leveradressen</div>
+                        @Html.DisplayFor(model => Model.Relatie.Naam)<br />
+                        <div class="h4">@Html.DisplayNameFor(model => Model.Leveradressen)</div>
                     </div>
                 </th>
             </tr>
@@ -18,9 +18,9 @@
                     <tr data-href="/Leveradres/Detail/@item.Id">
                         <td>
                             <div class="card-text">
-                                <div class="h5">@item.Naam</div>
-                                @item.Adres<br />
-                                @item.Gemeente.Postcode @item.Gemeente.Naam
+                                <div class="h5">@Html.DisplayFor(modelItem => item.Naam)</div>
+                                @Html.DisplayFor(modelItem => item.Adres)<br />
+                                @Html.DisplayFor(modelItem => item.Gemeente.Postcode) @Html.DisplayFor(modelItem => item.Gemeente.Naam)
                             </div>
                         </td>
                     </tr>
@@ -31,9 +31,9 @@
                 <tr data-href="/Relatie/Installatie/@Model.Relatie.Id">
                     <td>
                         <div class="card-text">
-                            <div class="h5">@Model.Relatie.Naam</div>
-                            @Model.Relatie.Adres<br />
-                            @Model.Relatie.Gemeente.Postcode @Model.Relatie.Gemeente.Naam
+                            <div class="h5">@Html.DisplayFor(model => Model.Relatie.Naam)</div>
+                            @Html.DisplayFor(model => Model.Relatie.Adres)<br />
+                            @Html.DisplayFor(model => Model.Relatie.Gemeente.Postcode) @Html.DisplayFor(model => Model.Relatie.Gemeente.Naam)
                         </div>
                     </td>
                 </tr>

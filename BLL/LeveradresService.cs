@@ -51,9 +51,9 @@ namespace BLL
             return repository.FindById(id);
         }
 
-        public List<Leveradres> FindByKlantId(int id)
+        public List<Leveradres> FindByRelatieId(int id)
         {
-            return repository.FindByKlantId(id);
+            return repository.FindByRelatieId(id);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace BLL
             repository = _repository;
         }
 
-        public Opmerking FindByInstallatieId(int id)
+        public List<Opmerking> FindByInstallatieId(int id)
         {
             return repository.FindByBatterijId(id);
         }

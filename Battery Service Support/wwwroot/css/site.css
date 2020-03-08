@@ -1,4 +1,8 @@
-﻿.sidebar-container {
+﻿body{
+    background-color: #fafafa;
+}
+
+.sidebar-container {
     position: fixed;
     width: 175px;
     height: 100%;
@@ -11,6 +15,8 @@
 
 .content-container {
     padding-top: 20px;
+    padding-left: 175px;
+    background-color: #fafafa;
 }
 
 .sidebar-logo {
@@ -79,6 +85,6 @@
             background-color: transparent;
         }
 
-.content-container {
-    padding-left: 175px;
+.td-175{
+    width: 175px;
 }

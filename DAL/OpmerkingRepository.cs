@@ -17,9 +17,11 @@ namespace DAL
             _context = context;
         }
 
-        public Opmerking FindByBatterijId(int id)
+        public List<Opmerking> FindByBatterijId(int id)
         {
-            return _context.Opmerkingen.Where(o => o.BatterijID == id).Single();
+            return _context.Opmerkingen.Where(o => o.BatterijID == id)
+                .OrderBy(o => o.ModDatum)
+                .ToList();
         }
     }
 }

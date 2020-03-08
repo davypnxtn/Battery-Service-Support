@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
@@ -15,9 +16,20 @@ namespace DAL
         {
             _context = context;
         }
+
+        public Batterij FindById(int id)
+        {
+            return _context.Batterijen.Where(b => b.Id == id)
+                .Include(b => b.Artikel)
+                .Include(b => b.Installatie)
+                .Single();
+        }
+
         public List<Batterij> FindByInstallatieId(int id)
         {
-            return _context.Batterijen.Where(b => b.InstallatieId == id).ToList();
+            return _context.Batterijen.Where(b => b.InstallatieId == id)
+                .Include(b => b.Artikel)
+                .ToList();
         }
     }
 }

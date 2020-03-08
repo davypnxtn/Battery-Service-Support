@@ -4,25 +4,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using ViewModel;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Battery_Service_Support.Controllers
 {
-    public class InstallatieController : Controller
+    public class BatterijController : Controller
     {
-        private readonly IInstallatieService service;
+        private readonly IBatterijService service;
 
-        public InstallatieController(IInstallatieService _service)
+        public BatterijController(IBatterijService _service)
         {
             service = _service;
         }
-
         // GET: /<controller>/
         public IActionResult Detail(int id)
         {
-            var installatieDetailVM = service.CreateInstallatieDetailViewModel(id);
-            return View(installatieDetailVM);
+            var batterijDetailVM = service.CreateBatterijDetailViewModel(id);
+            return View(batterijDetailVM);
+        }
+
+        public IActionResult Edit(BatterijDetailViewModel vm)
+        {
+            var batterijDetailVM = vm;
+            return View(batterijDetailVM);
         }
     }
 }

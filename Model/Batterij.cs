@@ -12,6 +12,7 @@ namespace Model
         public string? GeplaatstIn { get; set; }
         public string? Locatie { get; set; }
         [Required]
+        [Display(Name = "Datum geplaatst")]
         public DateTime Datum { get; set; }
         [Display(Name ="Basisapplicatie id")]
         public int? XjoBasisAppID { get; set; }

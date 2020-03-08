@@ -18,9 +18,14 @@ namespace DAL
             _context = context;
         }
 
+        public Installatie FindById(int id)
+        {
+            return _context.Installaties.Where(i => i.Id == id).Single();
+        }
+
         public List<Installatie> FindByLeveradresId(int id)
         {
-            return _context.Installaties.Where(i => i.LeveradresID == id)
+            return _context.Installaties.Where(i => i.LeveradresId == id)
                 .Include(i => i.InstallatieType)
                 .ToList();
         }

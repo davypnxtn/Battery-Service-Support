@@ -8,7 +8,7 @@ namespace BLL.Interfaces
 {
     public interface ILeveradresService
     {
-        List<Leveradres> FindByKlantId(int id);
+        List<Leveradres> FindByRelatieId(int id);
         Leveradres FindByAdres(string adres);
         Leveradres FindById(int id);
         //LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id);

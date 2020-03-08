@@ -26,7 +26,7 @@ namespace BLL
             var relatieDetailVM = new RelatieDetailViewModel
             {
                 Relatie = FindById(id),
-                Leveradressen = leveradresRepository.FindByKlantId(id)
+                Leveradressen = leveradresRepository.FindByRelatieId(id)
             };
             //if (relatieDetailVM.Leveradressen.Count == 0)
             //{

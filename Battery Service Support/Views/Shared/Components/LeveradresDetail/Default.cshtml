@@ -4,8 +4,8 @@
             <tr class="card-text">
                 <th>
                     <div class="h3 text-xl-center">
-                        @Model.Leveradres.Naam<br />
-                        <div class="h4">Installaties</div>
+                        @Html.DisplayFor(model => Model.Leveradres.Naam)<br />
+                        <div class="h4">@Html.DisplayNameFor(model => Model.Installaties)</div>
                     </div>
                 </th>
             </tr>
@@ -13,12 +13,12 @@
         <tbody>
            @foreach (var item in Model.Installaties)
             {
-                <tr data-href="/Home/Index">
+                <tr data-href="/Installatie/Detail/@item.Id">
                     <td>
                         <div class="card-text">
                             <div class="text-center">
-                                <div class="h5">@item.InstallatieType.Naam</div>
-                                Installatiecode: @item.XjoInstallatieCode
+                                <div class="h5">@Html.DisplayFor(modelItem => item.InstallatieType.Naam)</div>
+                                @Html.DisplayNameFor(modelItem => item.XjoInstallatieCode): @Html.DisplayFor(modelItem => item.XjoInstallatieCode)
                             </div>
                         </div>
                     </td>

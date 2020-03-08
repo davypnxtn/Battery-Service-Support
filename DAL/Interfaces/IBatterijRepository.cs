@@ -8,5 +8,6 @@ namespace DAL.Interfaces
     public interface IBatterijRepository
     {
         List<Batterij> FindByInstallatieId(int id);
+        Batterij FindById(int id);
     }
 }

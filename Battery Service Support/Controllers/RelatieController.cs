@@ -27,14 +27,14 @@ namespace Battery_Service_Support.Controllers
             return View(relatieIndexVM);
         }
 
-        // GET: /<controller>/ pagina leveradressen gekozen relatie
+        // GET: /<controller>/ view leveradressen gekozen relatie
         public IActionResult Detail(int id)
         {
             var relatieDetailVM = service.CreateRelatieDetailViewModel(id);
             return View(relatieDetailVM);
         }
 
-        // GET: /<controller>/ pagina indien relatie geen leveradres heeft
+        // GET: /<controller>/ view indien relatie geen leveradres heeft
         // toont facturatie adres als leveradres
         public IActionResult Installatie(int id)
         {
