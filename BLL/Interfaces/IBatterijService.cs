@@ -9,7 +9,9 @@ namespace BLL.Interfaces
     public interface IBatterijService
     {
         List<Batterij> FindByInstallatieId(int id);
-        Batterij FindById(int id);
-        BatterijDetailViewModel CreateBatterijDetailViewModel(int id);
+        Batterij FindById(int? id);
+        BatterijDetailViewModel CreateBatterijDetailViewModel(int? id);
+        Batterij Add(Batterij nieuweBatterij, int artikelId, string locatie);
+        Batterij Update(Batterij batterijChanges);
     }
 }

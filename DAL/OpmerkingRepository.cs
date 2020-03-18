@@ -1,5 +1,6 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,23 @@ namespace DAL
             _context = context;
         }
 
-        public List<Opmerking> FindByBatterijId(int id)
+        public void Add(Opmerking opmerking)
         {
-            return _context.Opmerkingen.Where(o => o.BatterijID == id)
+            try
+            {
+                _context.Opmerkingen.Add(opmerking);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
+
+        public List<Opmerking> FindByBatterijId(int? id)
+        {
+            return _context.Opmerkingen.Where(o => o.BatterijId == id)
+                .Include(o => o.Gebruiker)
                 .OrderBy(o => o.ModDatum)
                 .ToList();
         }

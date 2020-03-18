@@ -9,7 +9,8 @@ namespace DAL.Interfaces
     {
         List<Relatie> GetRelaties();
         Relatie FindById(int id);
-        Relatie FindByNaam(string naam);
-        Relatie FindByAdres(string adres);
+        List<Relatie> FindByNaam(string naam);
+        List<Relatie> FindByRoepnaam(string roepnaam);
+        List<Relatie> FindByAdres(string adres);
     }
 }

@@ -18,9 +18,11 @@ namespace DAL
             _context = context;
         }
 
-        public Relatie FindByAdres(string adres)
+        public List<Relatie> FindByAdres(string adres)
         {
-            return _context.Relaties.Where(r => r.Adres == adres).Single();
+            return _context.Relaties.Where(r => r.Adres.Contains(adres))
+                .Include(r => r.Gemeente)
+                .ToList();
         }
 
         public Relatie FindById(int id)
@@ -30,9 +32,18 @@ namespace DAL
                 .Single();
         }
 
-        public Relatie FindByNaam(string naam)
+        public List<Relatie> FindByNaam(string naam)
         {
-            return _context.Relaties.Where(r => r.Naam == naam).Single();
+            return _context.Relaties.Where(r => r.Naam.Contains(naam))
+                .Include(r => r.Gemeente)
+                .ToList();
+        }
+
+        public List<Relatie> FindByRoepnaam(string roepnaam)
+        {
+            return _context.Relaties.Where(r => r.Roepnaam.Contains(roepnaam))
+                .Include(r => r.Gemeente)
+                .ToList();
         }
 
         public List<Relatie> GetRelaties()

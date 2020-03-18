@@ -8,11 +8,11 @@ namespace BLL.Interfaces
 {
     public interface IRelatieService
     {
-        List<Relatie> GetRelaties();
+        //List<Relatie> GetRelaties();
         Relatie FindById(int id);
-        Relatie FindByNaam(string naam);
-        Relatie FindByAdres(string adres);
-        RelatieIndexViewModel CreateRelatieIndexViewModel();
+        RelatieIndexViewModel FindByNaam(string naam);
+        RelatieIndexViewModel FindByAdres(string adres);
+        RelatieIndexViewModel GetRelaties();
         RelatieDetailViewModel CreateRelatieDetailViewModel(int id);
         RelatieInstallatieViewModel CreateRelatieInstallatieViewModel(int id);
     }

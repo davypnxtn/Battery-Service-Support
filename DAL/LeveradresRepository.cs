@@ -18,9 +18,11 @@ namespace DAL
             _context = context;
         }
 
-        public Leveradres FindByAdres(string adres)
+        public List<Leveradres> FindByAdres(string adres)
         {
-            return _context.Leveradressen.Where(l => l.Adres == adres).Single();
+            return _context.Leveradressen.Where(l => l.Adres.Contains(adres))
+                .Include(l => l.Relatie)
+                .ToList();
         }
 
         public Leveradres FindById(int id)

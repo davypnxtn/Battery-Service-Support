@@ -7,6 +7,7 @@ namespace BLL.Interfaces
 {
     public interface IOpmerkingService
     {
-        List<Opmerking> FindByInstallatieId(int id);
+        List<Opmerking> FindByBatterijId(int? id);
+        void Add(string notitie, int batterijId);
     }
 }

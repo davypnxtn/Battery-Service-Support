@@ -14,6 +14,7 @@ namespace Model
         [Display(Name = "Gemeente")]
         public string Naam { get; set; }
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ModDatum { get; set; }
         public int LandId { get; set; }
         public Land Land { get; set; }

@@ -18,6 +18,7 @@ namespace Model
         [Required]
         public string Naam { get; set; }
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ModDatum { get; set; }
         public List<Batterij> Batterijen { get; set; }
     }

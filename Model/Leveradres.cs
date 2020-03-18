@@ -17,6 +17,7 @@ namespace Model
         [Display(Name = "Straat")]
         public string Adres { get; set; }
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ModDatum { get; set; }
         public int RelatieId { get; set; }
         public int GemeenteId { get; set; }

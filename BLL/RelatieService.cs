@@ -28,24 +28,14 @@ namespace BLL
                 Relatie = FindById(id),
                 Leveradressen = leveradresRepository.FindByRelatieId(id)
             };
-            //if (relatieDetailVM.Leveradressen.Count == 0)
-            //{
-            //    Leveradres leveradres = new Leveradres()
-            //    {
-            //        Naam = relatieDetailVM.Relatie.Naam,
-            //        Adres = relatieDetailVM.Relatie.Adres,
-            //        Gemeente = gemeenteRepository.FindById(relatieDetailVM.Relatie.GemeenteId)
-            //    };
-            //    relatieDetailVM.Leveradressen.Add(leveradres);
-            //}
             return relatieDetailVM;
         }
 
-        public RelatieIndexViewModel CreateRelatieIndexViewModel()
+        public RelatieIndexViewModel GetRelaties()
         {
             var relatieIndexVM = new RelatieIndexViewModel
             {
-                Relaties = GetRelaties()
+                Relaties = repository.GetRelaties()
             };
             return relatieIndexVM;
         }
@@ -60,9 +50,28 @@ namespace BLL
             return (relatieInstallatieVM);
         }
 
-        public Relatie FindByAdres(string adres)
+        public RelatieIndexViewModel FindByAdres(string adres)
         {
-            return repository.FindByAdres(adres);
+            var relatieIndexVM = new RelatieIndexViewModel();
+
+            if (!string.IsNullOrEmpty(adres))
+            {
+                relatieIndexVM.Relaties = repository.FindByAdres(adres);
+                if (relatieIndexVM.Relaties.Count == 0)
+                {
+                    var leveradressen = leveradresRepository.FindByAdres(adres);
+                    foreach (var item in leveradressen)
+                    {
+                        relatieIndexVM.Relaties.Add(item.Relatie);
+                    }
+                }
+            }
+            else
+            {
+                relatieIndexVM.Relaties = repository.GetRelaties();
+            }
+
+            return relatieIndexVM;
         }
 
         public Relatie FindById(int id)
@@ -70,14 +79,25 @@ namespace BLL
             return repository.FindById(id);
         }
 
-        public Relatie FindByNaam(string naam)
+        public RelatieIndexViewModel FindByNaam(string naam)
         {
-            return repository.FindByNaam(naam);
+            var relatieIndexVM = new RelatieIndexViewModel();
+            
+                if (!string.IsNullOrEmpty(naam))
+                {
+                    relatieIndexVM.Relaties = repository.FindByNaam(naam);
+                    if (relatieIndexVM.Relaties.Count == 0)
+                    {
+                        relatieIndexVM.Relaties = repository.FindByRoepnaam(naam);
+                    }
+                }
+                else
+                {
+                    relatieIndexVM.Relaties = repository.GetRelaties();
+                }
+            
+            return relatieIndexVM;
         }
 
-        public List<Relatie> GetRelaties()
-        {
-            return repository.GetRelaties();
-        }
     }
 }

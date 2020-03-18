@@ -8,5 +8,7 @@ namespace ViewModel
     public class RelatieIndexViewModel
     {
         public List<Relatie> Relaties { get; set; }
+        public string NaamSearch { get; set; }
+        public string AdresSearch { get; set; }
     }
 }

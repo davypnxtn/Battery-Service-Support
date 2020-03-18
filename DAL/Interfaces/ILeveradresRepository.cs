@@ -8,7 +8,7 @@ namespace DAL.Interfaces
     public interface ILeveradresRepository
     {
         List<Leveradres> FindByRelatieId(int id);
-        Leveradres FindByAdres(string adres);
+        List<Leveradres> FindByAdres(string adres);
         Leveradres FindById(int id);
     }
 }

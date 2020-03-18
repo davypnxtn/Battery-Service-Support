@@ -11,11 +11,14 @@ namespace Model
         [Display(Name = "Geplaatst in")]
         public string? GeplaatstIn { get; set; }
         public string? Locatie { get; set; }
+        [Display(Name ="Informatie")]
+        public string? Info { get; set; }
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Datum geplaatst")]
         public DateTime Datum { get; set; }
         [Display(Name ="Basisapplicatie id")]
-        public int? XjoBasisAppID { get; set; }
+        public int? XjoBasisAppId { get; set; }
         [Display(Name ="Basisapplicatie 2 id")]
         public int? XjoBasisApp2Id { get; set; }
         [Display(Name ="Vervangen door")]
@@ -23,6 +26,7 @@ namespace Model
         [Required]
         public bool Vervangen { get; set; }
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ModDatum { get; set; }
         public int InstallatieId { get; set; }
         public int GebruikerId { get; set; }

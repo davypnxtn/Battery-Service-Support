@@ -7,10 +7,12 @@
     StringBuilder sb = new StringBuilder();
     foreach (var item in Model.Opmerkingen)
     {
-        sb.Append(item.ModDatum.ToShortDateString() + "\n");
+        sb.Append(item.ModDatum.ToShortDateString() + " - " + item.Gebruiker.Naam + "\n");
         sb.Append(item.Notitie + "\n");
     }
     var opmerking = new HtmlString(sb.ToString());
+
+    var artikels = (IEnumerable<SelectListItem>)ViewData["Artikels"];
 }
     <div class="container-fluid">
         <div class="row">
@@ -27,11 +29,8 @@
                     <vc:relatie-installatie id="@Model.RelatieId"></vc:relatie-installatie>
                 }
             </div>
-            @*<div class="card border-0 shadow col-lg-2 col-md-4">
-                <vc:installatie-detail id="@Model.InstallatieId"></vc:installatie-detail>
-            </div>*@
             <div class="card border-0 shadow col-lg-7 col-md-12">
-                <form>
+                <form asp-controller="Batterij" asp-action="Detail" method="post">
                     <div class="card-text">
                         <div class="form-group row">
                             <div class="col-md-12 h3 text-xl-center">
@@ -39,163 +38,74 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Huidige batterij:</label>
+                            <label asp-for="Batterij.Artikel.Naam" class="col-sm-3 col-form-label">Huidige batterij:</label>
                             <div class="col-sm-9">
-                                <input type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Artikel.Naam" />
+                                <input asp-for="Batterij.Artikel.Naam" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Artikel.Naam" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@Model.Batterij.Locatie" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Locatie):</label>
+                            <label asp-for="Batterij.Artikel" class="col-sm-3 col-form-label">Nieuwe Batterij:</label>
                             <div class="col-sm-9">
-                                <input asp-for="@Model.Batterij.Locatie" type="text" class="form-control" value="@Model.Batterij.Locatie" />
+                                <select asp-for="ArtikelId" class="custom-select" asp-items="@artikels">
+                                    <option value="0" selected="selected">--Niet vervangen--</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@Model.Batterij.GeplaatstIn" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.GeplaatstIn):</label>
+                            <label asp-for="Batterij.Locatie" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Locatie):</label>
                             <div class="col-sm-9">
-                                <input asp-for="@Model.Batterij.GeplaatstIn" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.GeplaatstIn" />
+                                <input asp-for="Batterij.Locatie" type="text" class="form-control" value="@Model.Batterij.Locatie" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@Model.Batterij.Datum" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Datum):</label>
+                            <label asp-for="Batterij.GeplaatstIn" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.GeplaatstIn):</label>
                             <div class="col-sm-9">
-                                <input asp-for="@Model.Batterij.Datum" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Datum.ToShortDateString()" />
+                                <input asp-for="Batterij.GeplaatstIn" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.GeplaatstIn" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@Model.Batterij.Gebruiker" class="col-sm-3 col-form-label">Geplaatst door:</label>
+                            <label asp-for="Batterij.Info" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Info):</label>
                             <div class="col-sm-9">
-                                <input asp-for="@Model.Batterij.Gebruiker" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Gebruiker.Naam" />
+                                <input asp-for="Batterij.Info" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Info" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@Model.Opmerkingen" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Opmerkingen[0].Notitie):</label>
+                            <label asp-for="Batterij.Datum" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Datum):</label>
                             <div class="col-sm-9">
-                                <textarea type="text" readonly class="form-control" rows="4">@opmerking</textarea>
+                                <input asp-for="Batterij.Datum" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Datum" />
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Batterij.Gebruiker" class="col-sm-3 col-form-label">Geplaatst door:</label>
+                            <div class="col-sm-9">
+                                <input asp-for="Batterij.Gebruiker" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Gebruiker.Naam" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Opmerkingen" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Opmerkingen[0].Notitie):</label>
+                            <div class="col-sm-9">
+                                <textarea type="text" readonly class="form-control" rows="3">@opmerking</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="NieuweOpmerking" class="col-sm-3 col-form-label">Nieuwe opmerking:</label>
+                            <div class="col-sm-9">
+                                <textarea asp-for="NieuweOpmerking" type="text" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="Batterij.Id" value="@Model.Batterij.Id" />
+                        <input type="hidden" asp-for="Batterij.Artikel.ArtikelNr" value="@Model.Batterij.Artikel.ArtikelNr" />
+                        <input type="hidden" asp-for="Batterij.GebruikerId" value="@Model.Batterij.GebruikerId" />
+                        <input type="hidden" asp-for="Batterij.ArtikelId" value="@Model.Batterij.ArtikelId" />
+                        <input type="hidden" asp-for="Batterij.InstallatieId" value="@Model.Batterij.InstallatieId" />
+                        <input type="hidden" asp-for="Batterij.XjoBasisAppId" value="@Model.Batterij.XjoBasisAppId" />
+                        <input type="hidden" asp-for="Batterij.XjoBasisApp2Id" value="@Model.Batterij.XjoBasisApp2Id" />
+                        <div class="form-group row">
+                            <div class="col-sm-3 offset-3"><input type="submit" value="Opslaan" class="btn btn-primary py-2 btn-block" /></div>
+                            <div class="col-sm-3"><a asp-controller="Installatie" asp-action="Detail" asp-route-id="@Model.Batterij.InstallatieId" class="btn btn-primary py-2 btn-block">Annuleren</a></div>
                         </div>
                     </div>
                 </form>
-                @*<table class="table">
-                    <thead>
-                        <tr class="card-text">
-                            <th colspan="2">
-                                <div class="h3 text-xl-center">
-                                    Batterij gegevens
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="td-175">
-                                <div class="card-text">
-                                    <div class="text-center">
-                                        <div class="h5">@Html.DisplayNameFor(model => Model.Batterij.Artikel.Naam):</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card-text">
-                                    <div class="text-left">
-                                        <div class="h5">@Html.DisplayFor(model => Model.Batterij.Artikel.Naam)</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="td-175">
-                                <div class="card-text">
-                                    <div class="text-center">
-                                        <div class="h5">@Html.DisplayNameFor(model => Model.Batterij.Locatie):</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card-text">
-                                    <div class="text-left">
-                                        <div class="h5">@Html.DisplayFor(model => Model.Batterij.Locatie)</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="td-175">
-                                <div class="card-text">
-                                    <div class="text-center">
-                                        <div class="h5">@Html.DisplayNameFor(model => Model.Batterij.GeplaatstIn):</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card-text">
-                                    <div class="text-left">
-                                        <div class="h5">@Html.DisplayFor(model => Model.Batterij.GeplaatstIn)</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="td-175">
-                                <div class="card-text">
-                                    <div class="text-center">
-                                        <div class="h5">@Html.DisplayNameFor(model => Model.Batterij.Datum):</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card-text">
-                                    <div class="text-left">
-                                        <div class="h5">@Model.Batterij.Datum.ToShortDateString()</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="td-175">
-                                <div class="card-text">
-                                    <div class="text-center">
-                                        <div class="h5">Geplaatst door:</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card-text">
-                                    <div class="text-left">
-                                        <div class="h5">@Html.DisplayFor(model => Model.Gebruiker.Naam)</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="td-175">
-                                <div class="card-text">
-                                    <div class="text-center">
-                                        <div class="h5">@Html.DisplayNameFor(model => Model.Batterij.Opmerkingen[0].Notitie):</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card-text">
-                                    <div class="text-left">
-                                        @foreach (var item in Model.Opmerkingen)
-                                        {
-                                            <div class="h5">
-                                                @item.ModDatum.ToShortDateString():<br/>
-                                                @Html.DisplayFor(modelItem => item.Notitie)<br/>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a asp-controller="Batterij" asp-action="Edit" asp-route-vm="@Model" class="btn btn-dark rounded py-2 btn-block">Bewerken</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>*@
             </div>
         </div>
     </div>

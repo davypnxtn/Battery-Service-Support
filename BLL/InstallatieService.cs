@@ -25,9 +25,7 @@ namespace BLL
             var installatieDetailVM = new InstallatieDetailViewModel
             {
                 Installatie = FindById(id),
-                Batterijen = batterijRepository.FindByInstallatieId(id),
-                //RelatieId = installatie.RelatieId,
-                //LeveradresId = installatie.LeveradresID.Value
+                Batterijen = batterijRepository.FindActiveByInstallatieId(id)
             };
             return installatieDetailVM;
         }

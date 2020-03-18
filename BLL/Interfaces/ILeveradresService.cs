@@ -9,7 +9,7 @@ namespace BLL.Interfaces
     public interface ILeveradresService
     {
         List<Leveradres> FindByRelatieId(int id);
-        Leveradres FindByAdres(string adres);
+        List<Leveradres> FindByAdres(string adres);
         Leveradres FindById(int id);
         //LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id);
         LeveradresDetailViewModel CreateLeveradresDetailViewModel(int id);

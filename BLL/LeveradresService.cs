@@ -41,7 +41,7 @@ namespace BLL
         //    return leveradresIndexVM;
         //}
 
-        public Leveradres FindByAdres(string adres)
+        public List<Leveradres> FindByAdres(string adres)
         {
             return repository.FindByAdres(adres);
         }

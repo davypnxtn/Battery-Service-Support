@@ -16,7 +16,19 @@ namespace BLL
             repository = _repository;
         }
 
-        public List<Opmerking> FindByInstallatieId(int id)
+        public void Add(string notitie, int batterijId)
+        {
+            Opmerking opmerking = new Opmerking()
+            {
+                Notitie = notitie,
+                BatterijId = batterijId,
+                GebruikerId = 1,
+                ModDatum = DateTime.Now
+            };
+            repository.Add(opmerking);
+        }
+
+        public List<Opmerking> FindByBatterijId(int? id)
         {
             return repository.FindByBatterijId(id);
         }

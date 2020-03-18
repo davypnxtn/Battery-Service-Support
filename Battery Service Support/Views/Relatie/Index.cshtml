@@ -6,22 +6,26 @@
         <div class="card border-0 shadow">
             <div class="row">
                 <div class="col-lg-6">
-                    <form asp-controller="Relatie" asp-action="Index" method="post">
+                    <form asp-controller="Relatie" asp-action="NaamSearch" method="get">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <button type="submit">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </button>
                             </div>
-                            <input class="form-control" type="text" name="naam" id="naam" placeholder="Zoek op naam" />
+                            <input class="form-control" asp-for="NaamSearch" placeholder="Zoek op naam" />
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-6">
-                    <form asp-controller="Relatie" asp-action="Index" method="post">
+                    <form asp-controller="Relatie" asp-action="AdresSearch" method="get">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <button type="submit">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </button>
                             </div>
-                            <input class="form-control" type="text" name="adres" id="adres" placeholder="Zoek op adres" />
+                            <input class="form-control" asp-for="AdresSearch" placeholder="Zoek op adres" />
                         </div>
                     </form>
                 </div>

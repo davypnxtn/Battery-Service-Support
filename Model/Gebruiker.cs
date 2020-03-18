@@ -16,7 +16,7 @@ namespace Model
         public string? Email { get; set; }
         [Required]
         public bool Aktief { get; set; }
-        public int GebruikerTypeID { get; set; }
+        public int GebruikerTypeId { get; set; }
         public GebruikerType GebruikerType { get; set; }
         public List<Batterij> Batterijen { get; set; }
         public List<Opmerking> Opmerkingen { get; set; }
