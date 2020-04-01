@@ -88,3 +88,7 @@
 .w-175{
     width: 175px;
 }
+
+.btn-dark {
+    border-color:transparent;
+}

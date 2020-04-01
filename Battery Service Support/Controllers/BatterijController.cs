@@ -24,7 +24,7 @@ namespace Battery_Service_Support.Controllers
             opmerkingService = _opmerkingService;
         }
 
-        // Toon Detail pagina van de Batterij
+        // Toont Detail pagina van de Batterij
         // GET: /<controller>/
         public IActionResult Detail(int? id)
         {
@@ -33,7 +33,7 @@ namespace Battery_Service_Support.Controllers
                 return NotFound();
             }
 
-            var batterijDetailVM = service.CreateBatterijDetailViewModel(id);
+            var batterijDetailVM = service.CreateBatterijDetailViewModel((int)id);
             ViewData["Artikels"] = new SelectList(artikelService.GetArtikels(), "Id", "Naam");
                 
             return View(batterijDetailVM);

@@ -9,7 +9,7 @@ namespace DAL.Interfaces
     {
         List<Batterij> FindByInstallatieId(int id);
         List<Batterij> FindActiveByInstallatieId(int id);
-        Batterij FindById(int? id);
+        Batterij FindById(int id);
         Batterij Add(Batterij nieuweBatterij);
         Batterij Update(Batterij batterijChanges);
     }

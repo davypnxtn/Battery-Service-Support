@@ -31,18 +31,44 @@ namespace Battery_Service_Support.Controllers
 
         // GET: /<controller>/
         // Dit is de pagina indien gekozen relatie wel een leveradres(sen) heeft
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int? id)
         {
-            var relatieDetailVM = service.CreateRelatieDetailViewModel(id);
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var relatie = service.FindById((int)id);
+
+            if (relatie == null)
+            {
+                Response.StatusCode = 404;
+                return View("RelatieNotFound", id.Value);
+            }
+
+            var relatieDetailVM = service.CreateRelatieDetailViewModel((int)id);
             return View(relatieDetailVM);
         }
 
         // GET: /<controller>/ 
         // Dit is de pagina indien gekozen relatie geen leveradres heeft
         // Toont facturatie adres als leveradres
-        public IActionResult Installatie(int id)
+        public IActionResult Installatie(int? id)
         {
-            var relatieInstallatieVM = service.CreateRelatieInstallatieViewModel(id);
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var relatie = service.FindById((int)id);
+
+            if (relatie == null)
+            {
+                Response.StatusCode = 404;
+                return View("RelatieNotFound", id.Value);
+            }
+
+            var relatieInstallatieVM = service.CreateRelatieInstallatieViewModel((int)id);
             return View(relatieInstallatieVM); 
         }
 

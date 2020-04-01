@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -20,17 +22,35 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 @*<li class="nav-item active">
-                    <a class="nav-link" asp-controller="Product" asp-action="Index">
-                        Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>*@
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="" asp-action="" asp-route-id="">
-                        <div class="fas fa-user" style="width: 24px; height: 24px;"></div>
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
+                        <a class="nav-link" asp-controller="Product" asp-action="Index">
+                            Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>*@
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <form method="post" asp-controller="Account" asp-action="Logout">
+                            <button type="submit" class="btn-dark" asp-controller="Account" asp-action="Logout">
+                                <div class="nav-link">
+                                    <div class="fas fa-user" style="width: 24px; height: 24px;"></div>
+                                    Logout @User.Identity.Name
+                                </div>
+                                <span class="sr-only">(current)</span>
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">
+                            <div class="fas fa-user" style="width: 24px; height: 24px;"></div>
+                            Login
+                        </a>
+                    </li>
+                }
+
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Index">
                         <div class="fas fa-times" style="width: 24px; height: 24px;"></div>
@@ -57,7 +77,7 @@
             </li>
             <li class="header">Admin Menu</li>
             <li>
-                <a href="#">
+                <a asp-controller="Account" asp-action="Register">
                     <i class="fas fa-users" aria-hidden="true"></i> Gebruikers
                 </a>
             </li>
@@ -77,6 +97,8 @@
         @RenderBody()
     </div>
     <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     <script src="~/lib/fontawesome-free-5.12.0-web/js/all.js"></script>
 </body>

@@ -40,7 +40,7 @@ namespace DAL
                 .ToList();
         }
 
-        public Batterij FindById(int? id)
+        public Batterij FindById(int id)
         {
             return _context.Batterijen.Where(b => b.Id == id)
                 .Include(b => b.Artikel)

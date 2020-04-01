@@ -49,7 +49,7 @@ namespace BLL
         }
 
         //Aanmaken BatterijDetailViewModel voor Detail view van BatterijController
-        public BatterijDetailViewModel CreateBatterijDetailViewModel(int? id)
+        public BatterijDetailViewModel CreateBatterijDetailViewModel(int id)
         {
             Batterij batterij = FindById(id);
             BatterijDetailViewModel batterijDetailVM = new BatterijDetailViewModel
@@ -64,7 +64,7 @@ namespace BLL
         }
 
         //Ophalen batterij volgens Batterij Id
-        public Batterij FindById(int? id)
+        public Batterij FindById(int id)
         {
             return repository.FindById(id);
         }
