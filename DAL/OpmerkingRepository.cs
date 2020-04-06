@@ -34,7 +34,7 @@ namespace DAL
         public List<Opmerking> FindByBatterijId(int? id)
         {
             return _context.Opmerkingen.Where(o => o.BatterijId == id)
-                .Include(o => o.Gebruiker)
+                .Include(o => o.User)
                 .OrderBy(o => o.ModDatum)
                 .ToList();
         }

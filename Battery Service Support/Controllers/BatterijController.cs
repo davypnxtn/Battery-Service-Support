@@ -26,14 +26,14 @@ namespace Battery_Service_Support.Controllers
 
         // Toont Detail pagina van de Batterij
         // GET: /<controller>/
-        public IActionResult Detail(int? id)
+        public async Task<IActionResult> Detail(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var batterijDetailVM = service.CreateBatterijDetailViewModel((int)id);
+            var batterijDetailVM = await service.CreateBatterijDetailViewModel((int)id);
             ViewData["Artikels"] = new SelectList(artikelService.GetArtikels(), "Id", "Naam");
                 
             return View(batterijDetailVM);

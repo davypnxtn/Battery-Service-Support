@@ -22,17 +22,19 @@ namespace Model
         [Display(Name ="Basisapplicatie 2 id")]
         public int? XjoBasisApp2Id { get; set; }
         [Display(Name ="Vervangen door")]
-        public int? VervangenDoor { get; set; }
+        public string? VervangenDoor { get; set; }
         [Required]
         public bool Vervangen { get; set; }
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ModDatum { get; set; }
         public int InstallatieId { get; set; }
-        public int GebruikerId { get; set; }
+        public string UserId { get; set; }
+        //public int GebruikerId { get; set; }
         public int ArtikelId { get; set; }
         public Installatie Installatie { get; set; }
-        public Gebruiker Gebruiker { get; set; }
+        public ApplicationUser User { get; set; }
+        //public Gebruiker Gebruiker { get; set; }
         public Artikel Artikel { get; set; }
         public List<Opmerking> Opmerkingen { get; set; }
 

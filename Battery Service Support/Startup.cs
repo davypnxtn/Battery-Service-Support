@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Model;
 
 namespace Battery_Service_Support
 {
@@ -35,10 +36,13 @@ namespace Battery_Service_Support
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DataConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<DataContext>()
                     .AddDefaultTokenProviders();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IAdministrationService, AdministrationService>();
+            services.AddTransient<IAdministrationRepository, AdministrationRepository>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IOpmerkingService, OpmerkingService>();
@@ -88,6 +92,7 @@ namespace Battery_Service_Support
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapGet("/", async context =>
@@ -96,7 +101,7 @@ namespace Battery_Service_Support
                 //});
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Relatie}/{action=Index}/{id?}");
             });
         }
     }

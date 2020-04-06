@@ -1,0 +1,23 @@
+﻿@model ViewModel.CreateRoleViewModel
+
+@{
+     ViewData["NavTitle"] = "Aanmaken Nieuwe Rol";
+}
+    <div class="container-fluid">
+        <div class="col-md-6">
+            <h1>Aanmaken Nieuwe Rol</h1>
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <form asp-action="CreateRole" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="RoleName" class="col-form-label"></label>
+                            <input asp-for="RoleName" class="form-control" />
+                            <span asp-validation-for="RoleName" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Aanmaken Rol</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

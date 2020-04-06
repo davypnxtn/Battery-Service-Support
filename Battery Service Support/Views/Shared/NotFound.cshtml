@@ -2,9 +2,10 @@
     ViewData["NavTitle"] = "Not Found";
 }
 
-<h1>@ViewData["ErrorMessage"]</h1>
+    <div class="container-fluid">
+        <h1>@ViewData["ErrorMessage"]</h1>
 
-
-<a asp-controller="Relatie" asp-action="Index">
-    Terug naar zoekpagina
-</a>
+        <a asp-controller="Relatie" asp-action="Index">
+            Terug naar Dashboard
+        </a>
+    </div>

@@ -1,0 +1,46 @@
+﻿@model List<ListUserViewModel>
+@{
+    ViewData["NavTitle"] = "Gebruikers";
+}
+<div class="container-fluid">
+    <div class="col-md-6">
+        <h1>Alle Gebruikers</h1>
+
+        @if (Model.Any())
+        {
+            <a class="btn btn-primary mb-3" asp-controller="Account"  asp-action="Register" >
+                Nieuwe Gebruiker
+            </a>
+            @foreach (var user in Model)
+            {
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => user.UserName)</h5>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.UserId">
+                            Edit
+                        </a>
+                        <a href="#" class="btn btn-danger">Verwijder</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-header">
+                    Nog geen Gebruikers aangemaakt
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Gebruik onderstaande knop om een Gebruiker aan te maken
+                    </h5>
+                    <a class="btn btn-primary" asp-controller="Account" asp-action="Register">
+                        Nieuwe Gebruiker
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -6,28 +6,24 @@ using System.Text;
 
 namespace ViewModel
 {
-    public class RegisterViewModel
+    public class EditUserViewModel
     {
+        public EditUserViewModel()
+        {
+            Roles = new List<string>();
+        }
+
+        public string Id { get; set; }
+
         [Required]
         [EmailAddress]
-        [ValidEmailDomain(allowedDomain: "jojo.be", 
+        [ValidEmailDomain(allowedDomain: "jojo.be",
             ErrorMessage = "Email domain must be jojo.be")]
         public string Email { get; set; }
-         
+
         [Required]
         [Display(Name = "Gebruikersnaam")]
         public string UserName { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Paswoord")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Bevestig paswoord")]
-        [Compare("Password",
-            ErrorMessage = "Password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
 
         [Required]
         [Display(Name = "Gebruikercode")]
@@ -35,6 +31,9 @@ namespace ViewModel
 
         [Required]
         public string Naam { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public IList<string> Roles { get; set; }
     }
 }
-

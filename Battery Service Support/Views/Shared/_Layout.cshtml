@@ -1,4 +1,4 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+﻿@inject SignInManager<ApplicationUser> SignInManager
 
 <!DOCTYPE html>
 
@@ -75,22 +75,29 @@
                     <i class="fas fa-file-pdf" aria-hidden="true"></i> Exporteer PDF
                 </a>
             </li>
-            <li class="header">Admin Menu</li>
-            <li>
-                <a asp-controller="Account" asp-action="Register">
-                    <i class="fas fa-users" aria-hidden="true"></i> Gebruikers
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-file-alt" aria-hidden="true"></i> Exporteer CSV
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-info-circle" aria-hidden="true"></i> Informatie
-                </a>
-            </li>
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Administrator") || User.IsInRole("Beheerder"))){
+                <li class="header">Admin Menu</li>
+                <li>
+                     <a asp-controller="Administration" asp-action="ListUsers">
+                        <i class="fas fa-users" aria-hidden="true"></i> Gebruikers
+                     </a>
+                </li>
+                <li>
+                    <a asp-controller="Administration" asp-action="ListRoles">
+                        <i class="fas fa-user-tag" aria-hidden="true"></i> Rollen
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-file-alt" aria-hidden="true"></i> Exporteer CSV
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i> Informatie
+                    </a>
+                </li>
+            }
         </ul>
     </div>
     <div class="content-container">

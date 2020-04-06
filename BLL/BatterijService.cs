@@ -1,10 +1,14 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using ViewModel;
 
 namespace BLL
@@ -13,13 +17,15 @@ namespace BLL
     {
         private readonly IBatterijRepository repository;
         private readonly IOpmerkingRepository opmerkingRepository;
-        private readonly IGebruikerRepository gebruikerRepository;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public BatterijService(IBatterijRepository _repository, IOpmerkingRepository _opmerkingRepository, IGebruikerRepository _gebruikerRepository)
+        public BatterijService(IBatterijRepository _repository, IOpmerkingRepository _opmerkingRepository, UserManager<ApplicationUser> _userManager, IHttpContextAccessor _httpContextAccessor)
         {
             repository = _repository;
             opmerkingRepository = _opmerkingRepository;
-            gebruikerRepository = _gebruikerRepository;
+            userManager = _userManager;
+            httpContextAccessor = _httpContextAccessor;
         }
 
         //Nieuwe Batterij aanmaken
@@ -34,7 +40,7 @@ namespace BLL
             {
                 ArtikelId = artikelId,
                 Datum = datum,
-                GebruikerId = 1,
+                UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
                 GeplaatstIn = nieuweBatterij.GeplaatstIn,
                 Info = nieuweBatterij.Info,
                 InstallatieId = nieuweBatterij.InstallatieId,
@@ -49,14 +55,14 @@ namespace BLL
         }
 
         //Aanmaken BatterijDetailViewModel voor Detail view van BatterijController
-        public BatterijDetailViewModel CreateBatterijDetailViewModel(int id)
+        public async Task<BatterijDetailViewModel> CreateBatterijDetailViewModel(int id)
         {
             Batterij batterij = FindById(id);
             BatterijDetailViewModel batterijDetailVM = new BatterijDetailViewModel
             {
                 Batterij = batterij,
                 Opmerkingen = opmerkingRepository.FindByBatterijId(id),
-                Gebruiker = gebruikerRepository.FindById(batterij.GebruikerId),
+                User = await userManager.FindByIdAsync(batterij.UserId),
                 RelatieId = batterij.Installatie.RelatieId,
                 LeveradresId = batterij.Installatie.LeveradresId,
             };
@@ -96,7 +102,7 @@ namespace BLL
             if (batterij != null)
             {
                 batterij.Vervangen = true;
-                batterij.VervangenDoor = 1;
+                batterij.VervangenDoor = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 batterij.ModDatum = DateTime.Now;
                 repository.Update(batterij);
             }

@@ -36,7 +36,7 @@ namespace DAL
             return _context.Batterijen.Where(b => b.InstallatieId == id && b.Vervangen == false)
                 .Include(b => b.Artikel)
                 .Include(b => b.Installatie)
-                .Include(b => b.Gebruiker)
+                .Include(b => b.User)
                 .ToList();
         }
 
@@ -45,7 +45,7 @@ namespace DAL
             return _context.Batterijen.Where(b => b.Id == id)
                 .Include(b => b.Artikel)
                 .Include(b => b.Installatie)
-                .Include(b => b.Gebruiker)
+                .Include(b => b.User)
                 .Single();
         }
 
@@ -54,7 +54,7 @@ namespace DAL
             return _context.Batterijen.Where(b => b.InstallatieId == id)
                 .Include(b => b.Artikel)
                 .Include(b => b.Installatie)
-                .Include(b => b.Gebruiker)
+                .Include(b => b.User)
                 .ToList();
         }
 

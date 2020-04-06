@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +21,7 @@ namespace BLL
 
         public async Task<SignInResult> Login(LoginViewModel model)
         {
-            var result = await repository.Login(model.UserName, model.Password, model.RememberMe);
+            SignInResult result = await repository.Login(model.UserName, model.Password, model.RememberMe);
             return result;
         }
 
@@ -31,13 +32,16 @@ namespace BLL
 
         public async Task<IdentityResult> Register(RegisterViewModel model)
         {
-            var user = new IdentityUser
+            ApplicationUser user = new ApplicationUser
             {
                 UserName = model.UserName,
-                Email = model.Email
+                Email = model.Email,
+                Naam = model.Naam,
+                XjoGebruikerCode = model.XjoGebruikerCode,
+                Aktief = false
             };
 
-            var result = await repository.Register(user, model.Password);
+            IdentityResult result = await repository.Register(user, model.Password);
             return result;
         }
     }

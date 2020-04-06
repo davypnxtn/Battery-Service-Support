@@ -7,7 +7,7 @@
     StringBuilder sb = new StringBuilder();
     foreach (var item in Model.Opmerkingen)
     {
-        sb.Append(item.ModDatum.ToShortDateString() + " - " + item.Gebruiker.Naam + "\n");
+        sb.Append(item.ModDatum.ToShortDateString() + " - " + item.User.Naam + "\n");
         sb.Append(item.Notitie + "\n");
     }
     var opmerking = new HtmlString(sb.ToString());
@@ -76,9 +76,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="Batterij.Gebruiker" class="col-sm-3 col-form-label">Geplaatst door:</label>
+                            <label asp-for="Batterij.User" class="col-sm-3 col-form-label">Geplaatst door:</label>
                             <div class="col-sm-9">
-                                <input asp-for="Batterij.Gebruiker" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Gebruiker.Naam" />
+                                <input asp-for="Batterij.User" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.User.Naam" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -95,7 +95,7 @@
                         </div>
                         <input type="hidden" asp-for="Batterij.Id" value="@Model.Batterij.Id" />
                         <input type="hidden" asp-for="Batterij.Artikel.ArtikelNr" value="@Model.Batterij.Artikel.ArtikelNr" />
-                        <input type="hidden" asp-for="Batterij.GebruikerId" value="@Model.Batterij.GebruikerId" />
+                        <input type="hidden" asp-for="Batterij.UserId" value="@Model.Batterij.UserId" />
                         <input type="hidden" asp-for="Batterij.ArtikelId" value="@Model.Batterij.ArtikelId" />
                         <input type="hidden" asp-for="Batterij.InstallatieId" value="@Model.Batterij.InstallatieId" />
                         <input type="hidden" asp-for="Batterij.XjoBasisAppId" value="@Model.Batterij.XjoBasisAppId" />

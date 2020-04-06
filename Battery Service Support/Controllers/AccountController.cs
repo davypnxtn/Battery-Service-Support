@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewModel;
 
@@ -20,23 +21,25 @@ namespace Battery_Service_Support.Controllers
             service = _service;
         }
 
-        // GET: /<controller>/
         [HttpGet]
+        [Authorize(Roles = "Beheerder, Administrator")]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Beheerder, Administrator")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await service.Register(model);
+                IdentityResult result = await service.Register(model);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Relatie");
                 }
                 
                 foreach(var error in result.Errors)
@@ -48,21 +51,23 @@ namespace Battery_Service_Support.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
             service.Logout();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -84,6 +89,13 @@ namespace Battery_Service_Support.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

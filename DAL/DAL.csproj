@@ -15,6 +15,10 @@
     <Compile Remove="Migrations\20200213145038_change-relation-opmerking-batterij.Designer.cs" />
     <Compile Remove="Migrations\20200311082558_AddInfoToBatterij.cs" />
     <Compile Remove="Migrations\20200311082558_AddInfoToBatterij.Designer.cs" />
+    <Compile Remove="Migrations\20200402102608_Extend_IdentityUser.cs" />
+    <Compile Remove="Migrations\20200402102608_Extend_IdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20200402103739_Remove_tblGebruiker.cs" />
+    <Compile Remove="Migrations\20200402103739_Remove_tblGebruiker.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
