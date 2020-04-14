@@ -40,7 +40,7 @@ namespace Battery_Service_Support.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Relatie");
+                    return RedirectToAction("ListRoles", "Administration");
                 }
 
                 foreach (var error in result.Errors)
@@ -77,19 +77,41 @@ namespace Battery_Service_Support.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
-            IdentityResult result = await service.EditRole(model);
+            if (ModelState.IsValid)
+            {
+                IdentityResult result = await service.EditRole(model);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            IdentityResult result = await service.DeleteRole(id);
 
             if (result.Succeeded)
             {
                 return RedirectToAction("ListRoles");
             }
 
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            return View(model);
+            return View("ListRoles");
         }
 
         [HttpGet]
@@ -97,7 +119,7 @@ namespace Battery_Service_Support.Controllers
         {
             ViewData["roleId"] = roleId;
 
-            var model = await service.CreateUserRoleViewModel(roleId);
+            var model = await service.CreateRoleUsersViewModel(roleId);
 
             if (!string.IsNullOrEmpty(model[0].ErrorMessage))
             {
@@ -110,7 +132,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
+        public async Task<IActionResult> EditUsersInRole(List<RoleUsersViewModel> model, string roleId)
         {
             string errorMessage = await service.EditUsersInRole(model, roleId);
 
@@ -164,6 +186,56 @@ namespace Battery_Service_Support.Controllers
             }
             
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            IdentityResult result = await service.DeleteUser(id);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ListUsers");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View("ListUsers");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string UserId)
+        {
+            ViewData["userId"] = UserId;
+
+            var model = await service.CreateUserRolesViewModel(UserId);
+
+            if (!string.IsNullOrEmpty(model[0].ErrorMessage))
+            {
+                ViewData["ErrorMessage"] = model[0].ErrorMessage;
+                return View("NotFound");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        {
+            string errorMessage = await service.ManageUserRoles(model, userId);
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ViewData["ErrorMessage"] = errorMessage;
+                return View("NotFound");
+            }
+
+            return RedirectToAction("EditUser", new { Id = userId });
         }
     }
 }

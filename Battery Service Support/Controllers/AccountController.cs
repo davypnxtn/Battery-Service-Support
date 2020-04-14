@@ -39,7 +39,7 @@ namespace Battery_Service_Support.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Relatie");
+                    return RedirectToAction("ListUsers", "Administration");
                 }
                 
                 foreach(var error in result.Errors)

@@ -27,7 +27,9 @@ namespace DAL
 
         public Leveradres FindById(int id)
         {
-            return _context.Leveradressen.Where(l => l.Id == id).Single();
+            return _context.Leveradressen.Where(l => l.Id == id)
+                .Include(l => l.Gemeente)
+                .Single();
         }
 
         public List<Leveradres> FindByRelatieId(int id)

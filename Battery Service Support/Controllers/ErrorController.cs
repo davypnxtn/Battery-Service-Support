@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,7 @@ namespace Battery_Service_Support.Controllers
             return View("NotFound");
         }
 
+        [AllowAnonymous]
         [Route("Error")]
         public IActionResult Error()
         {

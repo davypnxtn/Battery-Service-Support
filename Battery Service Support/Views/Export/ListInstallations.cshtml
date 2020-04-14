@@ -1,0 +1,36 @@
+﻿@model List<ExportInstallationViewModel>
+@{
+    ViewData["NavTitle"] = "PDF export";
+}
+    <div class="container-fluid">
+        <h1>Exporteren naar PDF</h1>
+        <div class="card border-0 shadow">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="card-text">
+                                <th>Installatiecode</th>
+                                <th>Installatietype</th>
+                                <th>Naam</th>
+                                <th>Adres</th>
+                                <th>Gemeente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var installatie in Model)
+                            {
+                                <tr data-href="/Export/PdfPreview/@installatie.InstallatieId">
+                                    <td>@Html.DisplayFor(modelItem => installatie.InstallatieCode)</td>
+                                    <td>@Html.DisplayFor(modelItem => installatie.InstallatieType)</td>
+                                    <td>@Html.DisplayFor(modelItem => installatie.Naam)</td>
+                                    <td>@Html.DisplayFor(modelItem => installatie.Adres)</td>
+                                    <td>@Html.DisplayFor(modelItem => installatie.Gemeente)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

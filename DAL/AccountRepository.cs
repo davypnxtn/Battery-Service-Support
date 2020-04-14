@@ -69,5 +69,20 @@ namespace DAL
         {
             return await userManager.UpdateAsync(user);
         }
+
+        public async Task<IdentityResult> DeleteUser(ApplicationUser user)
+        {
+            return await userManager.DeleteAsync(user);
+        }
+
+        public async Task<IdentityResult> RemoveFromRoles(ApplicationUser user, IList<string> roles)
+        {
+            return await userManager.RemoveFromRolesAsync(user, roles);
+        }
+
+        public async Task<IdentityResult> AddToRoles(ApplicationUser user, IList<string> roles)
+        {
+            return await userManager.AddToRolesAsync(user, roles);
+        }
     }
 }

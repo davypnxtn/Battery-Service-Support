@@ -71,7 +71,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a asp-controller="Export" asp-action="ListCustomers" asp-route-id="@ViewData["installatieId"]">
                     <i class="fas fa-file-pdf" aria-hidden="true"></i> Exporteer PDF
                 </a>
             </li>
@@ -108,5 +108,6 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     <script src="~/lib/fontawesome-free-5.12.0-web/js/all.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

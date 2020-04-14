@@ -1,13 +1,13 @@
-﻿@model List<RoleUsersViewModel>
+﻿@model List<UserRolesViewModel>
 
-@{
-    ViewData["NavTitle"] = "Wijzigen Rol";
-    var roleId = ViewData["roleId"];
-}
+    @{
+        ViewData["NavTitle"] = "Wijzigen Rol";
+        var userId = ViewData["userId"];
+    }
 
     <div class="container-fluid">
         <div class="col-md-6">
-            <h2>Toevoegen of verwijderen gebruikers van deze Rol</h2>
+            <h2>Toevoegen of verwijderen Rollen van deze gebruiker</h2>
 
             <div class="card">
                 <div class="card-body">
@@ -15,18 +15,18 @@
                         @for (int i = 0; i < Model.Count(); i++)
                         {
                             <div class="form-check m-1">
-                                <input type="hidden" asp-for="@Model[i].UserId" />
-                                <input type="hidden" asp-for="@Model[i].UserName" />
+                                <input type="hidden" asp-for="@Model[i].RoleId" />
+                                <input type="hidden" asp-for="@Model[i].RoleName" />
                                 <input asp-for="@Model[i].IsSelected" class="form-check-input" />
-                                <label asp-for="@Model[i].IsSelected" class="form-check-label" >
-                                    @Html.DisplayFor(model => Model[i].UserName)
+                                <label asp-for="@Model[i].IsSelected" class="form-check-label">
+                                    @Html.DisplayFor(model => Model[i].RoleName)
                                 </label>
                             </div>
                         }
-                    
+
                         <div class="card-footer">
                             <input type="submit" value="Update" class="btn btn-primary" />
-                            <a asp-action="EditRole" asp-route-id="@roleId" class="btn btn-primary">Annuleer</a>
+                            <a asp-action="EditUser" asp-route-id="@userId" class="btn btn-primary">Annuleer</a>
                         </div>
                     </form>
                 </div>

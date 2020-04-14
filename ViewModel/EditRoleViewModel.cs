@@ -10,6 +10,7 @@ namespace ViewModel
         public EditRoleViewModel()
         {
             Users = new List<string>();
+            Claims = new List<string>();
         }
 
         public string Id { get; set; }
@@ -19,5 +20,6 @@ namespace ViewModel
         public string RoleName { get; set; }
         public string ErrorMessage { get; set; }
         public List<string> Users { get; set; }
+        public List<string> Claims { get; set; }
     }
 }

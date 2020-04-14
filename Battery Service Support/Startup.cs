@@ -41,6 +41,7 @@ namespace Battery_Service_Support
                     .AddEntityFrameworkStores<DataContext>()
                     .AddDefaultTokenProviders();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IExportService, ExportService>();
             services.AddTransient<IAdministrationService, AdministrationService>();
             services.AddTransient<IAdministrationRepository, AdministrationRepository>();
             services.AddTransient<IAccountService, AccountService>();
@@ -89,7 +90,7 @@ namespace Battery_Service_Support
             }
 
             app.UseRouting();
-            app.UseStatusCodePages();
+            //app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();

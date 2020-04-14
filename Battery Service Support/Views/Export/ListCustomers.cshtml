@@ -1,0 +1,60 @@
+﻿@model ViewModel.RelatieIndexViewModel
+@{
+    ViewData["NavTitle"] = "PDF export";
+}
+    <div class="container-fluid">
+        <h1>Exporteren naar PDF</h1>
+        <div class="card border-0 shadow">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form asp-controller="Relatie" asp-action="NaamSearch" method="get">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button type="submit">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </button>
+                            </div>
+                            <input class="form-control" asp-for="NaamSearch" placeholder="Zoek op naam" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <form asp-controller="Relatie" asp-action="AdresSearch" method="get">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button type="submit">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </button>
+                            </div>
+                            <input class="form-control" asp-for="AdresSearch" placeholder="Zoek op adres" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="card-text">
+                                <th>@Html.DisplayNameFor(model => Model.Relaties[0].XjoRelatieCode)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relaties[0].Naam)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relaties[0].Roepnaam)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relaties[0].Adres)</th>
+                                <th>@Html.DisplayNameFor(model => Model.Relaties[0].Gemeente)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Relaties)
+                            {
+                                <tr data-href="/Export/ListInstallations/@item.Id">
+                                    <td>@Html.DisplayFor(modelItem => item.XjoRelatieCode)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Naam)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Roepnaam)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Adres)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Gemeente.Naam)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

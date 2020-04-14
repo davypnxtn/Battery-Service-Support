@@ -3,6 +3,7 @@ using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModel;
@@ -28,6 +29,7 @@ namespace BLL
             };
 
             IdentityResult result = await repository.CreateRole(identityRole);
+            
             return result;
         }
 
@@ -49,6 +51,7 @@ namespace BLL
                     RoleName = " ",
                     ErrorMessage = $"Role with Id = {id} cannot be found"
                 };
+
                 return mdl;
             }
 
@@ -60,27 +63,30 @@ namespace BLL
             };
 
             var listUsers = accountRepository.GetUsers();
+            var roleClaims = await repository.GetClaims(role);
+
+            model.Claims = roleClaims.Select(c => c.Value).ToList();
 
             foreach (var user in listUsers)
             {
                 if(await accountRepository.IsInRole(user, role.Name))
                 {
-                    model.Users.Add(user.UserName);
+                    model.Users.Add(user.Naam);
                 }
             }
 
             return model;
         }
 
-        public async Task<List<UserRoleViewModel>> CreateUserRoleViewModel(string roleId)
+        public async Task<List<RoleUsersViewModel>> CreateRoleUsersViewModel(string roleId)
         {
             IdentityRole role = await FindById(roleId);
 
             if (role == null)
             {
-                var mdl = new List<UserRoleViewModel>();
+                var mdl = new List<RoleUsersViewModel>();
                 
-                UserRoleViewModel userRoleVM = new UserRoleViewModel
+                RoleUsersViewModel roleUsersVM = new RoleUsersViewModel
                 {
                     UserId = "",
                     UserName = " ",
@@ -88,18 +94,18 @@ namespace BLL
                     ErrorMessage = $"Role with Id = {roleId} cannot be found"
                 };
 
-                mdl.Add(userRoleVM);
+                mdl.Add(roleUsersVM);
 
                 return mdl;
             }
 
-            var model = new List<UserRoleViewModel>();
+            var model = new List<RoleUsersViewModel>();
 
             var listUsers = accountRepository.GetUsers();
 
             foreach (var user in listUsers)
             {
-                UserRoleViewModel userRoleViewModel = new UserRoleViewModel
+                RoleUsersViewModel roleUsersViewModel = new RoleUsersViewModel
                 {
                     UserId = user.Id,
                     UserName = user.UserName
@@ -107,14 +113,14 @@ namespace BLL
 
                 if (await accountRepository.IsInRole(user, role.Name))
                 {
-                    userRoleViewModel.IsSelected = true;
+                    roleUsersViewModel.IsSelected = true;
                 }
                 else
                 {
-                    userRoleViewModel.IsSelected = false;
+                    roleUsersViewModel.IsSelected = false;
                 }
 
-                model.Add(userRoleViewModel);
+                model.Add(roleUsersViewModel);
             }
 
             return model;
@@ -153,10 +159,11 @@ namespace BLL
             role.Name = model.RoleName;
 
             IdentityResult result = await repository.EditRole(role);
+
             return result;
         }
 
-        public async Task<string> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
+        public async Task<string> EditUsersInRole(List<RoleUsersViewModel> model, string roleId)
         {
             string errorMessage = "";
 
@@ -165,6 +172,7 @@ namespace BLL
             if (role == null)
             {
                 errorMessage = $"Role with Id = {roleId} cannot be found";
+                return errorMessage;
             }
 
             for (int i = 0; i < model.Count; i++)
@@ -213,7 +221,7 @@ namespace BLL
                 var listUserViewModel = new ListUserViewModel
                 {
                     UserId = user.Id,
-                    UserName = user.UserName
+                    UserName = user.Naam
                 };
 
                 model.Add(listUserViewModel);
@@ -237,6 +245,7 @@ namespace BLL
                     XjoGebruikerCode = " ",
                     ErrorMessage = $"User with Id = {id} cannot be found"
                 };
+
                 return mdl;
             }
 
@@ -271,7 +280,117 @@ namespace BLL
             user.Naam = model.Naam;
 
             IdentityResult result = await accountRepository.EditUser(user);
+
             return result;
+        }
+
+        public async Task<IdentityResult> DeleteUser(string id)
+        {
+            var user = await accountRepository.FindById(id);
+
+            if (user == null)
+            {
+                return IdentityResult.Failed();
+            }
+
+            IdentityResult result = await accountRepository.DeleteUser(user);
+
+            return result;
+        }
+
+        public async Task<IdentityResult> DeleteRole(string id)
+        {
+            IdentityRole role = await FindById(id);
+
+            if (role == null)
+            {
+                return IdentityResult.Failed();
+            }
+
+            IdentityResult result = await repository.DeleteRole(role);
+
+            return result;
+        }
+
+        public async Task<List<UserRolesViewModel>> CreateUserRolesViewModel(string userId)
+        {
+            var user = await accountRepository.FindById(userId);
+
+            if (user == null)
+            {
+                var mdl = new List<UserRolesViewModel>();
+
+                UserRolesViewModel roleUsersVM = new UserRolesViewModel
+                {
+                    RoleId = "",
+                    RoleName = " ",
+                    IsSelected = false,
+                    ErrorMessage = $"User with Id = {userId} cannot be found"
+                };
+
+                mdl.Add(roleUsersVM);
+
+                return mdl;
+            }
+
+            var model = new List<UserRolesViewModel>();
+
+            var listRoles = repository.GetRoles();
+
+            foreach (var role in listRoles)
+            {
+                UserRolesViewModel userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+
+                if (await accountRepository.IsInRole(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return model;
+        }
+
+        public async Task<string> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        {
+            string errorMessage = "";
+
+            var user = await accountRepository.FindById(userId);
+
+            if (user == null)
+            {
+                errorMessage = $"User with Id = {userId} cannot be found";
+                return errorMessage;
+            }
+
+            var roles = await accountRepository.GetUserRoles(user);
+            IdentityResult result = await accountRepository.RemoveFromRoles(user, roles);
+
+            if (!result.Succeeded)
+            {
+                errorMessage = "Cannot remove existing roles from user";
+                return errorMessage;
+            }
+
+            result = await accountRepository.AddToRoles(user,
+                model.Where(x => x.IsSelected).Select(y => y.RoleName).ToList());
+
+            if (!result.Succeeded)
+            {
+                errorMessage = "Cannot add selected roles to user";
+                return errorMessage;
+            }
+
+            return errorMessage;
         }
 
         //private async Task<(IdentityRole, string)> RoleCheck(string id)

@@ -19,5 +19,8 @@ namespace DAL.Interfaces
         Task<IdentityResult> RemoveFromRole(ApplicationUser user, string roleName);
         Task<IList<string>> GetUserRoles(ApplicationUser user);
         Task<IdentityResult> EditUser(ApplicationUser user);
+        Task<IdentityResult> DeleteUser(ApplicationUser user);
+        Task<IdentityResult> RemoveFromRoles(ApplicationUser user, IList<string> roles);
+        Task<IdentityResult> AddToRoles(ApplicationUser user, IList<string> roles);
     }
 }

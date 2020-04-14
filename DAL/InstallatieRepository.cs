@@ -20,7 +20,9 @@ namespace DAL
 
         public Installatie FindById(int id)
         {
-            return _context.Installaties.Where(i => i.Id == id).Single();
+            return _context.Installaties.Where(i => i.Id == id)
+                .Include(i => i.InstallatieType)
+                .Single();
         }
 
         public List<Installatie> FindByLeveradresId(int id)

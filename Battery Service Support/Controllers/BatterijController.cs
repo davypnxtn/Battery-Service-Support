@@ -42,28 +42,28 @@ namespace Battery_Service_Support.Controllers
         //Updaten of Toevoegen Batterij en Toevoegen opmerking
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Detail(BatterijDetailViewModel viewModel)
+        public IActionResult Detail(BatterijDetailViewModel model)
         {
             int batterijId = 0;
             if (ModelState.IsValid)
             {
-                if (viewModel.ArtikelId != 0)
+                if (model.ArtikelId != 0)
                 {
-                    var batterij = service.Add(viewModel.Batterij, viewModel.ArtikelId, viewModel.Batterij.Locatie);
+                    var batterij = service.Add(model.Batterij, model.ArtikelId, model.Batterij.Locatie);
                     batterijId = batterij.Id;
                 }
                 else
                 {
-                    var batterij = service.Update(viewModel.Batterij);
+                    var batterij = service.Update(model.Batterij);
                     batterijId = batterij.Id;
                 }
                 
-                if (!string.IsNullOrWhiteSpace(viewModel.NieuweOpmerking))
+                if (!string.IsNullOrWhiteSpace(model.NieuweOpmerking))
                 {
-                    opmerkingService.Add(viewModel.NieuweOpmerking, batterijId);
+                    opmerkingService.Add(model.NieuweOpmerking, batterijId);
                 }
             }
-            return RedirectToAction("Detail", "Installatie", new { id = viewModel.Batterij.InstallatieId });
+            return RedirectToAction("Detail", "Installatie", new { id = model.Batterij.InstallatieId });
         }
     }
 }
