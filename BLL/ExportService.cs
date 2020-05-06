@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using ViewModel;
 
 namespace BLL
@@ -16,23 +17,25 @@ namespace BLL
         private readonly ILeveradresRepository leveradresRepository;
         private readonly IRelatieRepository relatieRepository;
         private readonly IBatterijRepository batterijRepository;
+        private readonly IAccountRepository accountRepository;
 
         public ExportService(IInstallatieRepository _installatieRepository, ILeveradresRepository _leveradresRepository, IRelatieRepository _relatieRepository,
-                             IBatterijRepository _batterijRepository)
+                             IBatterijRepository _batterijRepository, IAccountRepository _accountRepository)
         {
             installatieRepository = _installatieRepository;
             leveradresRepository = _leveradresRepository;
             relatieRepository = _relatieRepository;
             batterijRepository = _batterijRepository;
+            accountRepository = _accountRepository;
         }
 
-        public PdfPreviewViewModel FindInstallationBatteries(int id)
+        public async Task<ExportPdfViewModel> CreateExportPdfViewModel(int id)
         {
             var installatie = installatieRepository.FindById(id);
             var relatie = relatieRepository.FindById(installatie.RelatieId);
             var batterijen = batterijRepository.FindByInstallatieId(id);
 
-            var model = new PdfPreviewViewModel
+            var model = new ExportPdfViewModel
             {
                 RapportDatum = DateTime.Today,
                 InstallatieId = installatie.Id,
@@ -70,14 +73,16 @@ namespace BLL
                 }
                 else
                 {
-                    if ((batterij.ModDatum - DateTime.Now).TotalDays < 30)
+                    if ((DateTime.Now - batterij.ModDatum).TotalDays < 30)
                     {
+                        var user = await accountRepository.FindById(batterij.VervangenDoor);
+
                         var oudeBatterijViewModel = new OudeBatterijViewModel
                         {
                             BatterijType = batterij.Artikel.Naam,
                             GeplaatstIn = batterij.GeplaatstIn,
                             VervangDatum = batterij.ModDatum,
-                            VervangenDoor = batterij.User.Naam
+                            VervangenDoor = user.Naam
                         };
 
                         model.OudeBatterijen.Add(oudeBatterijViewModel);
@@ -124,9 +129,9 @@ namespace BLL
             return model;
         }
 
-        public string GenerateHtmlString(int id)
+        public async Task<string> GenerateHtmlString(int id)
         {
-            var model = FindInstallationBatteries(id);
+            var model = await CreateExportPdfViewModel(id);
             string cssFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "lib", "bootstrap", "css", "bootstrap.css");
 
             var sb = new StringBuilder();
@@ -236,12 +241,12 @@ namespace BLL
             return sb.ToString();
         }
 
-        public FileResult GeneratePdf(int id)
+        public async Task<FileResult> GeneratePdf(int id)
         {
             var installatie = installatieRepository.FindById(id);
             var relatie = relatieRepository.FindById(installatie.RelatieId);
 
-            var htmlString = GenerateHtmlString(id);
+            var htmlString = await GenerateHtmlString(id);
             var baseUrl = "C:/Users/jojo/source/repos/Battery-Service-Support/Battery Service Support";
             DateTime date = DateTime.Now;
 
@@ -252,8 +257,6 @@ namespace BLL
             strings.Add(".pdf");
             var fileName =  String.Join("-", strings);
 
-            //var url = $"http://localhost:49837/Export/PdfPreview/{id}";
-
             // instantiate a html to pdf converter object
             HtmlToPdf converter = new HtmlToPdf();
 
@@ -263,10 +266,14 @@ namespace BLL
             converter.Options.WebPageWidth = 1024;
             converter.Options.DisplayHeader = true;
             converter.Options.DisplayFooter = true;
+
+            // set header options
             converter.Header.DisplayOnFirstPage = true;
             converter.Header.DisplayOnOddPages = false;
             converter.Header.DisplayOnEvenPages = false;
             converter.Header.Height = 100;
+
+            // set footer options
             converter.Footer.DisplayOnFirstPage = true;
             converter.Footer.DisplayOnOddPages = true;
             converter.Footer.DisplayOnEvenPages = true;
@@ -276,7 +283,7 @@ namespace BLL
             PdfImageSection pdfHeaderImageSection = new PdfImageSection(30, 30, 180, "wwwroot/images/logo_jojo.png");
             converter.Header.Add(pdfHeaderImageSection);
 
-            // add image to the footer
+            // add image to footer
             PdfImageSection pdfImageSection = new PdfImageSection( 20, 0, 510, "wwwroot/images/footer_jojo.png");
             converter.Footer.Add(pdfImageSection);
 
@@ -285,8 +292,7 @@ namespace BLL
             text.HorizontalAlign = PdfTextHorizontalAlign.Right;
             converter.Footer.Add(text);
 
-            // create a new pdf document converting an url
-            //PdfDocument doc = converter.ConvertUrl(url);
+            // create a new pdf document from htmlString
             PdfDocument doc = converter.ConvertHtmlString(htmlString, baseUrl);
 
             byte[] pdf = doc.Save();
@@ -296,44 +302,7 @@ namespace BLL
             FileResult fileResult = new FileContentResult(pdf, "application/pdf");
             fileResult.FileDownloadName = fileName;
             return fileResult;
-            //return RedirectToAction("Index", "Relatie");
-            //var installatieDetailVM = installatieRepository.CreateInstallatieDetailViewModel(id);
-
-            //var sb = new StringBuilder();
-            //sb.Append(@"
-            //            <html>
-            //                <head>
-            //                    <link href='~/wwwroot/lib/bootstrap/css/bootstrap.css' rel='stylesheet'/>
-            //                    <link href='~/wwwroot/css/site.css' rel='stylesheet'/>
-            //                </head>
-            //                <body>
-            //                    <div class='card'>
-            //                        <div class='card-header'><h1>This is the generated PDF report!!!</h1></div>
-            //                            <div class='card-body'>
-            //                                <table align='center'>
-            //                                    <tr>
-            //                                        <th>Name</th>
-            //                                        <th>LastName</th>
-            //                                        <th>Age</th>
-            //                                        <th>Gender</th>
-            //                                    </tr>");
-            //foreach (var batterij in installatieDetailVM.Batterijen)
-            //{
-            //    sb.AppendFormat(@"              <tr>
-            //                                        <td>{0}</td>
-            //                                        <td>{1}</td>
-            //                                        <td>{2}</td>
-            //                                        <td>{3}</td>
-            //                                    </tr>", batterij.Artikel.Naam, batterij.GeplaatstIn, batterij.Datum, batterij.User.Naam);
-            //}
-            //sb.Append(@"                    </table>
-            //                            </div>
-            //                        </div>
-            //                    </div>
-            //                </body>
-            //            </html>");
-
-            //return sb.ToString();
+            
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿@model List<ListBatteriesViewModel>
+@{
+    ViewData["NavTitle"] = "Lijst Actieve Batterijen";
+}
+<div class="container-fluid">
+    <div class="h1 text-center">Lijst actieve batterijen</div>
+    <div class="card border-0 shadow col-10 offset-1">
+        <div class="row">
+            <div class="col-lg-6">
+                <form asp-controller="Batterij" asp-action="FindActiveByName" method="get">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button type="submit">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </button>
+                        </div>
+                        <input class="form-control" name="name" placeholder="Zoek op relatie" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <form asp-controller="Batterij" asp-action="FindActiveByDate" method="get">
+                    <div class="input-group date mb-3">
+                        <div class="input-group-prepend">
+                            <button type="submit">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </button>
+                        </div>
+                        <input class="form-control" id="datepicker" name="date" onkeydown="return false" , onpaste="return false" placeholder="Geplaatst vanaf" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <vc:list-batteries model="@Model"></vc:list-batteries>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

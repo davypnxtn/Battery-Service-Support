@@ -258,6 +258,7 @@ namespace BLL
                 UserName = user.UserName,
                 Naam = user.Naam,
                 XjoGebruikerCode = user.XjoGebruikerCode,
+                Actief = user.Aktief,
                 ErrorMessage = "",
                 Roles = userRoles
             };
@@ -278,6 +279,7 @@ namespace BLL
             user.UserName = model.UserName;
             user.XjoGebruikerCode = model.XjoGebruikerCode;
             user.Naam = model.Naam;
+            user.Aktief = model.Actief;
 
             IdentityResult result = await accountRepository.EditUser(user);
 

@@ -31,6 +31,7 @@ namespace ViewModel
 
         [Required]
         public string Naam { get; set; }
+        public bool Actief { get; set; }
 
         public string ErrorMessage { get; set; }
 

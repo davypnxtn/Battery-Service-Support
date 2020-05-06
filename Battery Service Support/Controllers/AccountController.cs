@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewModel;
@@ -72,21 +74,41 @@ namespace Battery_Service_Support.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await service.Login(model);
+                
+                var (result, isAdmin) = await service.Login(model);
 
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
+                        if (isAdmin)
+                        {
+                            return RedirectToAction("BatterieWarningList", "Batterij");
+                        }
                         return Redirect(returnUrl);
                     }
                     else
                     {
+                        if (isAdmin)
+                        {
+                            return RedirectToAction("BatterieWarningList", "Batterij");
+                        }
                         return RedirectToAction("Index", "Relatie");
                     }
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "Account Is Not Activated. Contact Support");
+                }
+                else if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError(string.Empty, "Account Is locked! To Many Login Attempts");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                }
             }
             return View(model);
         }

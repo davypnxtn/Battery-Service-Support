@@ -2,15 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using ViewModel;
 
 namespace BLL.Interfaces
 {
     public interface IExportService
     {
-        FileResult GeneratePdf(int id);
-        string GenerateHtmlString(int id);
+        Task<FileResult> GeneratePdf(int id);
+        Task<string> GenerateHtmlString(int id);
         List<ExportInstallationViewModel> FindInstallations(int id);
-        PdfPreviewViewModel FindInstallationBatteries(int id);
+        Task<ExportPdfViewModel> CreateExportPdfViewModel(int id);
     }
 }

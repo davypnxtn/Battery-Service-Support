@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SelectPdf;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +25,7 @@ namespace Battery_Service_Support.Controllers
         {
             if (id != null)
             {
-                return RedirectToAction("PdfPreview", new { id = (int)id });
+                return RedirectToAction("ExportToPdf", new { id = (int)id });
             }
 
             var relatieIndexVM = relatieService.GetRelaties();
@@ -45,43 +43,23 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
-        public IActionResult PdfPreview(int id)
-        {
-            //var model = service.FindInstallationBatteries(id);
-            //return View(model);
-            FileResult fileResult = service.GeneratePdf((int)id);
-            return fileResult;
-        }
+        //[AllowAnonymous]
+        //public IActionResult PdfPreview(int id)
+        //{
+        //    //var model = service.FindInstallationBatteries(id);
+        //    //return View(model);
+        //    FileResult fileResult = service.GeneratePdf((int)id);
+        //    return fileResult;
+        //}
 
-        public IActionResult ExportToPdf(int? id, string naam)
+        public async Task<IActionResult> ExportToPdf(int? id)
         {
             if (id != null)
             {
-                FileResult fileResult = service.GeneratePdf((int)id);
+                FileResult fileResult = await service.GeneratePdf((int)id);
                 return fileResult;
             }
             return RedirectToAction("ListCustomers");
-
-            //var htmlString = service.GeneratePdf(id);
-            //var url = "C:/Users/jojo/source/repos/Battery-Service-Support/Battery Service Support";
-
-            //HtmlToPdf converter = new HtmlToPdf();
-
-            //converter.Options.PdfPageSize = PdfPageSize.A4;
-            //converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
-            //converter.Options.WebPageWidth = 1024;
-
-            //PdfDocument doc = converter.ConvertHtmlString(htmlString, url);
-
-            //byte[] pdf = doc.Save();
-            
-            //doc.Close();
-
-            //FileResult fileResult = new FileContentResult(pdf, "application/pdf");
-            //fileResult.FileDownloadName = "Document.pdf";
-            //return fileResult;
-            //return RedirectToAction("Index", "Relatie");
         }
     }
 }

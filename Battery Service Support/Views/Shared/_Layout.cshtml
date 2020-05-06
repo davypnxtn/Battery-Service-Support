@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/fontawesome-free-5.12.0-web/css/all.css" rel="stylesheet" />
 
@@ -21,12 +22,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                @*<li class="nav-item active">
-                        <a class="nav-link" asp-controller="Product" asp-action="Index">
-                            Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>*@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item">
@@ -52,7 +47,7 @@
                 }
 
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <a class="nav-link" asp-controller="Relatie" asp-action="Index">
                         <div class="fas fa-times" style="width: 24px; height: 24px;"></div>
                     </a>
                 </li>
@@ -75,26 +70,35 @@
                     <i class="fas fa-file-pdf" aria-hidden="true"></i> Exporteer PDF
                 </a>
             </li>
-            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Administrator") || User.IsInRole("Beheerder"))){
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Administrator") || User.IsInRole("Beheerder")))
+            {
                 <li class="header">Admin Menu</li>
                 <li>
-                     <a asp-controller="Administration" asp-action="ListUsers">
+                    <a asp-controller="Administration" asp-action="ListUsers">
                         <i class="fas fa-users" aria-hidden="true"></i> Gebruikers
-                     </a>
+                    </a>
                 </li>
                 <li>
                     <a asp-controller="Administration" asp-action="ListRoles">
                         <i class="fas fa-user-tag" aria-hidden="true"></i> Rollen
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-file-alt" aria-hidden="true"></i> Exporteer CSV
+                <li class="nav-item dropdown">
+                    <a href="#navbarCollapseMenuLink" class="nav-link dropdown-toggle" data-toggle="collapse" aria-controls="navbarCollapseMenuLink" aria-expanded="false">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i> Batterijen
                     </a>
+                    <div class="collapse" id="navbarCollapseMenuLink">
+                        <a class="dropdown-item" asp-controller="Batterij" asp-action="ListActiveBatteries">
+                            <i class="fas fa-battery-full" aria-hidden="true"></i> In Gebruik
+                        </a>
+                        <a class="dropdown-item" asp-controller="Batterij" asp-action="ListReplacedBatteries">
+                            <i class="fas fa-battery-empty" aria-hidden="true"></i> Vervangen
+                        </a>
+                    </div>
                 </li>
                 <li>
                     <a href="#">
-                        <i class="fas fa-info-circle" aria-hidden="true"></i> Informatie
+                        <i class="fas fa-file-csv" aria-hidden="true"></i> Exporteer CSV
                     </a>
                 </li>
             }
@@ -104,9 +108,12 @@
         @RenderBody()
     </div>
     <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/popper.js/umd/popper.js"></script>
     <script src="~/lib/jquery-validate/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.nl-BE.min.js"></script>
     <script src="~/lib/fontawesome-free-5.12.0-web/js/all.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

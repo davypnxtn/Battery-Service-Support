@@ -12,3 +12,10 @@ function confirmDelete(id, isDeleteClicked) {
     }
 }
 
+// Datepicker
+$('#datepicker').datepicker({
+    format: "dd/mm/yyyy",
+    clearBtn: true,
+    autoclose: true,
+    language: "nl-BE"
+});

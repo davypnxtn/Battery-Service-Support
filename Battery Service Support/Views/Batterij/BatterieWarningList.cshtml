@@ -1,0 +1,13 @@
+﻿@model List<ListBatteriesViewModel>
+@{
+    ViewData["NavTitle"] = "Lijst Batterijen";
+}
+<div class="container-fluid">
+    <div class="h1 text-center text-danger">Volgende batterijen hebben uw aandacht nodig!</div>
+    <div class="card border-0 shadow col-10 offset-1">
+        <div class="row">
+            <vc:list-batteries model="@Model"></vc:list-batteries>
+        </div>
+    </div>
+</div>
+

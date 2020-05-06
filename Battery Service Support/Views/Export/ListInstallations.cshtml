@@ -7,7 +7,7 @@
         <div class="card border-0 shadow">
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-hover">
+                    <table class="table">
                         <thead>
                             <tr class="card-text">
                                 <th>Installatiecode</th>
@@ -20,12 +20,13 @@
                         <tbody>
                             @foreach (var installatie in Model)
                             {
-                                <tr data-href="/Export/PdfPreview/@installatie.InstallatieId">
+                                <tr>
                                     <td>@Html.DisplayFor(modelItem => installatie.InstallatieCode)</td>
                                     <td>@Html.DisplayFor(modelItem => installatie.InstallatieType)</td>
                                     <td>@Html.DisplayFor(modelItem => installatie.Naam)</td>
                                     <td>@Html.DisplayFor(modelItem => installatie.Adres)</td>
                                     <td>@Html.DisplayFor(modelItem => installatie.Gemeente)</td>
+                                    <td><a asp-controller="Export" asp-action="ExportToPdf" asp-route-id="@installatie.InstallatieId" class="btn btn-primary py-2 btn-block">Exporteer pdf</a></td>
                                 </tr>
                             }
                         </tbody>

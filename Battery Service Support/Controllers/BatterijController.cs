@@ -39,7 +39,9 @@ namespace Battery_Service_Support.Controllers
             return View(batterijDetailVM);
         }
 
-        //Updaten of Toevoegen Batterij en Toevoegen opmerking
+        // ----- Updaten of Toevoegen Batterij en Toevoegen opmerking -----
+        // In deze Action wordt zowel de update van de locatie, het aanmaken van een nieuwe opmerking,
+        // als het vervangen van de Batterij afgehandeld.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Detail(BatterijDetailViewModel model)
@@ -65,5 +67,58 @@ namespace Battery_Service_Support.Controllers
             }
             return RedirectToAction("Detail", "Installatie", new { id = model.Batterij.InstallatieId });
         }
+
+        public async Task<IActionResult> ListActiveBatteries()
+        {
+            bool isVervangen = false;
+            var model = await service.CreateListBatteriesViewModel(isVervangen);
+            return View(model);
+        }
+
+        public async Task<IActionResult> ListReplacedBatteries()
+        {
+            bool isVervangen = true;
+            var model = await service.CreateListBatteriesViewModel(isVervangen);
+            return View(model);
+        }
+
+        public async Task<IActionResult> BatterieWarningList()
+        {
+            var model = await service.CreateBatterieWarningList();
+            if (model.Any())
+            {
+                return View(model);
+            }
+            return RedirectToAction("Index", "Relatie");
+        }
+
+        public async Task<IActionResult> FindActiveByDate(string date)
+        {
+            bool isVervangen = false;
+            var model = await service.FindByDate(date, isVervangen);
+            return View("ListActiveBatteries", model);
+        }
+
+        public async Task<IActionResult> FindActiveByName(string name)
+        {
+            bool isVervangen = false;
+            var model = await service.FindByName(name, isVervangen);
+            return View("ListActiveBatteries", model);
+        }
+
+        public async Task<IActionResult> FindReplacedByDate(string date)
+        {
+            bool isVervangen = true;
+            var model = await service.FindByDate(date, isVervangen);
+            return View("ListReplacedBatteries", model);
+        }
+
+        public async Task<IActionResult> FindReplacedByName(string name)
+        {
+            bool isVervangen = true;
+            var model = await service.FindByName(name, isVervangen);
+            return View("ListReplacedBatteries", model);
+        }
+        // Views nog aaanvullen met zoekvelden!!!
     }
 }

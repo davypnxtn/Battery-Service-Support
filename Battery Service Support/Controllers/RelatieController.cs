@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ViewModel;
 
@@ -20,17 +22,16 @@ namespace Battery_Service_Support.Controllers
             service = _service;
         }
 
-        
-        // GET: /<controller>/
-        // Index pagina dient om Relatie op te zoeken
+        // ----- Index pagina dient om Relatie op te zoeken -----
+        // Als de ingelogde gebruiker aan de administrator groep is toegewezen, zal er eerst gecontrolleerd worden
+        // of er batterijen zijn die vervangen dienen te worden
         public IActionResult Index()
         {
             var relatieIndexVM = service.GetRelaties();
             return View(relatieIndexVM);
         }
 
-        // GET: /<controller>/
-        // Dit is de pagina indien gekozen relatie wel een leveradres(sen) heeft
+        // ----- Dit is de pagina indien de gekozen relatie leveradres(sen) heeft -----
         public IActionResult Detail(int? id)
         {
             if (id == null)
@@ -50,9 +51,8 @@ namespace Battery_Service_Support.Controllers
             return View(relatieDetailVM);
         }
 
-        // GET: /<controller>/ 
-        // Dit is de pagina indien gekozen relatie geen leveradres heeft
-        // Toont facturatie adres als leveradres
+        // ----- Dit is de pagina indien gekozen relatie geen leveradres heeft -----
+        // Adres van Relate wordt getoond als leveradres
         public IActionResult Installatie(int? id)
         {
             if (id == null)
@@ -72,18 +72,19 @@ namespace Battery_Service_Support.Controllers
             return View(relatieInstallatieVM); 
         }
 
-        //GET: Toont Index pagina Relaties gefilterd op naam of roepnaam
+        // ----- Toont Index pagina Relaties gefilterd op naam of roepnaam -----
         public IActionResult NaamSearch(RelatieIndexViewModel viewModel)
         {
             var relatieIndexVM = service.FindByNaam(viewModel.NaamSearch);
             return View("Index", relatieIndexVM);
         }
 
-        //GET: Toont Index pagina Relaties gefilterd op adres of leveradres
+        // ----- Toont Index pagina Relaties gefilterd op adres of leveradres -----
         public IActionResult AdresSearch(RelatieIndexViewModel viewModel)
         {
             var relatieIndexVM = service.FindByAdres(viewModel.AdresSearch);
             return View("Index", relatieIndexVM);
         }
+
     }
 }

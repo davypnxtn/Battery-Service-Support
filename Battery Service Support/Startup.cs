@@ -40,6 +40,13 @@ namespace Battery_Service_Support
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<DataContext>()
                     .AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(options =>
+            {
+                //Default Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+            });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IExportService, ExportService>();
             services.AddTransient<IAdministrationService, AdministrationService>();
@@ -90,16 +97,11 @@ namespace Battery_Service_Support
             }
 
             app.UseRouting();
-            //app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGet("/", async context =>
-                //{
-                //    await context.Response.WriteAsync("Hello World!");
-                //});
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Relatie}/{action=Index}/{id?}");

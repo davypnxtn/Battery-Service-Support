@@ -14,6 +14,7 @@ namespace DAL.Interfaces
         Task<SignInResult> Login(string username, string password, Boolean rememberMe);
         List<ApplicationUser> GetUsers();
         Task<ApplicationUser> FindById(string id);
+        Task<ApplicationUser> FindByName(string name);
         Task<Boolean> IsInRole(ApplicationUser user, string name);
         Task<IdentityResult> AddToRole(ApplicationUser user, string roleName);
         Task<IdentityResult> RemoveFromRole(ApplicationUser user, string roleName);

@@ -58,6 +58,15 @@ namespace DAL
                 .ToList();
         }
 
+        public List<Batterij> GetBatteries(bool isVervangen)
+        {
+            return _context.Batterijen.Where(b => b.Vervangen == isVervangen)
+                .Include(b => b.Artikel)
+                .Include(b => b.Installatie)
+                .Include(b => b.User)
+                .ToList();
+        }
+
         public Batterij Update(Batterij batterijChanges)
         {
             try
@@ -70,11 +79,6 @@ namespace DAL
                     throw;   
             }
             return batterijChanges;
-            //Batterij batterij = _context.Batterijen.SingleOrDefault(b => b.Id == batterijChanges.Id);
-            //if (batterij != null)
-            //{
-            //    batterij.Locatie = batterijChanges.Locatie;
-            //}
         }
 
     }

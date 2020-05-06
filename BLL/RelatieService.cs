@@ -68,7 +68,7 @@ namespace BLL
             }
             else
             {
-                relatieIndexVM.Relaties = repository.GetRelaties();
+                relatieIndexVM = GetRelaties();
             }
 
             return relatieIndexVM;
@@ -93,7 +93,7 @@ namespace BLL
                 }
                 else
                 {
-                    relatieIndexVM.Relaties = repository.GetRelaties();
+                    relatieIndexVM = GetRelaties();
                 }
             
             return relatieIndexVM;

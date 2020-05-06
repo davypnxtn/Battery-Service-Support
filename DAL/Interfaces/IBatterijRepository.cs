@@ -12,5 +12,6 @@ namespace DAL.Interfaces
         Batterij FindById(int id);
         Batterij Add(Batterij nieuweBatterij);
         Batterij Update(Batterij batterijChanges);
+        List<Batterij> GetBatteries(bool isVervangen);
     }
 }
