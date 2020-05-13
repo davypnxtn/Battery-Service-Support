@@ -12,7 +12,6 @@ using ViewModel;
 
 namespace Battery_Service_Support.Controllers
 {
-    [Authorize(Roles="Beheerder, Administrator")]
     public class AdministrationController : Controller
     {
         private readonly IAdministrationService service;
@@ -22,16 +21,18 @@ namespace Battery_Service_Support.Controllers
             service = _service;
         }
 
+        // ----- GET: Aanmaken nieuwe Rol -----
         [HttpGet]
-        [Authorize(Roles = "Beheerder")]
+        [Authorize(Policy = "CreateRolePolicy")]
         public IActionResult CreateRole()
         {
             return View();
         }
 
+        // ----- POST: Aanmaken nieuwe Rol -----
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Beheerder")]
+        [Authorize(Policy = "CreateRolePolicy")]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -53,13 +54,15 @@ namespace Battery_Service_Support.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public IActionResult ListRoles()
         {
-            var roles = service.GetRoles();
+            var roles = service.GetListRolesViewModel();
             return View(roles);
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             EditRoleViewModel model = await service.CreateEditRoleViewModel(id);
@@ -75,6 +78,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -97,6 +101,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             IdentityResult result = await service.DeleteRole(id);
@@ -115,6 +120,7 @@ namespace Battery_Service_Support.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewData["roleId"] = roleId;
@@ -132,6 +138,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditUsersInRole(List<RoleUsersViewModel> model, string roleId)
         {
             string errorMessage = await service.EditUsersInRole(model, roleId);
@@ -142,10 +149,36 @@ namespace Battery_Service_Support.Controllers
                 return View("NotFound");
             }
 
-            return RedirectToAction("EditRole", new { Id = roleId });
+            return RedirectToAction("EditRole", new { id = roleId });
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditClaimsPolicy")]
+        public async Task<IActionResult> ManageRoleClaims(string roleId)
+        {
+            var model = await service.CreateRoleClaimsViewModel(roleId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditClaimsPolicy")]
+        public async Task<IActionResult> ManageRoleClaims(RoleClaimsViewModel model)
+        {
+            var result = await service.EditRoleClaims(model);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Cannot add/remove claims from role");
+                return View(model);
+            }
+
+            return RedirectToAction("EditRole", new { id = model.RoleId });
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "EditUserPolicy")]
         public IActionResult ListUsers()
         {
             var users = service.ListUsers();
@@ -153,6 +186,7 @@ namespace Battery_Service_Support.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditUserPolicy")]
         public async Task<IActionResult> EditUser(string id)
         {
             EditUserViewModel model = await service.CreateEditUserViewModel(id);
@@ -168,6 +202,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditUserPolicy")]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -190,6 +225,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "DeleteUserPolicy")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             IdentityResult result = await service.DeleteUser(id);
@@ -208,6 +244,7 @@ namespace Battery_Service_Support.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditUserPolicy")]
         public async Task<IActionResult> ManageUserRoles(string UserId)
         {
             ViewData["userId"] = UserId;
@@ -225,6 +262,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditUserPolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             string errorMessage = await service.ManageUserRoles(model, userId);
@@ -235,7 +273,8 @@ namespace Battery_Service_Support.Controllers
                 return View("NotFound");
             }
 
-            return RedirectToAction("EditUser", new { Id = userId });
+            return RedirectToAction("EditUser", new { id = userId });
         }
+
     }
 }

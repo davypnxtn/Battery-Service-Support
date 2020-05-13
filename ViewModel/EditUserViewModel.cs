@@ -25,6 +25,8 @@ namespace ViewModel
         [Display(Name = "Gebruikersnaam")]
         public string UserName { get; set; }
 
+        [RegularExpression(@"^[A-Z]{2}")]
+        [StringLength(2)]
         [Required]
         [Display(Name = "Gebruikercode")]
         public string XjoGebruikerCode { get; set; }

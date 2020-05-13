@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,7 +19,8 @@ namespace Battery_Service_Support.Controllers
             service = _service;
         }
 
-        // GET: /<controller>/
+        [HttpGet]
+        [Authorize(Policy = "ReadCustomersPolicy")]
         public IActionResult Detail(int id)
         {
             var installatieDetailVM = service.CreateInstallatieDetailViewModel(id);

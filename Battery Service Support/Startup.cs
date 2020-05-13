@@ -82,6 +82,23 @@ namespace Battery_Service_Support
                             .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ReadCustomersPolicy", policy => policy.RequireClaim("Read Customers"));
+                options.AddPolicy("EditBatteryPolicy", policy => policy.RequireClaim("Edit Battery"));
+                options.AddPolicy("ListsBatteriesPolicy", policy => policy.RequireClaim("Lists Batteries"));
+                options.AddPolicy("RegisterUserPolicy", policy => policy.RequireClaim("Register User"));
+                options.AddPolicy("EditUserPolicy", policy => policy.RequireClaim("Edit User"));
+                options.AddPolicy("DeleteUserPolicy", policy => policy.RequireClaim("Delete User"));
+                options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+                options.AddPolicy("EditClaimsPolicy", policy => policy.RequireClaim("Edit Claims"));
+                options.AddPolicy("ExportPdfPolicy", policy => policy.RequireClaim("Export PDF"));
+                options.AddPolicy("ExportCsvPolicy", policy => policy.RequireClaim("Export CSV"));
+                options.AddPolicy("AdminMenuPolicy", policy => policy.RequireClaim("Admin Menu"));
+            });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

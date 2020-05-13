@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ViewModel;
@@ -25,7 +26,8 @@ namespace Battery_Service_Support.Controllers
         }
 
         // Toont Detail pagina van de Batterij
-        // GET: /<controller>/
+        [HttpGet]
+        [Authorize(Policy = "ReadCustomersPolicy")]
         public async Task<IActionResult> Detail(int? id)
         {
             if (id == null)
@@ -39,11 +41,12 @@ namespace Battery_Service_Support.Controllers
             return View(batterijDetailVM);
         }
 
-        // ----- Updaten of Toevoegen Batterij en Toevoegen opmerking -----
+        // ----- Updaten locatie  of Toevoegen Batterij en Toevoegen opmerking -----
         // In deze Action wordt zowel de update van de locatie, het aanmaken van een nieuwe opmerking,
         // als het vervangen van de Batterij afgehandeld.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditBatteryPolicy")]
         public IActionResult Detail(BatterijDetailViewModel model)
         {
             int batterijId = 0;
@@ -68,6 +71,8 @@ namespace Battery_Service_Support.Controllers
             return RedirectToAction("Detail", "Installatie", new { id = model.Batterij.InstallatieId });
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> ListActiveBatteries()
         {
             bool isVervangen = false;
@@ -75,6 +80,8 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> ListReplacedBatteries()
         {
             bool isVervangen = true;
@@ -82,6 +89,8 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> BatterieWarningList()
         {
             var model = await service.CreateBatterieWarningList();
@@ -92,6 +101,8 @@ namespace Battery_Service_Support.Controllers
             return RedirectToAction("Index", "Relatie");
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> FindActiveByDate(string date)
         {
             bool isVervangen = false;
@@ -99,6 +110,8 @@ namespace Battery_Service_Support.Controllers
             return View("ListActiveBatteries", model);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> FindActiveByName(string name)
         {
             bool isVervangen = false;
@@ -106,6 +119,8 @@ namespace Battery_Service_Support.Controllers
             return View("ListActiveBatteries", model);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> FindReplacedByDate(string date)
         {
             bool isVervangen = true;
@@ -113,12 +128,13 @@ namespace Battery_Service_Support.Controllers
             return View("ListReplacedBatteries", model);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ListsBatteriesPolicy")]
         public async Task<IActionResult> FindReplacedByName(string name)
         {
             bool isVervangen = true;
             var model = await service.FindByName(name, isVervangen);
             return View("ListReplacedBatteries", model);
         }
-        // Views nog aaanvullen met zoekvelden!!!
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ViewModel;
@@ -25,6 +26,7 @@ namespace Battery_Service_Support.Controllers
         // ----- Index pagina dient om Relatie op te zoeken -----
         // Als de ingelogde gebruiker aan de administrator groep is toegewezen, zal er eerst gecontrolleerd worden
         // of er batterijen zijn die vervangen dienen te worden
+        [HttpGet]
         public IActionResult Index()
         {
             var relatieIndexVM = service.GetRelaties();
@@ -32,6 +34,8 @@ namespace Battery_Service_Support.Controllers
         }
 
         // ----- Dit is de pagina indien de gekozen relatie leveradres(sen) heeft -----
+        [HttpGet]
+        [Authorize(Policy = "ReadCustomersPolicy")]
         public IActionResult Detail(int? id)
         {
             if (id == null)
@@ -53,6 +57,8 @@ namespace Battery_Service_Support.Controllers
 
         // ----- Dit is de pagina indien gekozen relatie geen leveradres heeft -----
         // Adres van Relate wordt getoond als leveradres
+        [HttpGet]
+        [Authorize(Policy = "ReadCustomersPolicy")]
         public IActionResult Installatie(int? id)
         {
             if (id == null)
@@ -73,6 +79,7 @@ namespace Battery_Service_Support.Controllers
         }
 
         // ----- Toont Index pagina Relaties gefilterd op naam of roepnaam -----
+        [HttpGet]
         public IActionResult NaamSearch(RelatieIndexViewModel viewModel)
         {
             var relatieIndexVM = service.FindByNaam(viewModel.NaamSearch);
@@ -80,6 +87,7 @@ namespace Battery_Service_Support.Controllers
         }
 
         // ----- Toont Index pagina Relaties gefilterd op adres of leveradres -----
+        [HttpGet]
         public IActionResult AdresSearch(RelatieIndexViewModel viewModel)
         {
             var relatieIndexVM = service.FindByAdres(viewModel.AdresSearch);

@@ -55,7 +55,7 @@
                         </div>
                         <div class="card mt-3">
                             <div class="card-header">
-                                <h3>Claims van deze Rol</h3>
+                                <h3>Machtigingen van deze Rol</h3>
                             </div>
                             <div class="card-body">
                                 @if (Model.Claims.Any())
@@ -67,11 +67,11 @@
                                 }
                                 else
                                 {
-                                    <h5 class="card-title">Op dit moment geen Claims toegewezen</h5>
+                                    <h5 class="card-title">Op dit moment geen machtigingen toegewezen</h5>
                                 }
                             </div>
                             <div class="card-footer">
-                                <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">
+                                <a asp-controller="Administration" asp-action="ManageRoleClaims" asp-route-roleId="@Model.Id" class="btn btn-primary">
                                     Beheren
                                 </a>
                             </div>

@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,14 @@ namespace DAL
         // ----- Verwijderen gebruiker -----
         public async Task<IdentityResult> DeleteUser(ApplicationUser user)
         {
-            return await userManager.DeleteAsync(user);
+            try
+            {
+                return await userManager.DeleteAsync(user);
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
 
         // ----- Gebruiker verwijderen van een Lijst van Rollen -----

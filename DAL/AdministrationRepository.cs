@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,6 @@ namespace DAL
 
         public async Task<IdentityRole> FindById(string id)
         {
-            // test roleclaims
-            
-            //IdentityRole role = await roleManager.FindByIdAsync(id);
-            //var result = await roleManager.AddClaimAsync(role, new Claim("Edit Role", "true"));
             return await roleManager.FindByIdAsync(id);
         }
 
@@ -41,14 +38,31 @@ namespace DAL
             return await roleManager.UpdateAsync(role);
         }
 
-        public async Task<IList<Claim>> GetClaims(IdentityRole role)
+        public async Task<IdentityResult> DeleteRole(IdentityRole role)
+        {
+            try
+            {
+                return await roleManager.DeleteAsync(role);
+            }
+            catch (DbUpdateException)
+            {
+                throw new Exception("Exception while deleting Role, there are Users assigned to this Role");
+            }
+        }
+
+        public async Task<IList<Claim>> GetRoleClaims(IdentityRole role)
         {
             return await roleManager.GetClaimsAsync(role);
         }
 
-        public async Task<IdentityResult> DeleteRole(IdentityRole role)
+        public async Task<IdentityResult> RemoveRoleClaim(IdentityRole role, Claim claim)
         {
-            return await roleManager.DeleteAsync(role);
+            return await roleManager.RemoveClaimAsync(role, claim);
+        }
+
+        public async Task<IdentityResult> AddRoleClaim(IdentityRole role, Claim claim)
+        {
+            return await roleManager.AddClaimAsync(role, claim);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Battery_Service_Support.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Beheerder, Administrator")]
+        [Authorize(Policy = "RegisterUserPolicy")]
         public IActionResult Register()
         {
             return View();
@@ -32,7 +32,7 @@ namespace Battery_Service_Support.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Beheerder, Administrator")]
+        [Authorize(Policy = "RegisterUserPolicy")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)

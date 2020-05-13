@@ -13,5 +13,6 @@ namespace BLL.Interfaces
         Task<string> GenerateHtmlString(int id);
         List<ExportInstallationViewModel> FindInstallations(int id);
         Task<ExportPdfViewModel> CreateExportPdfViewModel(int id);
+        FileResult GenerateCsv(string date);
     }
 }

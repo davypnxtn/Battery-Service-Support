@@ -29,6 +29,8 @@ namespace ViewModel
             ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [RegularExpression(@"^[A-Z]{2}")]
+        [StringLength(2)]
         [Required]
         [Display(Name = "Gebruikercode")]
         public string XjoGebruikerCode { get; set; }

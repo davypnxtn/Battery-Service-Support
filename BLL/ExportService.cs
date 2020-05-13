@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Model;
 using SelectPdf;
 using System;
 using System.Collections.Generic;
@@ -303,6 +304,43 @@ namespace BLL
             fileResult.FileDownloadName = fileName;
             return fileResult;
             
+        }
+
+        public FileResult GenerateCsv(string date)
+        {
+            var isVervangen = false;
+            var Listbatteries = batterijRepository.GetBatteries(isVervangen);
+            var modifiedBatteries = new List<Batterij>();
+            var sb = new StringBuilder();
+            FileResult fileResult = null;
+
+            if (!string.IsNullOrEmpty(date))
+            {
+                DateTime fromDate = DateTime.Parse(date);
+
+                foreach (var batterij in Listbatteries)
+                {
+                    if (batterij.ModDatum >= fromDate)
+                    {
+                        modifiedBatteries.Add(batterij);
+                    }
+                }
+
+                sb.AppendLine("XjoBasisAppId,XjoBasisApp2Id,ArtikelId,Locatie");
+
+                foreach (var batterij in modifiedBatteries)
+                {
+                        sb.AppendLine($"{batterij.XjoBasisAppId},{batterij.XjoBasisApp2Id},{batterij.ArtikelId},{batterij.Locatie}");
+                }
+
+                byte[] csv = Encoding.UTF8.GetBytes(sb.ToString());
+
+                fileResult = new FileContentResult(csv, "text/csv");
+                fileResult.FileDownloadName = "bssa_export-" + date + ".csv";
+                return fileResult;
+            }
+
+            return fileResult;
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModel;
@@ -40,7 +41,6 @@ namespace BLL
 
         public async Task<EditRoleViewModel> CreateEditRoleViewModel(string id)
         {
-            //var (role, errorMessage) = await RoleCheck(id);
             IdentityRole role = await FindById(id);
 
             if (role == null)
@@ -63,7 +63,7 @@ namespace BLL
             };
 
             var listUsers = accountRepository.GetUsers();
-            var roleClaims = await repository.GetClaims(role);
+            var roleClaims = await repository.GetRoleClaims(role);
 
             model.Claims = roleClaims.Select(c => c.Value).ToList();
 
@@ -126,7 +126,67 @@ namespace BLL
             return model;
         }
 
-        public List<ListRoleViewModel> GetRoles()
+        public async Task<RoleClaimsViewModel> CreateRoleClaimsViewModel(string roleId)
+        {
+            IdentityRole role = await FindById(roleId);
+
+            var existingRoleClaims = await repository.GetRoleClaims(role);
+
+            var model = new RoleClaimsViewModel
+            {
+                RoleId = role.Id
+            };
+
+            foreach (Claim claim in ClaimsStore.AllClaims)
+            {
+                RoleClaim roleClaim = new RoleClaim
+                {
+                    ClaimType = claim.Type,
+                    ClaimValue = claim.Value
+                };
+
+                // Als de rol deze claim heeft, zet IsSelected property op true en check de ckeckbox in view.
+                if (existingRoleClaims.Any(c => c.Type == claim.Type))
+                {
+                    roleClaim.IsSelected = true;
+                }
+                else
+                {
+                    roleClaim.IsSelected = false;
+                }
+
+                model.Claims.Add(roleClaim);
+            }
+
+            return model;
+        }
+
+        public async Task<IdentityResult> EditRoleClaims(RoleClaimsViewModel model)
+        {
+            IdentityRole role = await FindById(model.RoleId);
+            IdentityResult result = null;
+
+            var claims = await repository.GetRoleClaims(role);
+            
+           
+            foreach (Claim claim in claims)
+            {
+                result = await repository.RemoveRoleClaim(role, claim);
+            }
+          
+            
+            foreach (RoleClaim claim in model.Claims)
+            {
+                if (claim.IsSelected)
+                {
+                    result = await repository.AddRoleClaim(role, new Claim( claim.ClaimType, claim.ClaimValue));
+                }
+            }
+
+            return result;
+        }
+
+        public List<ListRoleViewModel> GetListRolesViewModel()
         {
             var model = new List<ListRoleViewModel>();
 
@@ -148,7 +208,6 @@ namespace BLL
 
         public async Task<IdentityResult> EditRole(EditRoleViewModel model)
         {
-            //var (role, errorMessage) = await RoleCheck(model.Id);
             IdentityRole role = await FindById(model.Id);
 
             if(role == null)
@@ -194,7 +253,7 @@ namespace BLL
                     continue;
                 }
 
-                if (result.Succeeded)
+                if (!result.Succeeded)
                 {
                     if(i < model.Count - 1)
                     {
@@ -394,21 +453,5 @@ namespace BLL
 
             return errorMessage;
         }
-
-        //private async Task<(IdentityRole, string)> RoleCheck(string id)
-        //{
-        //    IdentityRole role = await FindById(id);
-
-        //    if(role == null)
-        //    {
-        //        //role.Id = "";
-        //        //role.Name = " ";
-        //        string errorMessage = $"Rol with Id = {id} cannot be found";
-        //        return (role, errorMessage);
-        //    }
-
-        //    string emptyMessage = "";
-        //    return (role, emptyMessage);
-        //}
     }
 }

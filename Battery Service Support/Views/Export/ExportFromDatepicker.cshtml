@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["NavTitle"] = "CSV export";
+}
+<div class="container-fluid">
+    <div class="col-md-4">
+        <h1>Exporteren CSV-file</h1>
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <form asp-action="ExportToCsv" method="get">
+                    <label name="date" class="col-form-label card-text">Kies een datum. De wijzigingen die vanaf deze datum ingevoerd zijn worden opgenomen in de CSV export file.</label>
+                    <div class="form-group col-6 offset-3" id="datepicker">
+                        <div class="input-group mt-3">
+                            <div class="input-group-prepend">
+                                <button type="submit">
+                                    <span class="input-group-text"><i class="fas fa-file-csv"></i></span>
+                                </button>
+                            </div>
+                            <input name="date" type="text" class="form-control" onkeydown="return false" , onpaste="return false" placeholder="Exporteer vanaf" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}
+

@@ -10,12 +10,14 @@ namespace BLL.Interfaces
     public interface IAdministrationService
     {
         Task<IdentityResult> CreateRole(CreateRoleViewModel model);
-        List<ListRoleViewModel> GetRoles();
+        List<ListRoleViewModel> GetListRolesViewModel();
         Task<IdentityRole> FindById(string id);
         Task<List<RoleUsersViewModel>> CreateRoleUsersViewModel(string roleId);
         Task<EditRoleViewModel> CreateEditRoleViewModel(string id);
+        Task<RoleClaimsViewModel> CreateRoleClaimsViewModel(string roleId);
         Task<IdentityResult> EditRole(EditRoleViewModel model);
         Task<string> EditUsersInRole(List<RoleUsersViewModel> model, string roleId);
+        Task<IdentityResult> EditRoleClaims(RoleClaimsViewModel model);
         List<ListUserViewModel> ListUsers();
         Task<EditUserViewModel> CreateEditUserViewModel(string id);
         Task<IdentityResult> EditUser(EditUserViewModel model);

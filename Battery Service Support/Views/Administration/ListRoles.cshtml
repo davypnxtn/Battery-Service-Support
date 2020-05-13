@@ -1,4 +1,5 @@
 ﻿@model List<ListRoleViewModel>
+@inject IAuthorizationService AuthorizationService
 @{
     ViewData["NavTitle"] = "Rollen";
 }
@@ -8,9 +9,12 @@
 
         @if (Model.Any())
         {
-            <a class="btn btn-primary mb-3" asp-controller="administration" asp-action="CreateRole">
-                Nieuwe Rol
-            </a>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "CreateRolePolicy")).Succeeded)
+            {
+                <a class="btn btn-primary mb-3" asp-controller="administration" asp-action="CreateRole">
+                    Nieuwe Rol
+                </a>
+            }
             @foreach (var role in Model)
             {
                 <div class="card border-0 shadow">
@@ -22,15 +26,18 @@
                             <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.RoleId">
                                 Wijzig
                             </a>
-                            <span id="confirmDeleteSpan_@role.RoleId" style="display:none">
-                                <span>Ben je zeker dat je deze Rol wil verwijderen?</span>
-                                <button type="submit" class="btn btn-danger">Ja</button>
-                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.RoleId', false)">Nee</a>
-                            </span>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
+                            {
+                                <span id="confirmDeleteSpan_@role.RoleId" style="display:none">
+                                    <span>Ben je zeker dat je deze Rol wil verwijderen?</span>
+                                    <button type="submit" class="btn btn-danger">Ja</button>
+                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.RoleId', false)">Nee</a>
+                                </span>
 
-                            <span id="deleteSpan_@role.RoleId">
-                                <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.RoleId', true)">Verwijder</a>
-                            </span>
+                                <span id="deleteSpan_@role.RoleId">
+                                    <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.RoleId', true)">Verwijder</a>
+                                </span>
+                            }
                         </form>
                     </div>
                 </div>
@@ -46,9 +53,12 @@
                     <h5 class="card-title">
                         Gebruik onderstaande knop om een Rol aan te maken
                     </h5>
-                    <a class="btn btn-primary" asp-controller="administration" asp-action="CreateRole">
-                        Nieuwe Rol
-                    </a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "CreateRolePolicy")).Succeeded)
+                    {
+                        <a class="btn btn-primary" asp-controller="administration" asp-action="CreateRole">
+                            Nieuwe Rol
+                        </a>
+                    }
                 </div>
             </div>
         }

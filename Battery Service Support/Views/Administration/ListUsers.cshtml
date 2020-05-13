@@ -1,4 +1,5 @@
 ﻿@model List<ListUserViewModel>
+@inject IAuthorizationService AuthorizationService
 @{
     ViewData["NavTitle"] = "Gebruikers";
 }
@@ -8,9 +9,12 @@
 
         @if (Model.Any())
         {
-            <a class="btn btn-primary mb-3" asp-controller="Account" asp-action="Register">
-                Nieuwe Gebruiker
-            </a>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "RegisterUserPolicy")).Succeeded)
+            {
+                <a class="btn btn-primary mb-3" asp-controller="Account" asp-action="Register">
+                    Nieuwe Gebruiker
+                </a>
+            }
             @foreach (var user in Model)
             {
                 <div class="card border-0 shadow">
@@ -22,15 +26,18 @@
                             <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.UserId">
                                 Wijzig
                             </a>
-                            <span id="confirmDeleteSpan_@user.UserId" style="display:none">
-                                <span>Ben je zeker dat je deze gebruiker wil verwijderen?</span>
-                                <button type="submit" class="btn btn-danger">Ja</button>
-                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@user.UserId', false)">Nee</a>
-                            </span>
+                            @if ((await AuthorizationService.AuthorizeAsync(User, "DeleteUserPolicy")).Succeeded)
+                            {
+                                <span id="confirmDeleteSpan_@user.UserId" style="display:none">
+                                    <span>Ben je zeker dat je deze gebruiker wil verwijderen?</span>
+                                    <button type="submit" class="btn btn-danger">Ja</button>
+                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@user.UserId', false)">Nee</a>
+                                </span>
 
-                            <span id="deleteSpan_@user.UserId">
-                                <a href="#" class="btn btn-danger" onclick="confirmDelete('@user.UserId', true)">Verwijder</a>
-                            </span>
+                                <span id="deleteSpan_@user.UserId">
+                                    <a href="#" class="btn btn-danger" onclick="confirmDelete('@user.UserId', true)">Verwijder</a>
+                                </span>
+                            }
                         </form>
                     </div>
                 </div>
@@ -46,9 +53,12 @@
                     <h5 class="card-title">
                         Gebruik onderstaande knop om een Gebruiker aan te maken
                     </h5>
-                    <a class="btn btn-primary" asp-controller="Account" asp-action="Register">
-                        Nieuwe Gebruiker
-                    </a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "RegisterUserPolicy")).Succeeded)
+                    {
+                        <a class="btn btn-primary" asp-controller="Account" asp-action="Register">
+                            Nieuwe Gebruiker
+                        </a>
+                    }
                 </div>
             </div>
         }

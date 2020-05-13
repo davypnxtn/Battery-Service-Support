@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,6 +22,8 @@ namespace Battery_Service_Support.Controllers
             relatieService = _relatieService;
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ExportPdfPolicy")]
         public IActionResult ListCustomers(int? id)
         {
             if (id != null)
@@ -32,6 +35,8 @@ namespace Battery_Service_Support.Controllers
             return View(relatieIndexVM);
         }
 
+        [HttpGet]
+        [Authorize(Policy = "ExportPdfPolicy")]
         public IActionResult ListInstallations(int? id)
         {
             if (id == null)
@@ -43,15 +48,8 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
-        //[AllowAnonymous]
-        //public IActionResult PdfPreview(int id)
-        //{
-        //    //var model = service.FindInstallationBatteries(id);
-        //    //return View(model);
-        //    FileResult fileResult = service.GeneratePdf((int)id);
-        //    return fileResult;
-        //}
-
+        [HttpGet]
+        [Authorize(Policy = "ExportPdfPolicy")]
         public async Task<IActionResult> ExportToPdf(int? id)
         {
             if (id != null)
@@ -60,6 +58,27 @@ namespace Battery_Service_Support.Controllers
                 return fileResult;
             }
             return RedirectToAction("ListCustomers");
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "ExportCsvPolicy")]
+        public IActionResult ExportFromDatepicker()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "ExportCsvPolicy")]
+        public IActionResult ExportToCsv(string date)
+        {
+            if (!string.IsNullOrEmpty(date))
+            {
+                FileResult fileResult = service.GenerateCsv(date);
+
+                return fileResult;
+            }
+
+            return RedirectToAction("ExportFromDatepicker");
         }
     }
 }
