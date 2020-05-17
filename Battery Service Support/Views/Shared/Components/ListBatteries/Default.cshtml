@@ -1,70 +1,71 @@
-﻿@model List<ListBatteriesViewModel>
+﻿@model PaginatedList<ListBatteriesViewModel>
 
-    <table class="table table-hover">
-        <tbody>
-            @foreach (var batterij in Model)
-            {
-                <tr data-href="/Installatie/Detail/@batterij.InstallatieId">
-                    <td>
-                        <div class="card-text">
-                            <div class="text-left">
+<table class="table table-hover">
+    <tbody>
+        @foreach (var batterij in Model)
+        {
+            <tr data-href="/Installatie/Detail/@batterij.InstallatieId">
+                <td>
+                    <div class="card-text">
+                        <div class="text-left">
 
-                                <div class="row">
-                                    <div class="col-md-3 h5">@Html.DisplayFor(modelItem => batterij.BatterijType)</div>
-                                    @if (batterij.VervangenDoor != "")
-                                    {
-                                        <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.VervangenDoor):</div>
-                                        <div class="col-md-4">@Html.DisplayFor(modelItem => batterij.VervangenDoor)</div>
-                                        <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.VervangDatum):</div>
-                                        <div class="col-md-1">@batterij.VervangDatum.ToShortDateString()</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.UserName):</div>
-                                        <div class="col-md-4">@Html.DisplayFor(modelItem => batterij.UserName)</div>
-                                        <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.PlaatsingsDatum):</div>
-                                        <div class="col-md-1">@batterij.PlaatsingsDatum.ToShortDateString()</div>
-                                    }
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.InstallatieType):</div>
-                                    <div class="col-md-2">@Html.DisplayFor(modelItem => batterij.InstallatieType)</div>
-                                    <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.GeplaatstIn):</div>
-                                    <div class="col-md-7">@Html.DisplayFor(modelItem => batterij.GeplaatstIn)</div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.RelatieCode):</div>
-                                    <div class="col-md-1">@Html.DisplayFor(modelItem => batterij.RelatieCode)</div>
-                                    <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.RelatieNaam):</div>
-                                    <div class="col-md-2">@Html.DisplayFor(modelItem => batterij.RelatieNaam)</div>
-                                    @if (batterij.Leveradres == null)
-                                    {
-                                        <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.RelatieAdres):</div>
-                                        <div class="col-md-3">@Html.DisplayFor(modelItem => batterij.RelatieAdres)</div>
-                                        <div class="col-md-3">
-                                            @Html.DisplayFor(modelItem => batterij.RelatiePostcode) @Html.DisplayFor(modelItem => batterij.RelatieGemeente)
-                                        </div>
-                                    }
-                                </div>
-
-                                @if (batterij.Leveradres != null)
+                            <div class="row">
+                                <div class="col-md-3 h5">@Html.DisplayFor(modelItem => batterij.BatterijType)</div>
+                                @if (batterij.VervangenDoor != "")
                                 {
-                                    <div class="row">
-                                        <div class="col-md-1 offset-2">@Html.DisplayNameFor(modelItem => batterij.LeveradresNaam):</div>
-                                        <div class="col-md-2">@Html.DisplayFor(modelItem => batterij.LeveradresNaam)</div>
-                                        <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.Leveradres):</div>
-                                        <div class="col-md-3">@Html.DisplayFor(modelItem => batterij.Leveradres)</div>
-                                        <div class="col-md-3">
-                                            @Html.DisplayFor(modelItem => batterij.LeveradresPostcode) @Html.DisplayFor(modelItem => batterij.LeveradresGemeente)
-                                        </div>
+                                    <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.VervangenDoor):</div>
+                                    <div class="col-md-4">@Html.DisplayFor(modelItem => batterij.VervangenDoor)</div>
+                                    <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.VervangDatum):</div>
+                                    <div class="col-md-1">@batterij.VervangDatum.ToShortDateString()</div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.UserName):</div>
+                                    <div class="col-md-4">@Html.DisplayFor(modelItem => batterij.UserName)</div>
+                                    <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.PlaatsingsDatum):</div>
+                                    <div class="col-md-1">@batterij.PlaatsingsDatum.ToShortDateString()</div>
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.InstallatieType):</div>
+                                <div class="col-md-2">@Html.DisplayFor(modelItem => batterij.InstallatieType)</div>
+                                <div class="col-md-2">@Html.DisplayNameFor(modelItem => batterij.GeplaatstIn):</div>
+                                <div class="col-md-7">@Html.DisplayFor(modelItem => batterij.GeplaatstIn)</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.RelatieCode):</div>
+                                <div class="col-md-1">@Html.DisplayFor(modelItem => batterij.RelatieCode)</div>
+                                <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.RelatieNaam):</div>
+                                <div class="col-md-2">@Html.DisplayFor(modelItem => batterij.RelatieNaam)</div>
+                                @if (batterij.Leveradres == null)
+                                {
+                                    <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.RelatieAdres):</div>
+                                    <div class="col-md-3">@Html.DisplayFor(modelItem => batterij.RelatieAdres)</div>
+                                    <div class="col-md-3">
+                                        @Html.DisplayFor(modelItem => batterij.RelatiePostcode) @Html.DisplayFor(modelItem => batterij.RelatieGemeente)
                                     </div>
                                 }
                             </div>
+
+                            @if (batterij.Leveradres != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-1 offset-2">@Html.DisplayNameFor(modelItem => batterij.LeveradresNaam):</div>
+                                    <div class="col-md-2">@Html.DisplayFor(modelItem => batterij.LeveradresNaam)</div>
+                                    <div class="col-md-1">@Html.DisplayNameFor(modelItem => batterij.Leveradres):</div>
+                                    <div class="col-md-3">@Html.DisplayFor(modelItem => batterij.Leveradres)</div>
+                                    <div class="col-md-3">
+                                        @Html.DisplayFor(modelItem => batterij.LeveradresPostcode) @Html.DisplayFor(modelItem => batterij.LeveradresGemeente)
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -21,7 +21,6 @@ namespace BLL
 
         public InstallatieDetailViewModel CreateInstallatieDetailViewModel(int id)
         {
-            //Installatie installatie = FindById(id);
             var installatieDetailVM = new InstallatieDetailViewModel
             {
                 Installatie = FindById(id),

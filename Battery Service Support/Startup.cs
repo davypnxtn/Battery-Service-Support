@@ -42,7 +42,7 @@ namespace Battery_Service_Support
                     .AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(options =>
             {
-                //Default Lockout settings
+                // Default Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
@@ -88,6 +88,7 @@ namespace Battery_Service_Support
                 options.AddPolicy("ReadCustomersPolicy", policy => policy.RequireClaim("Read Customers"));
                 options.AddPolicy("EditBatteryPolicy", policy => policy.RequireClaim("Edit Battery"));
                 options.AddPolicy("ListsBatteriesPolicy", policy => policy.RequireClaim("Lists Batteries"));
+                options.AddPolicy("WarningBatteriesPolicy", policy => policy.RequireClaim("Warning Batteries"));
                 options.AddPolicy("RegisterUserPolicy", policy => policy.RequireClaim("Register User"));
                 options.AddPolicy("EditUserPolicy", policy => policy.RequireClaim("Edit User"));
                 options.AddPolicy("DeleteUserPolicy", policy => policy.RequireClaim("Delete User"));

@@ -4,15 +4,15 @@
 @{
     ViewData["NavTitle"] = "Dashboard";
 
-    StringBuilder sb = new StringBuilder();
-    foreach (var item in Model.Opmerkingen)
-    {
-        sb.Append(item.ModDatum.ToShortDateString() + " - " + item.User.Naam + "\n");
-        sb.Append(item.Notitie + "\n");
-    }
-    var opmerking = new HtmlString(sb.ToString());
+    //StringBuilder sb = new StringBuilder();
+    //foreach (var item in Model.Opmerkingen)
+    //{
+    //    sb.Append(item.ModDatum.ToShortDateString() + " - " + item.User.Naam + "\n");
+    //    sb.Append(item.Notitie + "\n");
+    //}
+    //var opmerking = new HtmlString(sb.ToString());
 
-    var artikels = (IEnumerable<SelectListItem>)ViewData["Artikels"];
+    //var artikels = (IEnumerable<SelectListItem>)ViewData["Artikels"];
 }
     <div class="container-fluid">
         <div class="row">
@@ -46,7 +46,7 @@
                         <div class="form-group row">
                             <label asp-for="Batterij.Artikel" class="col-sm-3 col-form-label">Nieuwe Batterij:</label>
                             <div class="col-sm-9">
-                                <select asp-for="ArtikelId" class="custom-select" asp-items="@artikels">
+                                <select asp-for="ArtikelId" class="custom-select" asp-items="@Model.ArtikelSelectList">
                                     <option value="0" selected="selected">--Niet vervangen--</option>
                                 </select>
                             </div>
@@ -82,9 +82,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="Opmerkingen" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Opmerkingen[0].Notitie):</label>
+                            <label asp-for="Opmerkingen" class="col-sm-3 col-form-label">Notitie:</label>
                             <div class="col-sm-9">
-                                <textarea type="text" readonly class="form-control" rows="3">@opmerking</textarea>
+                                <textarea type="text" readonly class="form-control" rows="3">@Model.Opmerkingen</textarea>
                             </div>
                         </div>
                         <div class="form-group row">

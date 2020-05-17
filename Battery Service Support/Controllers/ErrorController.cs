@@ -20,6 +20,7 @@ namespace Battery_Service_Support.Controllers
             this.logger = logger;
         }
 
+        // ----- Weergeven foutpagina adhv statuscode, loggen details van foutmelding in logfile -----
         [AllowAnonymous]
         [Route("Error/{statusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode)
@@ -68,6 +69,7 @@ namespace Battery_Service_Support.Controllers
             return View("NotFound");
         }
 
+        // ----- Weergeven foutpagina indien er geen statuscode meegegeven wordt, loggen details van foutmelding in logfile -----
         [AllowAnonymous]
         [Route("Error")]
         public IActionResult Error()

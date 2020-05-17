@@ -92,3 +92,8 @@
 .btn-dark {
     border-color:transparent;
 }
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}

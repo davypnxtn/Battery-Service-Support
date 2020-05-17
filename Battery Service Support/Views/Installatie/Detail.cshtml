@@ -19,7 +19,11 @@
             }
         </div>
         <div class="card border-0 shadow col-lg-7 col-md-12">
-            <vc:installatie-detail id="@Model.Installatie.Id"></vc:installatie-detail>
+            <vc:installatie-detail model="@Model"></vc:installatie-detail>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

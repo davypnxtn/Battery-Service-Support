@@ -1,28 +1,29 @@
 ﻿@model ViewModel.RelatieInstallatieViewModel
-    <table class="table table-hover">
-        <thead>
-            <tr class="card-text">
-                <th>
-                    <div class="h3 text-xl-center">
-                        @Html.DisplayFor(model => Model.Relatie.Naam)<br />
-                        <div class="h4">@Html.DisplayNameFor(model => Model.Installaties)</div>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-           @foreach (var item in Model.Installaties)
-            {
-                <tr data-href="/Installatie/Detail/@item.Id">
-                    <td>
-                        <div class="card-text">
-                            <div class="text-center">
-                                <div class="h5">@Html.DisplayFor(modelItem => item.InstallatieType.Naam)</div>
-                                @Html.DisplayNameFor(modelItem => item.XjoInstallatieCode): @Html.DisplayFor(modelItem => item.XjoInstallatieCode)
-                            </div>
+<table class="table table-hover">
+    <thead>
+        <tr class="card-text">
+            <th>
+                <div class="h3 text-xl-center">
+                    @Html.DisplayFor(model => Model.Relatie.Naam)<br />
+                    <div class="h4">@Html.DisplayNameFor(model => Model.Installaties)</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Installaties)
+        {
+            <tr data-href="/Installatie/Detail/@item.Id">
+                <td>
+                    <div class="card-text">
+                        <div class="text-center">
+                            <div class="h5">@Html.DisplayFor(modelItem => item.InstallatieType.Naam)</div>
+                            @Html.DisplayNameFor(modelItem => item.XjoInstallatieCode): @Html.DisplayFor(modelItem => item.XjoInstallatieCode)
                         </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

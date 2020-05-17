@@ -25,7 +25,7 @@ namespace DAL
                 _context.Opmerkingen.Add(opmerking);
                 _context.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 throw;
             }

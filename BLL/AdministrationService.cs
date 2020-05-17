@@ -22,6 +22,7 @@ namespace BLL
             accountRepository = _accountRepository;
         }
 
+        // ----- Aanmaken nieuwe rol -----
         public async Task<IdentityResult> CreateRole(CreateRoleViewModel model)
         {
             IdentityRole identityRole = new IdentityRole
@@ -34,11 +35,13 @@ namespace BLL
             return result;
         }
 
+        // ----- Zoek op rol id -----
         public async Task<IdentityRole> FindById(string id)
         {
             return await repository.FindById(id);
         }
 
+        // ----- Aanmaken EditRoleViewModel voor EditRole view -----
         public async Task<EditRoleViewModel> CreateEditRoleViewModel(string id)
         {
             IdentityRole role = await FindById(id);
@@ -78,6 +81,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Aanmaken RoleUsersViewModel voor EditUsersInRole view -----
         public async Task<List<RoleUsersViewModel>> CreateRoleUsersViewModel(string roleId)
         {
             IdentityRole role = await FindById(roleId);
@@ -108,7 +112,7 @@ namespace BLL
                 RoleUsersViewModel roleUsersViewModel = new RoleUsersViewModel
                 {
                     UserId = user.Id,
-                    UserName = user.UserName
+                    UserName = user.Naam
                 };
 
                 if (await accountRepository.IsInRole(user, role.Name))
@@ -126,6 +130,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Aanmaken RoleClaimsViewModel voor ManageRoleClaims view -----
         public async Task<RoleClaimsViewModel> CreateRoleClaimsViewModel(string roleId)
         {
             IdentityRole role = await FindById(roleId);
@@ -161,31 +166,49 @@ namespace BLL
             return model;
         }
 
-        public async Task<IdentityResult> EditRoleClaims(RoleClaimsViewModel model)
+        // ----- Update claims van een rol -----
+        public async Task<string> EditRoleClaims(RoleClaimsViewModel model)
         {
-            IdentityRole role = await FindById(model.RoleId);
-            IdentityResult result = null;
+            string errorMessage = "";
 
-            var claims = await repository.GetRoleClaims(role);
+            IdentityRole role = await FindById(model.RoleId);
+
+            if (role == null)
+            {
+                errorMessage = $"Role with Id = {model.RoleId} cannot be found";
+                return errorMessage;
+            }
+
+            var roleClaims = await repository.GetRoleClaims(role);
             
            
-            foreach (Claim claim in claims)
+            foreach (Claim claim in roleClaims)
             {
-                result = await repository.RemoveRoleClaim(role, claim);
+                IdentityResult result = await repository.RemoveRoleClaim(role, claim);
+                if (!result.Succeeded)
+                {
+                    errorMessage = "Cannot remove existing claim from role";
+                    return errorMessage;
+                }
             }
-          
-            
+
             foreach (RoleClaim claim in model.Claims)
             {
                 if (claim.IsSelected)
                 {
-                    result = await repository.AddRoleClaim(role, new Claim( claim.ClaimType, claim.ClaimValue));
+                    IdentityResult result = await repository.AddRoleClaim(role, new Claim( claim.ClaimType, claim.ClaimValue));
+                    if (!result.Succeeded)
+                    {
+                        errorMessage = "Cannot add selected claim to role";
+                        return errorMessage;
+                    }
                 }
             }
-
-            return result;
+            
+            return errorMessage;
         }
 
+        // ----- Aanmaken ListRolesViewModel voor ListRoles view -----
         public List<ListRoleViewModel> GetListRolesViewModel()
         {
             var model = new List<ListRoleViewModel>();
@@ -206,6 +229,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Updaten rol -----
         public async Task<IdentityResult> EditRole(EditRoleViewModel model)
         {
             IdentityRole role = await FindById(model.Id);
@@ -222,6 +246,7 @@ namespace BLL
             return result;
         }
 
+        // ----- Update gebruikers in een rol -----
         public async Task<string> EditUsersInRole(List<RoleUsersViewModel> model, string roleId)
         {
             string errorMessage = "";
@@ -269,6 +294,7 @@ namespace BLL
             return errorMessage;
         }
 
+        // ----- Aanmaken ListUsersViewModel voor ListUsers view -----
         public List<ListUserViewModel> ListUsers()
         {
             var model = new List<ListUserViewModel>();
@@ -289,6 +315,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Aanmaken EditUserViewModel voor EditUser view -----
         public async Task<EditUserViewModel> CreateEditUserViewModel(string id)
         {
             var user = await accountRepository.FindById(id);
@@ -325,6 +352,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Update gebruiker -----
         public async Task<IdentityResult> EditUser(EditUserViewModel model)
         {
             var user = await accountRepository.FindById(model.Id);
@@ -345,6 +373,7 @@ namespace BLL
             return result;
         }
 
+        // ----- Verwijderen gebruiker -----
         public async Task<IdentityResult> DeleteUser(string id)
         {
             var user = await accountRepository.FindById(id);
@@ -359,6 +388,7 @@ namespace BLL
             return result;
         }
 
+        // ----- Verwijderen rol -----
         public async Task<IdentityResult> DeleteRole(string id)
         {
             IdentityRole role = await FindById(id);
@@ -373,6 +403,7 @@ namespace BLL
             return result;
         }
 
+        // ----- Aanmaken UserRolesViewModel voor ManageUserRoles view -----
         public async Task<List<UserRolesViewModel>> CreateUserRolesViewModel(string userId)
         {
             var user = await accountRepository.FindById(userId);
@@ -406,6 +437,7 @@ namespace BLL
                     RoleName = role.Name
                 };
 
+                // Als de gebruiker deze rol heeft zet IsSelected op true, anders zet op false om in view weer te geven
                 if (await accountRepository.IsInRole(user, role.Name))
                 {
                     userRolesViewModel.IsSelected = true;
@@ -421,6 +453,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Updaten rollen van de gebruiker -----
         public async Task<string> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             string errorMessage = "";
@@ -433,8 +466,9 @@ namespace BLL
                 return errorMessage;
             }
 
-            var roles = await accountRepository.GetUserRoles(user);
-            IdentityResult result = await accountRepository.RemoveFromRoles(user, roles);
+            // Verwijder alle rollen van de gebruiker
+            var userRoles = await accountRepository.GetUserRoles(user);
+            IdentityResult result = await accountRepository.RemoveFromRoles(user, userRoles);
 
             if (!result.Succeeded)
             {
@@ -442,6 +476,7 @@ namespace BLL
                 return errorMessage;
             }
 
+            // Koppel de geselecteerde rollen aan de gebruiker
             result = await accountRepository.AddToRoles(user,
                 model.Where(x => x.IsSelected).Select(y => y.RoleName).ToList());
 

@@ -18,6 +18,7 @@ namespace ViewModel
             new Claim("Edit User", "Edit Gebruiker"),
             new Claim("Delete User", "Verwijder Gebruiker"),
             new Claim("Lists Batteries", "Lijsten Batterijen"),
+            new Claim("Warning Batteries", "Waarschuwing Batterijen"),
             new Claim("Export PDF", "Exporteer PDF"),
             new Claim("Export CSV", "Exporteer CSV"),
             new Claim("Edit Claims", "Edit Machtigingen"),

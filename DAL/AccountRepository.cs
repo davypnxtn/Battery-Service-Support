@@ -5,6 +5,7 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,7 +43,14 @@ namespace DAL
         // ----- Registreren nieuwe User -----
         public async Task<IdentityResult> Register(ApplicationUser user, string password)
         {
-            return await userManager.CreateAsync(user, password);
+            try
+            {
+                return await userManager.CreateAsync(user, password);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // ----- Zoek gebruiker op userId -----
@@ -66,13 +74,27 @@ namespace DAL
         // ----- Gebruiker toevoegen aan een bepaalde Role -----
         public async Task<IdentityResult> AddToRole(ApplicationUser user, string roleName)
         {
-            return await userManager.AddToRoleAsync(user, roleName);
+            try
+            {
+                return await userManager.AddToRoleAsync(user, roleName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // ----- Gebruiker verwijderen van een bepaalde Role -----
         public async Task<IdentityResult> RemoveFromRole(ApplicationUser user, string roleName)
         {
-            return await userManager.RemoveFromRoleAsync(user, roleName);
+            try
+            {
+                return await userManager.RemoveFromRoleAsync(user, roleName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // ----- Opvragen Rollen van gebruiker -----
@@ -84,7 +106,14 @@ namespace DAL
         // ----- Updaten gebruiker gegevens -----
         public async Task<IdentityResult> EditUser(ApplicationUser user)
         {
-            return await userManager.UpdateAsync(user);
+            try
+            {
+                return await userManager.UpdateAsync(user);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // ----- Verwijderen gebruiker -----
@@ -94,22 +123,36 @@ namespace DAL
             {
                 return await userManager.DeleteAsync(user);
             }
-            catch (DbUpdateException)
+            catch
             {
-                throw;
+                throw new Exception("Exception while deleting User, the User cannot be deleted because of Foreign Key Constraints");
             }
         }
 
         // ----- Gebruiker verwijderen van een Lijst van Rollen -----
         public async Task<IdentityResult> RemoveFromRoles(ApplicationUser user, IList<string> roles)
         {
-            return await userManager.RemoveFromRolesAsync(user, roles);
+            try
+            {
+                return await userManager.RemoveFromRolesAsync(user, roles);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // ----- Gebruiker toevoegen aan een Lijst van Rollen -----
         public async Task<IdentityResult> AddToRoles(ApplicationUser user, IList<string> roles)
         {
-            return await userManager.AddToRolesAsync(user, roles);
+            try
+            {
+                return await userManager.AddToRolesAsync(user, roles);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

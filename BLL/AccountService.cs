@@ -1,7 +1,10 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Model;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ViewModel;
 
@@ -10,10 +13,14 @@ namespace BLL
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository repository;
+        private readonly IAdministrationRepository administrationRepository;
+        private readonly IAuthorizationService authorizationService;
 
-        public AccountService(IAccountRepository _repository)
+        public AccountService(IAccountRepository _repository, IAdministrationRepository _administrationRepository, IAuthorizationService _authorizationService)
         {
             repository = _repository;
+            administrationRepository = _administrationRepository;
+            authorizationService = _authorizationService;
         }
 
         // ----- Deactiveren gebruiker in database -----
@@ -33,6 +40,7 @@ namespace BLL
         public async Task<(SignInResult, bool)> Login(LoginViewModel model)
         {
             ApplicationUser user = await FindByName(model.UserName);
+            bool hasWarningBatteriesClaim = false;
 
             // Controle of gebruiker bestaat in de database
             if (user == null)
@@ -42,8 +50,22 @@ namespace BLL
 
             SignInResult result;
 
-            bool isAdmin = await CheckRole(user, "Administrator");
-            
+            var userRoleNames = await repository.GetUserRoles(user);
+
+            foreach (var roleName in userRoleNames)
+            {
+                IdentityRole role = await administrationRepository.FindByName(roleName);
+                var roleClaims = await administrationRepository.GetRoleClaims(role);
+
+               foreach (Claim claim in roleClaims)
+                {
+                    if (claim.Type == "Warning Batteries")
+                    {
+                        hasWarningBatteriesClaim = true;
+                    }
+                }
+            }
+
             // Controle of de User actief is.
             if (user.Aktief)
             {
@@ -59,8 +81,8 @@ namespace BLL
             {
                 result = SignInResult.NotAllowed;
             }
-            
-            return (result, isAdmin);
+
+            return (result, hasWarningBatteriesClaim);
         }
 
         // ----- Logout -----
@@ -83,12 +105,6 @@ namespace BLL
 
             IdentityResult result = await repository.Register(user, model.Password);
             return result;
-        }
-
-        // ----- Controle of een User aan een bepaalde Role is toegewezen -----
-        public async Task<bool> CheckRole(ApplicationUser user, string roleName)
-        {
-            return await repository.IsInRole(user, roleName);
         }
     }
 }

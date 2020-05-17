@@ -13,7 +13,7 @@ namespace BLL.Interfaces
         Task<IdentityResult> Register(RegisterViewModel model);
         void Logout();
         Task<(SignInResult, bool)> Login(LoginViewModel model);
-        Task<Boolean> CheckRole(ApplicationUser user, string roleName);
+        //Task<Boolean> CheckRole(ApplicationUser user, string roleName);
         Task<ApplicationUser> FindByName(string name);
         Task<IdentityResult> DisableUser(ApplicationUser user);
     }

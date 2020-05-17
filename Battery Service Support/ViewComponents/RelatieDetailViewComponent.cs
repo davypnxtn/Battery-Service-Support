@@ -16,6 +16,7 @@ namespace Battery_Service_Support.ViewComponents
             service = _service;
         }
 
+        // ----- Weergeven viewcomponent leveradressen relatie -----
         public IViewComponentResult Invoke(int id)
         {
             var relatieDetailVM = service.CreateRelatieDetailViewModel(id);

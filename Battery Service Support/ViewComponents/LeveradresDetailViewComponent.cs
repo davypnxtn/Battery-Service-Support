@@ -18,6 +18,7 @@ namespace Battery_Service_Support.ViewComponents
             service = _service;
         }
 
+        // ----- Weergeven viewcomponent installaties van leveradres -----
         public IViewComponentResult Invoke(int id)
         {
             var leveradresDetailVM = service.CreateLeveradresDetailViewModel(id);

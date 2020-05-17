@@ -19,6 +19,7 @@ namespace Battery_Service_Support.Controllers
             service = _service;
         }
 
+        // ----- Weergeven alle batterijen van installatie -----
         [HttpGet]
         [Authorize(Policy = "ReadCustomersPolicy")]
         public IActionResult Detail(int id)

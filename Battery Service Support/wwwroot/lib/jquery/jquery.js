@@ -10591,33 +10591,7 @@ if ( !noGlobal ) {
 	window.jQuery = window.$ = jQuery;
 }
 
-//Make table row clickable
-	$(function () {
-		$('.table tr[data-href]').each(function () {
-			$(this).css('cursor', 'pointer').hover(
-				function () {
-					$(this).addClass('active');
-				},
-				function () {
-					$(this).removeClass('active');
-				}).click(function () {
-					document.location = $(this).attr('data-href');
-				}
-				);
-		});
-	});
 
-
-//Find element with id="datetrigger" and add class="alert-danger" when date is older then 3 years
-	$(function () {
-		$('#datetrigger').each(function () {
-			let objDate = new Date($(this).html);
-			let dateNow = new Date();
-			if (dateNow.getFullYear() - objDate.getFullYear() > 3) {
-				$(this).parrent('tr').addClass('alert-danger');
-			}
-		})
-	})
 
 return jQuery;
 } );

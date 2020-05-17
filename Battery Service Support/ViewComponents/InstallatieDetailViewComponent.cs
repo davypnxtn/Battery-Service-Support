@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ViewModel;
 
 namespace Battery_Service_Support.ViewComponents
 {
@@ -16,10 +17,10 @@ namespace Battery_Service_Support.ViewComponents
             service = _service;
         }
 
-        public IViewComponentResult Invoke(int id)
+        // ----- Weergeven viewcomponent batterijen van installatie -----
+        public IViewComponentResult Invoke(InstallatieDetailViewModel model)
         {
-            var installatieDetailVM = service.CreateInstallatieDetailViewModel(id);
-            return View(installatieDetailVM);
+            return View(model);
         }
     }
 }

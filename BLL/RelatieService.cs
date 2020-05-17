@@ -1,10 +1,14 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ViewModel;
+using ViewModel.Utilities;
 
 namespace BLL
 {
@@ -31,12 +35,54 @@ namespace BLL
             return relatieDetailVM;
         }
 
-        public RelatieIndexViewModel GetRelaties()
+        public RelatieIndexViewModel GetRelaties(string name, string address, int? pageNumber)
         {
-            var relatieIndexVM = new RelatieIndexViewModel
+            int pageSize = 2;
+            var relatieIndexVM = new RelatieIndexViewModel();
+
+            if (!string.IsNullOrEmpty(name))
             {
-                Relaties = repository.GetRelaties()
-            };
+                var relatiesByName = repository.FindByNaam(name);
+
+                if (relatiesByName.Count() != 0)
+                {
+                    relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relatiesByName, pageNumber ?? 1, pageSize);
+                }
+                else
+                {
+                    var relatiesByGivenName = repository.FindByRoepnaam(name);
+
+                    relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relatiesByGivenName, pageNumber ?? 1, pageSize);
+                }
+            }
+            else if (!string.IsNullOrEmpty(address))
+            {
+                var relatiesByAdres = repository.FindByAdres(address);
+
+                if (relatiesByAdres.Count() != 0)
+                {
+                    relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relatiesByAdres, pageNumber ?? 1, pageSize);
+                }
+                else
+                {
+                    var leveradressen = leveradresRepository.FindByAdres(address);
+                    var relatiesByLeveradres = new List<Relatie>();
+
+                    foreach (var item in leveradressen)
+                    {
+                        relatiesByLeveradres.Add(item.Relatie);
+                    }
+
+                    relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relatiesByLeveradres, pageNumber ?? 1, pageSize);
+                }
+            }
+            else
+            {
+                var relaties = repository.GetRelaties();
+
+                relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relaties, pageNumber ?? 1, pageSize);
+            }
+
             return relatieIndexVM;
         }
 
@@ -50,54 +96,72 @@ namespace BLL
             return (relatieInstallatieVM);
         }
 
-        public RelatieIndexViewModel FindByAdres(string adres)
-        {
-            var relatieIndexVM = new RelatieIndexViewModel();
+        // ----- Zoek relatie op adres of leveradres -----
+        //public RelatieIndexViewModel FindByAdres(string adres, int? pageNumber)
+        //{
+        //    var pageSize = 1;
 
-            if (!string.IsNullOrEmpty(adres))
-            {
-                relatieIndexVM.Relaties = repository.FindByAdres(adres);
-                if (relatieIndexVM.Relaties.Count == 0)
-                {
-                    var leveradressen = leveradresRepository.FindByAdres(adres);
-                    foreach (var item in leveradressen)
-                    {
-                        relatieIndexVM.Relaties.Add(item.Relatie);
-                    }
-                }
-            }
-            else
-            {
-                relatieIndexVM = GetRelaties();
-            }
+        //    var relatieIndexVM = new RelatieIndexViewModel();
 
-            return relatieIndexVM;
-        }
+        //    if (!string.IsNullOrEmpty(adres))
+        //    {
+        //        var relaties = repository.FindByAdres(adres);
+
+        //        relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relaties, pageNumber ?? 1, pageSize);
+
+        //        if (relatieIndexVM.Relaties.Count == 0)
+        //        {
+        //            var leveradressen = leveradresRepository.FindByAdres(adres);
+        //            var relatiesByLeveradres = new List<Relatie>();
+
+        //            foreach (var item in leveradressen)
+        //            {
+        //                relatiesByLeveradres.Add(item.Relatie);
+        //            }
+
+        //            relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relatiesByLeveradres, pageNumber ?? 1, pageSize);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        relatieIndexVM = GetRelaties("", pageNumber);
+        //    }
+
+        //    return relatieIndexVM;
+        //}
 
         public Relatie FindById(int id)
         {
             return repository.FindById(id);
         }
 
-        public RelatieIndexViewModel FindByNaam(string naam)
-        {
-            var relatieIndexVM = new RelatieIndexViewModel();
+        // ----- Zoek relatie op naam of roepnaam -----
+        //public RelatieIndexViewModel FindByNaam(string naam, int? pageNumber)
+        //{
+        //    int pageSize = 1;
+
+        //    var relatieIndexVM = new RelatieIndexViewModel();
             
-                if (!string.IsNullOrEmpty(naam))
-                {
-                    relatieIndexVM.Relaties = repository.FindByNaam(naam);
-                    if (relatieIndexVM.Relaties.Count == 0)
-                    {
-                        relatieIndexVM.Relaties = repository.FindByRoepnaam(naam);
-                    }
-                }
-                else
-                {
-                    relatieIndexVM = GetRelaties();
-                }
+        //        if (!string.IsNullOrEmpty(naam))
+        //        {
+        //            var relatiesByName = repository.FindByNaam(naam);
+
+        //            relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relatiesByName, pageNumber ?? 1, pageSize);
+
+        //            if (relatieIndexVM.Relaties.Count == 0)
+        //            {
+        //                var relaties = repository.FindByRoepnaam(naam);
+
+        //                relatieIndexVM.Relaties = PaginatedList<Relatie>.Create(relaties, pageNumber ?? 1, pageSize);
+        //        }
+        //        }
+        //        else
+        //        {
+        //            relatieIndexVM = GetRelaties("", pageNumber);
+        //        }
             
-            return relatieIndexVM;
-        }
+        //    return relatieIndexVM;
+        //}
 
     }
 }

@@ -46,6 +46,12 @@ namespace DAL
                 .ToList();
         }
 
+        public IQueryable<Relatie> GetRelatiesIQ()
+        {
+            return _context.Relaties
+                .Include(r => r.Gemeente);
+        }
+
         public List<Relatie> GetRelaties()
         {
             return _context.Relaties

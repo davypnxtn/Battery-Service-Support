@@ -12,6 +12,7 @@ namespace DAL.Interfaces
         Task<IdentityResult> CreateRole(IdentityRole identityRole);
         List<IdentityRole> GetRoles();
         Task<IdentityRole> FindById(string id);
+        Task<IdentityRole> FindByName(string name);
         Task<IdentityResult> EditRole(IdentityRole role);
         Task<IdentityResult> DeleteRole(IdentityRole role);
         Task<IList<Claim>> GetRoleClaims(IdentityRole role);

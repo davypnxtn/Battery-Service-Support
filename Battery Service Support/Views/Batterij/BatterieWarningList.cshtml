@@ -1,4 +1,4 @@
-﻿@model List<ListBatteriesViewModel>
+﻿@model PaginatedList<ListBatteriesViewModel>
 @{
     ViewData["NavTitle"] = "Lijst Batterijen";
 }
@@ -7,6 +7,20 @@
     <div class="card border-0 shadow col-10 offset-1">
         <div class="row">
             <vc:list-batteries model="@Model"></vc:list-batteries>
+        </div>
+        <div>
+            <ul class="pagination ml-2">
+                <li class="page-item @(!Model.HasPreviousPage? "disabled":"")">
+                    <a class="page-link" asp-action="BatterieWarningList" asp-route-pageNumber="@(Model.PageIndex - 1)">
+                        Vorige
+                    </a>
+                </li>
+                <li class="page-item @(!Model.HasNextPage? "disabled":"")">
+                    <a class="page-link" asp-action="BatterieWarningList" asp-route-pageNumber="@(Model.PageIndex + 1)">
+                        Volgende
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

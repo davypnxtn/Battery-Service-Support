@@ -53,6 +53,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- Lijst van alle rollen -----
         [HttpGet]
         [Authorize(Policy = "EditRolePolicy")]
         public IActionResult ListRoles()
@@ -61,6 +62,7 @@ namespace Battery_Service_Support.Controllers
             return View(roles);
         }
 
+        // ----- GET: Wijzigen rol -----
         [HttpGet]
         [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
@@ -76,6 +78,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- POST: Wijzigen rol -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "EditRolePolicy")]
@@ -99,6 +102,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- Verwijderen rol -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "DeleteRolePolicy")]
@@ -119,6 +123,7 @@ namespace Battery_Service_Support.Controllers
             return View("ListRoles");
         }
 
+        // ----- GET: Beheren gebruikers in rol -----
         [HttpGet]
         [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
@@ -136,6 +141,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- POST: Beheren gebruikers in rol -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "EditRolePolicy")]
@@ -152,6 +158,7 @@ namespace Battery_Service_Support.Controllers
             return RedirectToAction("EditRole", new { id = roleId });
         }
 
+        // ----- GET: Beheren claims van rol -----
         [HttpGet]
         [Authorize(Policy = "EditClaimsPolicy")]
         public async Task<IActionResult> ManageRoleClaims(string roleId)
@@ -161,22 +168,24 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- POST: Beheren claims van rol -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "EditClaimsPolicy")]
         public async Task<IActionResult> ManageRoleClaims(RoleClaimsViewModel model)
         {
-            var result = await service.EditRoleClaims(model);
+            var errorMessage = await service.EditRoleClaims(model);
 
-            if (!result.Succeeded)
+            if (!string.IsNullOrEmpty(errorMessage))
             {
-                ModelState.AddModelError(string.Empty, "Cannot add/remove claims from role");
-                return View(model);
+                ViewData["ErrorMessage"] = errorMessage;
+                return View("NotFound");
             }
 
             return RedirectToAction("EditRole", new { id = model.RoleId });
         }
 
+        // ----- Lijst gebruikers -----
         [HttpGet]
         [Authorize(Policy = "EditUserPolicy")]
         public IActionResult ListUsers()
@@ -185,6 +194,7 @@ namespace Battery_Service_Support.Controllers
             return View(users);
         }
 
+        // ----- GET: Wijzigen gebruiker -----
         [HttpGet]
         [Authorize(Policy = "EditUserPolicy")]
         public async Task<IActionResult> EditUser(string id)
@@ -200,6 +210,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- POST: Wijzigen gebruiker -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "EditUserPolicy")]
@@ -223,6 +234,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- Verwijderen gebruiker -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "DeleteUserPolicy")]
@@ -243,6 +255,7 @@ namespace Battery_Service_Support.Controllers
             return View("ListUsers");
         }
 
+        // ----- GET: Beheren rollen van gebruiker -----
         [HttpGet]
         [Authorize(Policy = "EditUserPolicy")]
         public async Task<IActionResult> ManageUserRoles(string UserId)
@@ -260,6 +273,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // POST: Beheren rollen van gebruiker -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "EditUserPolicy")]

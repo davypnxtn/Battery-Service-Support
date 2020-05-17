@@ -22,19 +22,23 @@ namespace Battery_Service_Support.Controllers
             relatieService = _relatieService;
         }
 
+        // ----- Lijst van relaties in Exporteren PDF view -----
         [HttpGet]
         [Authorize(Policy = "ExportPdfPolicy")]
-        public IActionResult ListCustomers(int? id)
+        public IActionResult ListCustomers(int? id, string name, string address, int? pageNumber)
         {
             if (id != null)
             {
                 return RedirectToAction("ExportToPdf", new { id = (int)id });
             }
 
-            var relatieIndexVM = relatieService.GetRelaties();
+            ViewData["CurrentNameFilter"] = name;
+            ViewData["CurrentAddressFilter"] = address;
+            var relatieIndexVM = relatieService.GetRelaties( name, address, pageNumber);
             return View(relatieIndexVM);
         }
 
+        // ----- Lijst installaties, weergegeven na selecteren relatie -----
         [HttpGet]
         [Authorize(Policy = "ExportPdfPolicy")]
         public IActionResult ListInstallations(int? id)
@@ -48,6 +52,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- Exporteren naar PDF -----
         [HttpGet]
         [Authorize(Policy = "ExportPdfPolicy")]
         public async Task<IActionResult> ExportToPdf(int? id)
@@ -60,6 +65,7 @@ namespace Battery_Service_Support.Controllers
             return RedirectToAction("ListCustomers");
         }
 
+        // ----- Datepicker weergeven voor Export CSV -----
         [HttpGet]
         [Authorize(Policy = "ExportCsvPolicy")]
         public IActionResult ExportFromDatepicker()
@@ -67,6 +73,7 @@ namespace Battery_Service_Support.Controllers
             return View();
         }
 
+        // ----- Exporteren naar CSV -----
         [HttpGet]
         [Authorize(Policy = "ExportCsvPolicy")]
         public IActionResult ExportToCsv(string date)

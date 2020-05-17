@@ -1,11 +1,15 @@
-﻿@model ViewModel.RelatieDetailViewModel
+﻿@model int
 @{
     ViewData["NavTitle"] = "Dashboard";
 }
-    <div class="container-fluid">
-        <div class="row">
-            <div class="card border-0 shadow col-lg-3 col-md-6">
-                <vc:relatie-detail id="@Model.Relatie.Id"></vc:relatie-detail>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="card border-0 shadow col-lg-3 col-md-6">
+            <vc:relatie-detail id="@Model"></vc:relatie-detail>
         </div>
     </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

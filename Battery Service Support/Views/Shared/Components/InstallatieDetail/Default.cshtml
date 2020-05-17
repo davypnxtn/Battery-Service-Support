@@ -1,40 +1,41 @@
 ﻿@model ViewModel.InstallatieDetailViewModel
 
-    <table class="table table-hover">
-        <thead>
-            <tr class="card-text">
-                <th>
-                    <div class="h3 text-xl-center">
-                        Batterijen<br />
-                        <div class="h4">@Html.DisplayNameFor(model => Model.Installatie) @Html.DisplayFor(model => Model.Installatie.InstallatieType.Naam)</div>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Batterijen)
-            {
-                <tr data-href="/Batterij/Detail/@item.Id">
-                    <td>
-                        <div class="card-text">
-                            <div class="text-left">
-                                <div class="row">
-                                    <div class="col-md-6 h5">@Html.DisplayFor(modelItel => item.Artikel.Naam)</div>
-                                    <div class="col-md-3">@Html.DisplayNameFor(modelItem => item.Datum):</div>
-                                    <div id="datetrigger" class="col-md-3">@item.Datum.ToShortDateString()</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(modelItem => item.Locatie):</div>
-                                    <div class="col-md-9">@Html.DisplayFor(modelItem => item.Locatie)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(modelItem => item.GeplaatstIn):</div>
-                                    <div class="col-md-9">@Html.DisplayFor(modelItem => item.GeplaatstIn)</div>
-                                </div>
+<table class="table table-hover">
+    <thead>
+        <tr class="card-text">
+            <th>
+                <div class="h3 text-xl-center">
+                    Batterijen<br />
+                    <div class="h4">@Html.DisplayNameFor(model => Model.Installatie) @Html.DisplayFor(model => Model.Installatie.InstallatieType.Naam)</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Batterijen)
+        {
+            <tr data-href="/Batterij/Detail/@item.Id">
+                <td>
+                    <div class="card-text">
+                        <div class="text-left">
+                            <div class="row">
+                                <div class="col-md-6 h5">@Html.DisplayFor(modelItel => item.Artikel.Naam)</div>
+                                <div class="col-md-3">@Html.DisplayNameFor(modelItem => item.Datum):</div>
+                                <div id="datetrigger" class="col-md-3">@item.Datum.ToShortDateString()</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(modelItem => item.Locatie):</div>
+                                <div class="col-md-9">@Html.DisplayFor(modelItem => item.Locatie)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(modelItem => item.GeplaatstIn):</div>
+                                <div class="col-md-9">@Html.DisplayFor(modelItem => item.GeplaatstIn)</div>
                             </div>
                         </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

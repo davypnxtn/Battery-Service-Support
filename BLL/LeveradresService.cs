@@ -31,16 +31,6 @@ namespace BLL
             return leveradresDetailVM;
         }
 
-        //public LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id)
-        //{
-        //    var leveradresIndexVM = new LeveradresIndexViewModel
-        //    {
-        //        Leveradressen = FindByKlantId(id),
-        //        Relatie = relatieRepository.FindById(id)
-        //    };
-        //    return leveradresIndexVM;
-        //}
-
         public List<Leveradres> FindByAdres(string adres)
         {
             return repository.FindByAdres(adres);

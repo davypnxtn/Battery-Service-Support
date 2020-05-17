@@ -18,51 +18,94 @@ namespace DAL
         {
             roleManager = _roleManager;
         }
+
+        // ----- Aanmaken nieuwe rol -----
         public async Task<IdentityResult> CreateRole(IdentityRole identityRole)
         {
-            return await roleManager.CreateAsync(identityRole);
+            try
+            {
+                return await roleManager.CreateAsync(identityRole);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
+        // ----- Zoek rol op rol id -----
         public async Task<IdentityRole> FindById(string id)
         {
             return await roleManager.FindByIdAsync(id);
         }
 
+        // ----- Zoek rol op naam -----
+        public async Task<IdentityRole> FindByName(string name)
+        {
+            return await roleManager.FindByNameAsync(name);
+        }
+
+        // ----- Ophalen alle rollen -----
         public List<IdentityRole> GetRoles()
         {
             return roleManager.Roles.ToList();
         }
 
+        // ----- Wijzigen rol -----
         public async Task<IdentityResult> EditRole(IdentityRole role)
         {
-            return await roleManager.UpdateAsync(role);
+            try
+            {
+                return await roleManager.UpdateAsync(role);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
+        // ----- Verwijderen rol -----
         public async Task<IdentityResult> DeleteRole(IdentityRole role)
         {
             try
             {
                 return await roleManager.DeleteAsync(role);
             }
-            catch (DbUpdateException)
+            catch 
             {
                 throw new Exception("Exception while deleting Role, there are Users assigned to this Role");
             }
         }
 
+        // ----- Opvragen alle claims van een rol -----
         public async Task<IList<Claim>> GetRoleClaims(IdentityRole role)
         {
             return await roleManager.GetClaimsAsync(role);
         }
 
+        // ----- Verwijderen claim van een rol -----
         public async Task<IdentityResult> RemoveRoleClaim(IdentityRole role, Claim claim)
         {
-            return await roleManager.RemoveClaimAsync(role, claim);
+            try
+            {
+                return await roleManager.RemoveClaimAsync(role, claim);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
+        // ----- Toevoegen claim aan een rol -----
         public async Task<IdentityResult> AddRoleClaim(IdentityRole role, Claim claim)
         {
-            return await roleManager.AddClaimAsync(role, claim);
+            try
+            {
+                return await roleManager.AddClaimAsync(role, claim);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

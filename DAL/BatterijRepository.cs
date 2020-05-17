@@ -23,12 +23,12 @@ namespace DAL
             {
                 _context.Batterijen.Add(nieuweBatterij);
                 _context.SaveChanges();
+                return nieuweBatterij;
             }
-            catch (DbUpdateException)
+            catch (Exception)
             {
                 throw;
             }
-            return nieuweBatterij;
         }
 
         public List<Batterij> FindActiveByInstallatieId(int id)
@@ -73,12 +73,12 @@ namespace DAL
             {
                 _context.Batterijen.Update(batterijChanges);
                 _context.SaveChanges();
+                return batterijChanges;
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                    throw;   
+                throw;   
             }
-            return batterijChanges;
         }
 
     }

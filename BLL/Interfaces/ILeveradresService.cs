@@ -11,7 +11,6 @@ namespace BLL.Interfaces
         List<Leveradres> FindByRelatieId(int id);
         List<Leveradres> FindByAdres(string adres);
         Leveradres FindById(int id);
-        //LeveradresIndexViewModel CreateLeveradresIndexViewModel(int id);
         LeveradresDetailViewModel CreateLeveradresDetailViewModel(int id);
     }
 }

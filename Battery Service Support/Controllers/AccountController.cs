@@ -23,6 +23,7 @@ namespace Battery_Service_Support.Controllers
             service = _service;
         }
 
+        // ----- GET: Registreren nieuwe gebruiker -----
         [HttpGet]
         [Authorize(Policy = "RegisterUserPolicy")]
         public IActionResult Register()
@@ -30,6 +31,7 @@ namespace Battery_Service_Support.Controllers
             return View();
         }
 
+        // ----- POST: Registreren nieuwe gebruiker -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RegisterUserPolicy")]
@@ -52,6 +54,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- Uitloggen gebruiker -----
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
@@ -60,6 +63,7 @@ namespace Battery_Service_Support.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        // ----- GET: Inloggen gebruiker -----
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -67,6 +71,8 @@ namespace Battery_Service_Support.Controllers
             return View();
         }
 
+        // ----- POST: Inloggen gebruiker -----
+        // 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -75,13 +81,13 @@ namespace Battery_Service_Support.Controllers
             if (ModelState.IsValid)
             {
                 
-                var (result, isAdmin) = await service.Login(model);
+                var (result, hasWarningBatteriesClaim) = await service.Login(model);
 
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
-                        if (isAdmin)
+                        if (hasWarningBatteriesClaim)
                         {
                             return RedirectToAction("BatterieWarningList", "Batterij");
                         }
@@ -89,7 +95,7 @@ namespace Battery_Service_Support.Controllers
                     }
                     else
                     {
-                        if (isAdmin)
+                        if (hasWarningBatteriesClaim)
                         {
                             return RedirectToAction("BatterieWarningList", "Batterij");
                         }
@@ -113,6 +119,7 @@ namespace Battery_Service_Support.Controllers
             return View(model);
         }
 
+        // ----- Wordt aangeroepen indien een pagina opgevraagd wordt waar de gebruiker geen toegang toe heeft -----
         [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()

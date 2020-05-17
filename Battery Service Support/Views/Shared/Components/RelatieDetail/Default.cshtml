@@ -1,42 +1,43 @@
 ﻿@model ViewModel.RelatieDetailViewModel
-    <table class="table table-hover">
-        <thead>
-            <tr class="card-text">
-                <th>
-                    <div class="h3 text-xl-center">
-                        @Html.DisplayFor(model => Model.Relatie.Naam)<br />
-                        <div class="h4">@Html.DisplayNameFor(model => Model.Leveradressen)</div>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Leveradressen.Count > 0)
+<table class="table table-hover">
+    <thead>
+        <tr class="card-text">
+            <th>
+                <div class="h3 text-xl-center">
+                    @Html.DisplayFor(model => Model.Relatie.Naam)<br />
+                    <div class="h4">@Html.DisplayNameFor(model => Model.Leveradressen)</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Leveradressen.Count > 0)
+        {
+            @foreach (var item in Model.Leveradressen)
             {
-                @foreach (var item in Model.Leveradressen)
-                {
-                    <tr data-href="/Leveradres/Detail/@item.Id">
-                        <td>
-                            <div class="card-text">
-                                <div class="h5">@Html.DisplayFor(modelItem => item.Naam)</div>
-                                @Html.DisplayFor(modelItem => item.Adres)<br />
-                                @Html.DisplayFor(modelItem => item.Gemeente.Postcode) @Html.DisplayFor(modelItem => item.Gemeente.Naam)
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr data-href="/Relatie/Installatie/@Model.Relatie.Id">
+                <tr data-href="/Leveradres/Detail/@item.Id">
                     <td>
                         <div class="card-text">
-                            <div class="h5">@Html.DisplayFor(model => Model.Relatie.Naam)</div>
-                            @Html.DisplayFor(model => Model.Relatie.Adres)<br />
-                            @Html.DisplayFor(model => Model.Relatie.Gemeente.Postcode) @Html.DisplayFor(model => Model.Relatie.Gemeente.Naam)
+                            <div class="h5">@Html.DisplayFor(modelItem => item.Naam)</div>
+                            @Html.DisplayFor(modelItem => item.Adres)<br />
+                            @Html.DisplayFor(modelItem => item.Gemeente.Postcode) @Html.DisplayFor(modelItem => item.Gemeente.Naam)
                         </div>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
+        }
+        else
+        {
+            <tr data-href="/Relatie/Installatie/@Model.Relatie.Id">
+                <td>
+                    <div class="card-text">
+                        <div class="h5">@Html.DisplayFor(model => Model.Relatie.Naam)</div>
+                        @Html.DisplayFor(model => Model.Relatie.Adres)<br />
+                        @Html.DisplayFor(model => Model.Relatie.Gemeente.Postcode) @Html.DisplayFor(model => Model.Relatie.Gemeente.Naam)
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

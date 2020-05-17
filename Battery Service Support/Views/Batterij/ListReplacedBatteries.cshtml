@@ -1,4 +1,4 @@
-﻿@model List<ListBatteriesViewModel>
+﻿@model PaginatedList<ListBatteriesViewModel>
 @{
     ViewData["NavTitle"] = "Lijst Batterijen";
 }
@@ -7,32 +7,52 @@
     <div class="card border-0 shadow col-10 offset-1">
         <div class="row">
             <div class="col-lg-6">
-                <form asp-controller="Batterij" asp-action="FindReplacedByName" method="get">
+                <form asp-controller="Batterij" asp-action="ListReplacedBatteries" method="get">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <button type="submit">
                                 <span class="input-group-text"><i class="fas fa-search"></i></span>
                             </button>
                         </div>
-                        <input class="form-control" name="name" placeholder="Zoek op relatie" />
+                        <input class="form-control" name="name" value="@ViewData["CurrentNameFilter"]" placeholder="Zoek op relatie" />
                     </div>
                 </form>
             </div>
             <div class="col-lg-6">
-                <form asp-controller="Batterij" asp-action="FindReplacedByDate" method="get">
+                <form asp-controller="Batterij" asp-action="ListReplacedBatteries" method="get">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <button type="submit">
                                 <span class="input-group-text"><i class="fas fa-search"></i></span>
                             </button>
                         </div>
-                        <input class="form-control" id="datepicker" name="date" onkeydown="return false" , onpaste="return false" placeholder="Vervangen vanaf" />
+                        <input class="form-control" id="datepicker" name="date" onkeydown="return false" onpaste="return false" value="@ViewData["CurrentDateFilter"]" placeholder="Vervangen vanaf" />
                     </div>
                 </form>
             </div>
         </div>
         <div class="row">
             <vc:list-batteries model="@Model"></vc:list-batteries>
+            <div>
+                <ul class="pagination ml-2">
+                    <li class="page-item @(!Model.HasPreviousPage? "disabled":"")">
+                        <a class="page-link" asp-action="ListReplacedBatteries"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-name="@ViewData["CurrentNameFilter"]"
+                           asp-route-date="@ViewData["CurrentDateFilter"]">
+                            Vorige
+                        </a>
+                    </li>
+                    <li class="page-item @(!Model.HasNextPage? "disabled":"")">
+                        <a class="page-link" asp-action="ListReplacedBatteries"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-name="@ViewData["CurrentNameFilter"]"
+                           asp-route-date="@ViewData["CurrentDateFilter"]">
+                            Volgende
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

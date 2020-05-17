@@ -20,6 +20,7 @@ namespace BLL
             httpContextAccessor = _httpContextAccessor;
         }
 
+        // ----- Aanmaken opmerking -----
         public void Add(string notitie, int batterijId)
         {
             Opmerking opmerking = new Opmerking()

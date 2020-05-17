@@ -16,6 +16,8 @@ namespace Battery_Service_Support.ViewComponents
             service = _service;   
         }
 
+        // ----- Weergeven viewcomponent relatieadres indien relatie geen leveradressen heeft-----
+        // Adres van Relate wordt getoond als leveradres
         public IViewComponentResult Invoke(int id)
         {
             var relatieInstallatieVM = service.CreateRelatieInstallatieViewModel(id);
