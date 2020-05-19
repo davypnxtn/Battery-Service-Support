@@ -1,10 +1,8 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
 using Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL
 {
@@ -16,21 +14,25 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Opvragen gebruiker op xjoGebruikerCode -----
         public Gebruiker FindByCode(string code)
         {
             return _context.Gebruikers.Where(g => g.XjoGebruikerCode == code).Single();
         }
 
+        // ----- Opvragen gebruiker op gebruikerId -----
         public Gebruiker FindById(int id)
         {
             return _context.Gebruikers.Where(g => g.Id == id).Single();
         }
 
+        // ----- Opvragen gebruiker op gebruikersnaam -----
         public Gebruiker FindByNaam(string naam)
         {
             return _context.Gebruikers.Where(g => g.Naam == naam).Single();
         }
 
+        // ----- Opvragen alle gebruikers -----
         public List<Gebruiker> GetGebruikers()
         {
             return _context.Gebruikers.ToList();

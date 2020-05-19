@@ -3,7 +3,6 @@ using DAL.Interfaces;
 using Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +16,7 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Toevoegen nieuwe batterij -----
         public Batterij Add(Batterij nieuweBatterij)
         {
             try
@@ -31,6 +31,7 @@ namespace DAL
             }
         }
 
+        // ----- Opvragen actieve batterijen op installatieId -----
         public List<Batterij> FindActiveByInstallatieId(int id)
         {
             return _context.Batterijen.Where(b => b.InstallatieId == id && b.Vervangen == false)
@@ -40,6 +41,7 @@ namespace DAL
                 .ToList();
         }
 
+        // ----- Opvragen batterijen op batterijId -----
         public Batterij FindById(int id)
         {
             return _context.Batterijen.Where(b => b.Id == id)
@@ -49,6 +51,7 @@ namespace DAL
                 .Single();
         }
 
+        // ----- Opvragen batterijen op installatieId -----
         public List<Batterij> FindByInstallatieId(int id)
         {
             return _context.Batterijen.Where(b => b.InstallatieId == id)
@@ -58,6 +61,7 @@ namespace DAL
                 .ToList();
         }
 
+        // ----- Opvragen alle niet vervangen of vervangen batterijen -----
         public List<Batterij> GetBatteries(bool isVervangen)
         {
             return _context.Batterijen.Where(b => b.Vervangen == isVervangen)
@@ -67,6 +71,7 @@ namespace DAL
                 .ToList();
         }
 
+        // ----- Wijzigen gegevens batterij -----
         public Batterij Update(Batterij batterijChanges)
         {
             try

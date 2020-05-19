@@ -30,6 +30,7 @@ namespace BLL
             accountRepository = _accountRepository;
         }
 
+        // ----- Aanmaken ExportPdfViewModel voor het aanmaken van de HtmlString en voor de TestPaginaPdfExport view -----
         public async Task<ExportPdfViewModel> CreateExportPdfViewModel(int id)
         {
             var installatie = installatieRepository.FindById(id);
@@ -60,6 +61,7 @@ namespace BLL
 
             foreach (var batterij in batterijen)
             {
+                // Alle niet vervangen batterijen toevoegen aan de lijst van BatterijViewModel in ExportPdfViewModel
                 if (batterij.Vervangen == false)
                 {
                     var batterijViewModel = new BatterijViewModel
@@ -73,6 +75,7 @@ namespace BLL
                     model.Batterijen.Add(batterijViewModel);
                 }
                 else
+                // Alle vervangen batterijen toevoegen aan de lijst van OudeBatterijViewModel in ExportPdfViewModel
                 {
                     if ((DateTime.Now - batterij.ModDatum).TotalDays < 30)
                     {
@@ -94,6 +97,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Aanmaken lijst van ExportInstallationViewModel voor ListInstallation view van ExportController -----
         public List<ExportInstallationViewModel> FindInstallations(int id)
         {
             var model = new List<ExportInstallationViewModel>();
@@ -130,6 +134,7 @@ namespace BLL
             return model;
         }
 
+        // ----- Genereren HtmlString voor Pdf export -----
         public async Task<string> GenerateHtmlString(int id)
         {
             var model = await CreateExportPdfViewModel(id);
@@ -188,10 +193,10 @@ namespace BLL
             }
             sb.Append(@"            <div class='row mt-5'>
                                         <div class='col-10 offset-1'>
-                                            <h5>
+                                            <h6>
                                                 De technieker verklaart alle batterijen te hebben getest.<br />
                                                 Indien bepaalde batterijen de afgelopen 30 dagen zijn vervangen, worden deze hieronder opgegeven.
-                                            </h5>
+                                            </h6>
                                             <br />
                                             <table class='col-12'>
                                                 <tr class='border'>
@@ -214,9 +219,9 @@ namespace BLL
                                     </div>
                                     <div class='row mt-5'>
                                         <div class='col-10 offset-1'>
-                                            <h5>
+                                            <h6>
                                                 Volgende batterijen zijn getest en goed bevonden:
-                                            </h5>
+                                            </h6>
                                             <br />
                                             <table class='col-12'>
                                                 <tr class='border'>
@@ -242,6 +247,7 @@ namespace BLL
             return sb.ToString();
         }
 
+        // ----- Genereren Pdf document voor Pdf export -----
         public async Task<FileResult> GeneratePdf(int id)
         {
             var installatie = installatieRepository.FindById(id);
@@ -251,11 +257,13 @@ namespace BLL
             var baseUrl = "C:/Users/jojo/source/repos/Battery-Service-Support/Battery Service Support";
             DateTime date = DateTime.Now;
 
-            var strings = new List<string>();
-            strings.Add("Verslag");
-            strings.Add(relatie.Naam);
-            strings.Add(date.ToString());
-            strings.Add(".pdf");
+            var strings = new List<string>
+            {
+                "Verslag",
+                relatie.Naam,
+                date.ToString(),
+                ".pdf"
+            };
             var fileName =  String.Join("-", strings);
 
             // instantiate a html to pdf converter object
@@ -289,8 +297,10 @@ namespace BLL
             converter.Footer.Add(pdfImageSection);
 
             // add page numbers to footer
-            PdfTextSection text = new PdfTextSection(0, 30, "Pagina: {page_number} van {total_pages}  ", new System.Drawing.Font("Verdana", 7));
-            text.HorizontalAlign = PdfTextHorizontalAlign.Right;
+            PdfTextSection text = new PdfTextSection(0, 30, "Pagina: {page_number} van {total_pages}  ", new System.Drawing.Font("Verdana", 7))
+            {
+                HorizontalAlign = PdfTextHorizontalAlign.Right
+            };
             converter.Footer.Add(text);
 
             // create a new pdf document from htmlString
@@ -300,45 +310,48 @@ namespace BLL
 
             doc.Close();
 
-            FileResult fileResult = new FileContentResult(pdf, "application/pdf");
-            fileResult.FileDownloadName = fileName;
+            FileResult fileResult = new FileContentResult(pdf, "application/pdf")
+            {
+                FileDownloadName = fileName
+            };
             return fileResult;
             
         }
 
+        // ----- Aanmaken Csv document voor Csv export, gefiltert op "vanaf datum" -----
         public FileResult GenerateCsv(string date)
         {
             var isVervangen = false;
             var Listbatteries = batterijRepository.GetBatteries(isVervangen);
             var modifiedBatteries = new List<Batterij>();
             var sb = new StringBuilder();
-            FileResult fileResult = null;
 
-            if (!string.IsNullOrEmpty(date))
+            DateTime fromDate = DateTime.Parse(date);
+
+            foreach (var batterij in Listbatteries)
             {
-                DateTime fromDate = DateTime.Parse(date);
-
-                foreach (var batterij in Listbatteries)
+                // Controle of de gegevens van de batterij nog aangepast zijn na de "vanaf datum" 
+                if (batterij.ModDatum >= fromDate)
                 {
-                    if (batterij.ModDatum >= fromDate)
-                    {
-                        modifiedBatteries.Add(batterij);
-                    }
+                    modifiedBatteries.Add(batterij);
                 }
-
-                sb.AppendLine("XjoBasisAppId,XjoBasisApp2Id,ArtikelId,Locatie");
-
-                foreach (var batterij in modifiedBatteries)
-                {
-                        sb.AppendLine($"{batterij.XjoBasisAppId},{batterij.XjoBasisApp2Id},{batterij.ArtikelId},{batterij.Locatie}");
-                }
-
-                byte[] csv = Encoding.UTF8.GetBytes(sb.ToString());
-
-                fileResult = new FileContentResult(csv, "text/csv");
-                fileResult.FileDownloadName = "bssa_export-" + date + ".csv";
-                return fileResult;
             }
+
+            sb.AppendLine("XjoBasisAppId,XjoBasisApp2Id,ArtikelId,Locatie");
+
+            foreach (var batterij in modifiedBatteries)
+            {
+                sb.AppendLine($"{batterij.XjoBasisAppId},{batterij.XjoBasisApp2Id},{batterij.ArtikelId},{batterij.Locatie}");
+            }
+
+            byte[] csv = Encoding.UTF8.GetBytes(sb.ToString());
+
+            sb.Clear();
+
+            FileResult fileResult = new FileContentResult(csv, "text/csv")
+            {
+                FileDownloadName = "bssa_export-" + date + ".csv"
+            };
 
             return fileResult;
         }

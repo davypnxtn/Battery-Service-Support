@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using BLL.Interfaces;
+﻿using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ViewModel;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,26 +10,16 @@ namespace Battery_Service_Support.Controllers
     {
 
         private readonly IRelatieService service;
-        private readonly IAuthorizationService authorizationService;
 
-        public RelatieController(IRelatieService _service, IAuthorizationService _authorizationService)
+        public RelatieController(IRelatieService _service)
         {
             service = _service;
-            authorizationService = _authorizationService;
         }
 
-        // ----- Index pagina dient om Relatie op te zoeken -----
-        // Als de ingelogde gebruiker aan de administrator groep is toegewezen, zal er eerst gecontrolleerd worden
-        // of er batterijen zijn die vervangen dienen te worden
+        // ----- Index pagina om Relatie op te zoeken -----
         [HttpGet]
         public IActionResult Index(string name, string address, int? pageNumber)
         {
-            //var authResult = await authorizationService.AuthorizeAsync(User, "WarningBatteriesPolicy");
-            //if (authResult.Succeeded)
-            //{
-            //    return RedirectToAction("BatterieWarningList", "Batterij");
-            //}
-
             ViewData["CurrentNameFilter"] = name;
             ViewData["CurrentAddressFilter"] = address;
 
@@ -61,7 +44,6 @@ namespace Battery_Service_Support.Controllers
                 return View("RelatieNotFound", id.Value);
             }
 
-            //var relatieDetailVM = service.CreateRelatieDetailViewModel((int)id);
             return View((int)id);
         }
 
@@ -87,22 +69,5 @@ namespace Battery_Service_Support.Controllers
             var relatieInstallatieVM = service.CreateRelatieInstallatieViewModel((int)id);
             return View(relatieInstallatieVM); 
         }
-
-        // ----- Toont Index pagina Relaties gefilterd op naam of roepnaam -----
-        //[HttpGet]
-        //public IActionResult NaamSearch(RelatieIndexViewModel viewModel, int? pageNumber)
-        //{
-        //    var relatieIndexVM = service.FindByNaam(viewModel.NaamSearch, pageNumber);
-        //    return View("Index", relatieIndexVM);
-        //}
-
-        // ----- Toont Index pagina Relaties gefilterd op adres of leveradres -----
-        //[HttpGet]
-        //public IActionResult AdresSearch(RelatieIndexViewModel viewModel, int? pageNumber)
-        //{
-        //    var relatieIndexVM = service.FindByAdres(viewModel.AdresSearch, pageNumber);
-        //    return View("Index", relatieIndexVM);
-        //}
-
     }
 }

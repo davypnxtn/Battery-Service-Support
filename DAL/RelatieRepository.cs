@@ -2,10 +2,8 @@
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL
 {
@@ -18,6 +16,7 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Opvragen relatie op relatieadres -----
         public List<Relatie> FindByAdres(string adres)
         {
             return _context.Relaties.Where(r => r.Adres.Contains(adres))
@@ -25,6 +24,7 @@ namespace DAL
                 .ToList();
         }
 
+        // ----- Opvragen relatie op relatieId -----
         public Relatie FindById(int id)
         {
             return _context.Relaties.Where(r => r.Id == id)
@@ -32,6 +32,7 @@ namespace DAL
                 .Single();
         }
 
+        // ----- Opvragen relatie op relatienaam -----
         public List<Relatie> FindByNaam(string naam)
         {
             return _context.Relaties.Where(r => r.Naam.Contains(naam))
@@ -39,6 +40,7 @@ namespace DAL
                 .ToList();
         }
 
+        // ----- Opvragen relatie op relatie roepnaam -----
         public List<Relatie> FindByRoepnaam(string roepnaam)
         {
             return _context.Relaties.Where(r => r.Roepnaam.Contains(roepnaam))
@@ -46,12 +48,7 @@ namespace DAL
                 .ToList();
         }
 
-        public IQueryable<Relatie> GetRelatiesIQ()
-        {
-            return _context.Relaties
-                .Include(r => r.Gemeente);
-        }
-
+        // ----- Opvragen alle relaties -----
         public List<Relatie> GetRelaties()
         {
             return _context.Relaties

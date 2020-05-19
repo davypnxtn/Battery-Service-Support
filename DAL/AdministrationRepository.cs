@@ -1,11 +1,9 @@
 ﻿using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL
@@ -32,19 +30,19 @@ namespace DAL
             }
         }
 
-        // ----- Zoek rol op rol id -----
+        // ----- Opvragen rol op rol id -----
         public async Task<IdentityRole> FindById(string id)
         {
             return await roleManager.FindByIdAsync(id);
         }
 
-        // ----- Zoek rol op naam -----
+        // ----- Opvragen rol op naam -----
         public async Task<IdentityRole> FindByName(string name)
         {
             return await roleManager.FindByNameAsync(name);
         }
 
-        // ----- Ophalen alle rollen -----
+        // ----- Opvragen alle rollen -----
         public List<IdentityRole> GetRoles()
         {
             return roleManager.Roles.ToList();

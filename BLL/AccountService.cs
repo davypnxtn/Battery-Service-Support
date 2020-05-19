@@ -1,7 +1,5 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Model;
 using System.Security.Claims;
@@ -14,13 +12,11 @@ namespace BLL
     {
         private readonly IAccountRepository repository;
         private readonly IAdministrationRepository administrationRepository;
-        private readonly IAuthorizationService authorizationService;
 
-        public AccountService(IAccountRepository _repository, IAdministrationRepository _administrationRepository, IAuthorizationService _authorizationService)
+        public AccountService(IAccountRepository _repository, IAdministrationRepository _administrationRepository)
         {
             repository = _repository;
             administrationRepository = _administrationRepository;
-            authorizationService = _authorizationService;
         }
 
         // ----- Deactiveren gebruiker in database -----

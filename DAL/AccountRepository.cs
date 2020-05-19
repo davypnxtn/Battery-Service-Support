@@ -1,12 +1,9 @@
 ﻿using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL
@@ -40,7 +37,7 @@ namespace DAL
             signInManager.SignOutAsync();
         }
 
-        // ----- Registreren nieuwe User -----
+        // ----- Registreren nieuwe gebruiker -----
         public async Task<IdentityResult> Register(ApplicationUser user, string password)
         {
             try
@@ -53,25 +50,25 @@ namespace DAL
             }
         }
 
-        // ----- Zoek gebruiker op userId -----
+        // ----- Opvragen gebruiker op userId -----
         public async Task<ApplicationUser> FindById(string id)
         {
             return await userManager.FindByIdAsync(id);
         }
 
-        // ----- Zoek gebruiker op naam -----
+        // ----- Opvragen gebruiker op gebruikersnaam -----
         public async Task<ApplicationUser> FindByName(string name)
         {
             return await userManager.FindByNameAsync(name);
         }
 
-        // ----- Controle of een User aan een bepaalde Role is toegewezen -----
+        // ----- Controle of een User aan een bepaalde rol is toegewezen -----
         public async Task<Boolean> IsInRole(ApplicationUser user, string name)
         {
             return await userManager.IsInRoleAsync(user, name);
         }
 
-        // ----- Gebruiker toevoegen aan een bepaalde Role -----
+        // ----- Gebruiker toevoegen aan een bepaalde rol -----
         public async Task<IdentityResult> AddToRole(ApplicationUser user, string roleName)
         {
             try
@@ -84,7 +81,7 @@ namespace DAL
             }
         }
 
-        // ----- Gebruiker verwijderen van een bepaalde Role -----
+        // ----- Gebruiker verwijderen van een bepaalde rol -----
         public async Task<IdentityResult> RemoveFromRole(ApplicationUser user, string roleName)
         {
             try
@@ -129,7 +126,7 @@ namespace DAL
             }
         }
 
-        // ----- Gebruiker verwijderen van een Lijst van Rollen -----
+        // ----- Gebruiker verwijderen uit een Lijst van Rollen -----
         public async Task<IdentityResult> RemoveFromRoles(ApplicationUser user, IList<string> roles)
         {
             try

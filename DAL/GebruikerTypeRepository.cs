@@ -1,10 +1,8 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
 using Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL
 {
@@ -17,11 +15,13 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Opvragen gebruikertype op gebruikerTypeId -----
         public GebruikerType FindById(int id)
         {
             return _context.GebruikerTypes.Where(g => g.Id == id).Single();
         }
 
+        // ----- Opvragen alle gebruikertypes -----
         public List<GebruikerType> GetGebruikerTypes()
         {
             return _context.GebruikerTypes.ToList();

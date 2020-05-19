@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BLL;
 using BLL.Interfaces;
 using DAL;
@@ -32,7 +29,6 @@ namespace Battery_Service_Support
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DataConnection")));
 
@@ -43,10 +39,11 @@ namespace Battery_Service_Support
             services.Configure<IdentityOptions>(options =>
             {
                 // Default Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
             });
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IExportService, ExportService>();
             services.AddTransient<IAdministrationService, AdministrationService>();
@@ -85,20 +82,50 @@ namespace Battery_Service_Support
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ReadCustomersPolicy", policy => policy.RequireClaim("Read Customers"));
-                options.AddPolicy("EditBatteryPolicy", policy => policy.RequireClaim("Edit Battery"));
-                options.AddPolicy("ListsBatteriesPolicy", policy => policy.RequireClaim("Lists Batteries"));
+                options.AddPolicy("ReadCustomersPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Read Customers") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("EditBatteryPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Edit Battery") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("ListsBatteriesPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Lists Batteries") ||
+                    context.User.IsInRole("Beheerder")));
                 options.AddPolicy("WarningBatteriesPolicy", policy => policy.RequireClaim("Warning Batteries"));
-                options.AddPolicy("RegisterUserPolicy", policy => policy.RequireClaim("Register User"));
-                options.AddPolicy("EditUserPolicy", policy => policy.RequireClaim("Edit User"));
-                options.AddPolicy("DeleteUserPolicy", policy => policy.RequireClaim("Delete User"));
-                options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
-                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
-                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
-                options.AddPolicy("EditClaimsPolicy", policy => policy.RequireClaim("Edit Claims"));
-                options.AddPolicy("ExportPdfPolicy", policy => policy.RequireClaim("Export PDF"));
-                options.AddPolicy("ExportCsvPolicy", policy => policy.RequireClaim("Export CSV"));
-                options.AddPolicy("AdminMenuPolicy", policy => policy.RequireClaim("Admin Menu"));
+                options.AddPolicy("ListOrWarningPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Lists Batteries") ||
+                    context.User.HasClaim(claim => claim.Type == "Warning Batteries") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("RegisterUserPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Register User") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("EditUserPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Edit User") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("DeleteUserPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Delete User") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("CreateRolePolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Create Role") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Edit Role") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Delete Role") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("EditClaimsPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Edit Claims") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("ExportPdfPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Export PDF") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("ExportCsvPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Export CSV") ||
+                    context.User.IsInRole("Beheerder")));
+                options.AddPolicy("AdminMenuPolicy", policy => policy.RequireAssertion(context =>
+                    context.User.HasClaim(claim => claim.Type == "Admin Menu") ||
+                    context.User.IsInRole("Beheerder")));
             });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

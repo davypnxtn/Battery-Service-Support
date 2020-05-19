@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using ViewModel;
 
@@ -239,7 +238,10 @@ namespace BLL
                 return IdentityResult.Failed();
             }
 
-            role.Name = model.RoleName;
+            if(role.Name != "Beheerder")
+            {
+                role.Name = model.RoleName;
+            }
 
             IdentityResult result = await repository.EditRole(role);
 
@@ -263,7 +265,7 @@ namespace BLL
             {
                 var user = await accountRepository.FindById(model[i].UserId);
 
-                IdentityResult result = null;
+                IdentityResult result;
 
                 if (model[i].IsSelected && !(await accountRepository.IsInRole(user, role.Name)))
                 {
@@ -396,6 +398,11 @@ namespace BLL
             if (role == null)
             {
                 return IdentityResult.Failed();
+            }
+
+            if (role.Name == "Beheerder")
+            {
+                throw new Exception("You cannot delete the role 'Beheerder'!");
             }
 
             IdentityResult result = await repository.DeleteRole(role);

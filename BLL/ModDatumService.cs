@@ -2,8 +2,6 @@
 using DAL.Interfaces;
 using Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BLL
 {
@@ -16,11 +14,14 @@ namespace BLL
             repository = _repository;
         }
 
+        // ----- Opvragen alle moddatums -----
         public ModDatum GetModDatum()
         {
             return repository.GetModDatum();
         }
 
+        // ----- Vergelijken moddatum van test database met moddatum van CRM database -----
+        // Niet gebruikt op dit moment wegens geen koppeling met CRM database. Niet kunnen testen.
         public bool CompareModData(DateTime ModDatum, DateTime BatterijModDatum)
         {
             int result = DateTime.Compare(ModDatum, BatterijModDatum);

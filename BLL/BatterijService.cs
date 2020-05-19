@@ -1,7 +1,6 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Model;
 using System;
@@ -38,13 +37,13 @@ namespace BLL
             artikelRepository = _artikelRepository;
         }
 
-        // ----- Nieuwe Batterij aanmaken -----
+        // ----- Toevoegen nieuwe batterij -----
         public Batterij Add(Batterij nieuweBatterij, int artikelId, string locatie)
         {
-            //Vervangen oude batterij
+            // Vervangen oude batterij
             VervangBatterij(nieuweBatterij);
 
-            //Nieuwe batterij aanmaken
+            // Nieuwe batterij aanmaken
             var datum = DateTime.Now;
             Batterij batterij = new Batterij()
             {
@@ -64,74 +63,7 @@ namespace BLL
             return batterij;
         }
 
-        // ----- Nieuwe lijst maken gefilterd op plaatsingsdatum. Batterijen geplaatst vanaf de zoekdatum worden aan de lijst toegevoegd -----
-        //public async Task<List<ListBatteriesViewModel>> FindByDate(string date, bool isVervangen)
-        //{
-        //    var model = new List<ListBatteriesViewModel>();
-
-        //    var listBatteries = await CreateListBatteriesViewModel("","", isVervangen);
-
-        //    if (!string.IsNullOrEmpty(date))
-        //    {
-        //        DateTime searchDate = DateTime.Parse(date);
-
-        //        if (isVervangen)
-        //        {
-        //            foreach (var batterij in listBatteries)
-        //            {
-        //                if (batterij.VervangDatum >= searchDate)
-        //                {
-        //                    model.Add(batterij);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            foreach (var batterij in listBatteries)
-        //            {
-        //                if (batterij.PlaatsingsDatum >= searchDate)
-        //                {
-        //                    model.Add(batterij);
-        //                }
-        //            }
-        //        }
-
-        //        return model;
-        //    }
-        //    else
-        //    {
-        //        return listBatteries;
-        //    }
-            
-        //}
-
-        // ----- Nieuwe lijst maken gefilterd op relatienaam -----
-        //public async Task<List<ListBatteriesViewModel>> FindByName(string name, bool isVervangen)
-        //{
-        //    var model = new List<ListBatteriesViewModel>();
-
-        //    var listBatteries = await CreateListBatteriesViewModel("","",isVervangen);
-
-        //    if (!string.IsNullOrEmpty(name))
-        //    {
-        //        foreach (var batterij in listBatteries)
-        //        {
-        //            if (batterij.RelatieNaam.ToUpper().Contains(name.ToUpper()))
-        //            {
-        //                model.Add(batterij);
-        //            }
-        //        }
-
-        //        return model;
-        //    }
-        //    else
-        //    {
-        //        return listBatteries;
-        //    }
-
-        //}
-
-        // ----- Nieuwe lijst maken gefilterd op ouderdom batterij. Indien ouder dan 1035 dagen toevoegen aan lijst -----
+        // ----- Nieuwe lijst maken gefilterd op ouderdom batterij. Indien ouder dan 1035 dagen, toevoegen aan lijst -----
         public async Task<List<ListBatteriesViewModel>> CreateBatterieWarningList()
         {
             var model = new List<ListBatteriesViewModel>();
@@ -151,13 +83,15 @@ namespace BLL
             return model;
         }
 
-        // ----- Aanmaken ListBatteriesViewModel voor ListBatteries view van BatterijController -----
+        // ----- Opvragen alle batterijen met zoekfunctie op naam en datum en toevoegen aan ListBatteriesViewModel-----
+        // Voor BatterieWarningList, ListActiveBatteries en ListReplacedBatteries view van BatterijController
         public async Task<List<ListBatteriesViewModel>> CreateListBatteriesViewModel(string name, string date, bool isVervangen)
         {
             var model = new List<ListBatteriesViewModel>();
 
             var batterijen = GetBatteries(isVervangen);
 
+            // Aanmaken Lijst van ListBatteriesViewModel
             foreach (var batterij in batterijen)
             {
                 var vervangUsernaam = "";
@@ -200,7 +134,7 @@ namespace BLL
                 model.Add(listBatteriesVM);
             }
 
-            //
+            // // Als "name" niet null of leeg is dan wordt de lijst van ListBatteriesViewModel gefiltert op naam van relatie
             if (!string.IsNullOrEmpty(name))
             {
                 var filteredModel = new List<ListBatteriesViewModel>();
@@ -216,12 +150,14 @@ namespace BLL
 
                 return filteredModel;
             }
-            //
+
+            // // Als "date" niet null of leeg is dan wordt de lijst van ListBatteriesViewModel gefiltert op datum
             if (!string.IsNullOrEmpty(date))
             {
                 DateTime searchDate = DateTime.Parse(date);
                 var filteredModel = new List<ListBatteriesViewModel>();
 
+                // Als een lijst van vervangen batterijen opgevraagd wordt onderstaande uitvoeren
                 if (isVervangen)
                 {
                     foreach (var batterij in model)
@@ -233,6 +169,7 @@ namespace BLL
                     }
                 }
                 else
+                // Als een lijst van actieve batterijen opgevraagd wordt onderstaande uitvoeren
                 {
                     foreach (var batterij in model)
                     {
@@ -247,7 +184,7 @@ namespace BLL
 
                 return filteredModel;
             }
-            //
+            
             model = model.OrderBy(b => b.RelatieCode).ToList();
 
             return model;

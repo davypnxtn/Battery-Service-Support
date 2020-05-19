@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL.Data
 {
@@ -44,6 +40,8 @@ namespace DAL.Data
             modelBuilder.Entity<Opmerking>().ToTable("Opmerking");
             modelBuilder.Entity<Relatie>().ToTable("Relatie");
 
+
+            // ----- Zet Foreign Key constraints op "On Delete No Action" -----
             foreach (var foreignkey in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys()))
             {

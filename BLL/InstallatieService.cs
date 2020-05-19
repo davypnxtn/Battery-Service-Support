@@ -1,9 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using ViewModel;
 
 namespace BLL
@@ -19,6 +17,7 @@ namespace BLL
             batterijRepository = _batterijRepository;
         }
 
+        // ----- Aanmaken InstallatieDetailViewModel voor Detail view van InstallatieController -----
         public InstallatieDetailViewModel CreateInstallatieDetailViewModel(int id)
         {
             var installatieDetailVM = new InstallatieDetailViewModel
@@ -29,16 +28,19 @@ namespace BLL
             return installatieDetailVM;
         }
 
+        // ----- Opvragen installatie op installatieId -----
         public Installatie FindById(int id)
         {
             return repository.FindById(id);
         }
 
+        // ----- Opvragen installaties op leveradresId -----
         public List<Installatie> FindByLeveradresId(int id)
         {
             return repository.FindByLeveradresId(id);
         }
 
+        // ----- Opvragen installaties op relatieId -----
         public List<Installatie> FindByRelatieId(int id)
         {
             return repository.FindByRelatieId(id);

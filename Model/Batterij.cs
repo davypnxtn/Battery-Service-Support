@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Model
 {
@@ -30,11 +29,9 @@ namespace Model
         public DateTime ModDatum { get; set; }
         public int InstallatieId { get; set; }
         public string UserId { get; set; }
-        //public int GebruikerId { get; set; }
         public int ArtikelId { get; set; }
         public Installatie Installatie { get; set; }
         public ApplicationUser User { get; set; }
-        //public Gebruiker Gebruiker { get; set; }
         public Artikel Artikel { get; set; }
         public List<Opmerking> Opmerkingen { get; set; }
 

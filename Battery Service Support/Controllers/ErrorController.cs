@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -77,6 +73,7 @@ namespace Battery_Service_Support.Controllers
             
             var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
+            ViewData["ErrorMessage"] = exceptionDetails.Error.Message;
             logger.LogError($"The path {exceptionDetails.Path} threw an exception " + $"{exceptionDetails.Error}");
 
             return View("Error");

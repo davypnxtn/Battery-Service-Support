@@ -5,7 +5,6 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL
 {
@@ -18,6 +17,7 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Toevoegen nieuwe opmerking -----
         public void Add(Opmerking opmerking)
         {
             try
@@ -31,6 +31,7 @@ namespace DAL
             }
         }
 
+        // ----- Opvragen opmerking op batterijId -----
         public List<Opmerking> FindByBatterijId(int? id)
         {
             return _context.Opmerkingen.Where(o => o.BatterijId == id)

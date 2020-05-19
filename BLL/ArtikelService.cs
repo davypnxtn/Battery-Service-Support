@@ -14,16 +14,19 @@ namespace BLL
             repository = _repository;
         }
 
+        // ----- Opvragen artikels op artikelId -----
         public Artikel FindById(int id)
         {
             return repository.FindById(id);
         }
 
+        // ----- Opvragen artikels op xjoArtikelId -----
         public Artikel FindByXjoArtikelId(int id)
         {
             return repository.FindByXjoArtikelId(id);
         }
 
+        // ----- Opvragen alle Artikels -----
         public List<Artikel> GetArtikels()
         {
             return repository.GetArtikels();

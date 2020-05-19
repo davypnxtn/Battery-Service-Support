@@ -3,109 +3,102 @@
 @using System.Text
 @{
     ViewData["NavTitle"] = "Dashboard";
-
-    //StringBuilder sb = new StringBuilder();
-    //foreach (var item in Model.Opmerkingen)
-    //{
-    //    sb.Append(item.ModDatum.ToShortDateString() + " - " + item.User.Naam + "\n");
-    //    sb.Append(item.Notitie + "\n");
-    //}
-    //var opmerking = new HtmlString(sb.ToString());
-
-    //var artikels = (IEnumerable<SelectListItem>)ViewData["Artikels"];
 }
-    <div class="container-fluid">
-        <div class="row">
-            <div class="card border-0 shadow col-lg-3 col-md-6">
-                <vc:relatie-detail id="@Model.RelatieId"></vc:relatie-detail>
-            </div>
-            <div class="card border-0 shadow col-lg-2 col-md-6">
-                @if (Model.LeveradresId != null)
-                {
-                    <vc:leveradres-detail id="@Model.LeveradresId.Value"></vc:leveradres-detail>
-                }
-                else
-                {
-                    <vc:relatie-installatie id="@Model.RelatieId"></vc:relatie-installatie>
-                }
-            </div>
-            <div class="card border-0 shadow col-lg-7 col-md-12">
-                <form asp-controller="Batterij" asp-action="Detail" method="post">
-                    <div class="card-text">
-                        <div class="form-group row">
-                            <div class="col-md-12 h3 text-xl-center">
-                                Batterij gegevens<br /><br /><hr />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.Artikel.Naam" class="col-sm-3 col-form-label">Huidige batterij:</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Batterij.Artikel.Naam" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Artikel.Naam" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.Artikel" class="col-sm-3 col-form-label">Nieuwe Batterij:</label>
-                            <div class="col-sm-9">
-                                <select asp-for="ArtikelId" class="custom-select" asp-items="@Model.ArtikelSelectList">
-                                    <option value="0" selected="selected">--Niet vervangen--</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.Locatie" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Locatie):</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Batterij.Locatie" type="text" class="form-control" value="@Model.Batterij.Locatie" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.GeplaatstIn" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.GeplaatstIn):</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Batterij.GeplaatstIn" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.GeplaatstIn" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.Info" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Info):</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Batterij.Info" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Info" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.Datum" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Datum):</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Batterij.Datum" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Datum" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Batterij.User" class="col-sm-3 col-form-label">Geplaatst door:</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Batterij.User" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.User.Naam" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Opmerkingen" class="col-sm-3 col-form-label">Notitie:</label>
-                            <div class="col-sm-9">
-                                <textarea type="text" readonly class="form-control" rows="3">@Model.Opmerkingen</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="NieuweOpmerking" class="col-sm-3 col-form-label">Nieuwe opmerking:</label>
-                            <div class="col-sm-9">
-                                <textarea asp-for="NieuweOpmerking" type="text" class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <input type="hidden" asp-for="Batterij.Id" value="@Model.Batterij.Id" />
-                        <input type="hidden" asp-for="Batterij.Artikel.ArtikelNr" value="@Model.Batterij.Artikel.ArtikelNr" />
-                        <input type="hidden" asp-for="Batterij.UserId" value="@Model.Batterij.UserId" />
-                        <input type="hidden" asp-for="Batterij.ArtikelId" value="@Model.Batterij.ArtikelId" />
-                        <input type="hidden" asp-for="Batterij.InstallatieId" value="@Model.Batterij.InstallatieId" />
-                        <input type="hidden" asp-for="Batterij.XjoBasisAppId" value="@Model.Batterij.XjoBasisAppId" />
-                        <input type="hidden" asp-for="Batterij.XjoBasisApp2Id" value="@Model.Batterij.XjoBasisApp2Id" />
-                        <div class="form-group row">
-                            <div class="col-sm-3 offset-3"><input type="submit" value="Opslaan" class="btn btn-primary py-2 btn-block" /></div>
-                            <div class="col-sm-3"><a asp-controller="Installatie" asp-action="Detail" asp-route-id="@Model.Batterij.InstallatieId" class="btn btn-primary py-2 btn-block">Annuleren</a></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="card border-0 shadow col-lg-3 col-md-6">
+            <vc:relatie-detail id="@Model.RelatieId"></vc:relatie-detail>
+        </div>
+        <div class="card border-0 shadow col-lg-2 col-md-6">
+            @if (Model.LeveradresId != null)
+            {
+                <vc:leveradres-detail id="@Model.LeveradresId.Value"></vc:leveradres-detail>
+            }
+            else
+            {
+                <vc:relatie-installatie id="@Model.RelatieId"></vc:relatie-installatie>
+            }
+        </div>
+        <div class="card border-0 shadow col-lg-7 col-md-12">
+            <form asp-controller="Batterij" asp-action="Detail" method="post">
+                <div class="card-text">
+                    <div class="form-group row">
+                        <div class="col-md-12 h3 text-xl-center">
+                            Batterij gegevens<br /><br /><hr />
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.Artikel.Naam" class="col-sm-3 col-form-label">Huidige batterij:</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Batterij.Artikel.Naam" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Artikel.Naam" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.Artikel" class="col-sm-3 col-form-label">Nieuwe Batterij:</label>
+                        <div class="col-sm-9">
+                            <select asp-for="ArtikelId" class="custom-select" asp-items="@Model.ArtikelSelectList">
+                                <option value="0" selected="selected">--Niet vervangen--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.Locatie" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Locatie):</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Batterij.Locatie" type="text" class="form-control" value="@Model.Batterij.Locatie" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.GeplaatstIn" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.GeplaatstIn):</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Batterij.GeplaatstIn" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.GeplaatstIn" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.Info" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Info):</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Batterij.Info" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Info" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.Datum" class="col-sm-3 col-form-label">@Html.DisplayNameFor(model => Model.Batterij.Datum):</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Batterij.Datum" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.Datum" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Batterij.User" class="col-sm-3 col-form-label">Geplaatst door:</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Batterij.User" type="text" readonly class="form-control-plaintext" value="@Model.Batterij.User.Naam" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Opmerkingen" class="col-sm-3 col-form-label">Notitie:</label>
+                        <div class="col-sm-9">
+                            <textarea type="text" readonly class="form-control" rows="3">@Model.Opmerkingen</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="NieuweOpmerking" class="col-sm-3 col-form-label">Nieuwe opmerking:</label>
+                        <div class="col-sm-9">
+                            <textarea asp-for="NieuweOpmerking" type="text" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="Batterij.Id" value="@Model.Batterij.Id" />
+                    <input type="hidden" asp-for="Batterij.Artikel.ArtikelNr" value="@Model.Batterij.Artikel.ArtikelNr" />
+                    <input type="hidden" asp-for="Batterij.UserId" value="@Model.Batterij.UserId" />
+                    <input type="hidden" asp-for="Batterij.ArtikelId" value="@Model.Batterij.ArtikelId" />
+                    <input type="hidden" asp-for="Batterij.InstallatieId" value="@Model.Batterij.InstallatieId" />
+                    <input type="hidden" asp-for="Batterij.XjoBasisAppId" value="@Model.Batterij.XjoBasisAppId" />
+                    <input type="hidden" asp-for="Batterij.XjoBasisApp2Id" value="@Model.Batterij.XjoBasisApp2Id" />
+                    <div class="form-group row">
+                        <div class="col-sm-3 offset-3"><input type="submit" value="Opslaan" class="btn btn-primary py-2 btn-block" /></div>
+                        <div class="col-sm-3"><a asp-controller="Installatie" asp-action="Detail" asp-route-id="@Model.Batterij.InstallatieId" class="btn btn-primary py-2 btn-block">Annuleren</a></div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

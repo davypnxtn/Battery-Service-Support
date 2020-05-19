@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using ViewModel;
 using ViewModel.Utilities;
 
@@ -47,7 +44,7 @@ namespace Battery_Service_Support.Controllers
         [Authorize(Policy = "EditBatteryPolicy")]
         public IActionResult Detail(BatterijDetailViewModel model)
         {
-            int batterijId = 0;
+            int batterijId;
             if (ModelState.IsValid)
             {
                 if (model.ArtikelId != 0)
@@ -92,7 +89,7 @@ namespace Battery_Service_Support.Controllers
         public async Task<IActionResult> ListReplacedBatteries(string name, string date, int? pageNumber)
         {
             bool isVervangen = true;
-            int pageSize = 2;
+            int pageSize = 6;
 
             ViewData["CurrentNameFilter"] = name;
             ViewData["CurrentDateFilter"] = date;
@@ -105,6 +102,7 @@ namespace Battery_Service_Support.Controllers
 
         // ----- Lijst van batterijen die bijna aan vervanging toe zijn -----
         [HttpGet]
+        [Authorize(Policy = "ListOrWarningPolicy")]
         public async Task<IActionResult> BatterieWarningList(int? pageNumber)
         {
             int pageSize = 6;
@@ -117,45 +115,5 @@ namespace Battery_Service_Support.Controllers
             }
             return RedirectToAction("Index", "Relatie");
         }
-
-        // ----- Zoek actieve batterijen op plaatsingsdatum -----
-        //[HttpGet]
-        //[Authorize(Policy = "ListsBatteriesPolicy")]
-        //public async Task<IActionResult> FindActiveByDate(string date)
-        //{
-        //    bool isVervangen = false;
-        //    var model = await service.FindByDate(date, isVervangen);
-        //    return View("ListActiveBatteries", model);
-        //}
-
-        // ----- Zoek actieve batterijen op relatienaam -----
-        //[HttpGet]
-        //[Authorize(Policy = "ListsBatteriesPolicy")]
-        //public async Task<IActionResult> FindActiveByName(string name)
-        //{
-        //    bool isVervangen = false;
-        //    var model = await service.FindByName(name, isVervangen);
-        //    return View("ListActiveBatteries", model);
-        //}
-
-        // ----- Zoek vervangen batterijen op vervangdatum -----
-        //[HttpGet]
-        //[Authorize(Policy = "ListsBatteriesPolicy")]
-        //public async Task<IActionResult> FindReplacedByDate(string date)
-        //{
-        //    bool isVervangen = true;
-        //    var model = await service.FindByDate(date, isVervangen);
-        //    return View("ListReplacedBatteries", model);
-        //}
-
-        // ----- Zoek vervangen batterijen op relatienaam -----
-        //[HttpGet]
-        //[Authorize(Policy = "ListsBatteriesPolicy")]
-        //public async Task<IActionResult> FindReplacedByName(string name)
-        //{
-        //    bool isVervangen = true;
-        //    var model = await service.FindByName(name, isVervangen);
-        //    return View("ListReplacedBatteries", model);
-        //}
     }
 }

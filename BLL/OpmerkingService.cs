@@ -5,7 +5,6 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
 namespace BLL
 {
@@ -20,7 +19,7 @@ namespace BLL
             httpContextAccessor = _httpContextAccessor;
         }
 
-        // ----- Aanmaken opmerking -----
+        // ----- Toevoegen nieuwe opmerking -----
         public void Add(string notitie, int batterijId)
         {
             Opmerking opmerking = new Opmerking()
@@ -33,6 +32,7 @@ namespace BLL
             repository.Add(opmerking);
         }
 
+        // ----- Opvragen opmerkingen op batterijId -----
         public List<Opmerking> FindByBatterijId(int? id)
         {
             return repository.FindByBatterijId(id);

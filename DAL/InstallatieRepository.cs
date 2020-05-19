@@ -2,10 +2,8 @@
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL
 {
@@ -18,6 +16,7 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Opvragen installatie op installatieId -----
         public Installatie FindById(int id)
         {
             return _context.Installaties.Where(i => i.Id == id)
@@ -25,6 +24,7 @@ namespace DAL
                 .Single();
         }
 
+        // ----- Opvragen installaties op leveradresId -----
         public List<Installatie> FindByLeveradresId(int id)
         {
             return _context.Installaties.Where(i => i.LeveradresId == id)
@@ -32,6 +32,7 @@ namespace DAL
                 .ToList();
         }
 
+        // ----- Opvragen installaties op relatieId -----
         public List<Installatie> FindByRelatieId(int id)
         {
             return _context.Installaties.Where(i => i.RelatieId == id)

@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Model;
 using ViewModel.Utilities;
 
 namespace ViewModel

@@ -93,7 +93,7 @@
     border-color:transparent;
 }
 
-table {
+.table-fixed {
     table-layout: fixed;
     width: 100%;
 }

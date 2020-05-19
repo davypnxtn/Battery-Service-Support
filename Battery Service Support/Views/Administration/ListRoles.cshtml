@@ -26,7 +26,7 @@
                             <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.RoleId">
                                 Wijzig
                             </a>
-                            @if ((await AuthorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
+                            @if ((role.RoleName != "Beheerder" && (await AuthorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded))
                             {
                                 <span id="confirmDeleteSpan_@role.RoleId" style="display:none">
                                     <span>Ben je zeker dat je deze Rol wil verwijderen?</span>

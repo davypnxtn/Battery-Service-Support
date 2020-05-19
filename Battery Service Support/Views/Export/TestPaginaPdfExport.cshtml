@@ -1,0 +1,106 @@
+﻿@model ViewModel.ExportPdfViewModel
+@{
+    ViewData["NavTitle"] = "PDF export preview";
+}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 offset-1 mt-5">
+                <img src="~/images/logo_jojo.png" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 offset-8">
+                <h5 style="font-weight: bold">
+                    @Html.DisplayFor(model => model.RelatieNaam)<br />
+                    @Html.DisplayFor(model => model.RelatieAdres)<br />
+                    @Html.DisplayFor(model => model.RelatiePostcode) @Html.DisplayFor(model => model.RelatieGemeente)<br />
+                    Relatiecode: @Html.DisplayFor(model => model.RelatieCode)
+                </h5>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-11 offset-1">
+                <h1>Verslag nazicht batterijen @Html.DisplayFor(model => model.InstallatieType)</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 offset-1">
+                <h5>Datum verslag: @Model.RapportDatum.ToShortDateString()</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10 offset-1"><hr /></div>
+        </div>
+
+        @if (Model.Leveradres != null)
+        {
+            <div class="row">
+                <div class="col-7 offset-1">
+                    <h5>
+                        De controle werd uitgevoerd op volgend leveradres
+                    </h5>
+                </div>
+                <div class="col-3">
+                    <h5>
+                        @Html.DisplayFor(model => model.LeveradresNaam)<br />
+                        @Html.DisplayFor(model => model.Leveradres)<br />
+                        @Html.DisplayFor(model => model.LeveradresPostcode) @Html.DisplayFor(model => model.LeveradresGemeente)<br />
+                        Leveradres code: @Html.DisplayFor(model => model.LeveradresCode)
+                    </h5>
+                </div>
+            </div>
+        }
+
+        <div class="row mt-5">
+            <div class="col-10 offset-1">
+                <h6>
+                    De technieker verklaart alle batterijen te hebben getest.<br />
+                    Indien bepaalde batterijen de afgelopen 30 dagen zijn vervangen, worden deze hieronder opgegeven.
+                </h6>
+                <br />
+                <table class="col-12">
+                    <tr class="border">
+                        <th>Type batterij</th>
+                        <th>Geplaatst in</th>
+                        <th>Datum vervangen</th>
+                        <th>Vervangen door</th>
+                    </tr>
+                    @foreach (var batterij in Model.OudeBatterijen)
+                    {
+                        <tr class="border">
+                            <td class="border">@batterij.BatterijType</td>
+                            <td class="border">@batterij.GeplaatstIn</td>
+                            <td class="border">@batterij.VervangDatum.ToShortDateString()</td>
+                            <td class="border">@batterij.VervangenDoor</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-10 offset-1">
+                <h6>
+                    Volgende batterijen zijn getest en goed bevonden.
+                </h6>
+                <br />
+                <table class="col-12">
+                    <tr class="border">
+                        <th>Type batterij</th>
+                        <th>Geplaatst in</th>
+                        <th>Datum geplaatst</th>
+                        <th>Geplaatst door</th>
+                    </tr>
+                    @foreach (var batterij in Model.Batterijen)
+                    {
+                        <tr class="border">
+                            <td class="border">@batterij.BatterijType</td>
+                            <td class="border">@batterij.GeplaatstIn</td>
+                            <td class="border">@batterij.Datum.ToShortDateString()</td>
+                            <td class="border">@batterij.UserName</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>

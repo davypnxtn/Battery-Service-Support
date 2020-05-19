@@ -1,9 +1,6 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BLL
 {
@@ -16,6 +13,7 @@ namespace BLL
             repository = _repository;
         }
 
+        // ----- Opvragen gemeente op gemeenteId -----
         public Gemeente FindById(int id)
         {
             return repository.FindById(id);

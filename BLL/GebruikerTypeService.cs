@@ -1,9 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BLL
 {
@@ -16,11 +14,13 @@ namespace BLL
             repository = _repository;
         }
 
+        // ----- Opvragen gebruikertype op gebruikerTypeId -----
         public GebruikerType GetById(int id)
         {
             return repository.FindById(id);
         }
 
+        // ----- Opvragen alle gebruikertypes -----
         public List<GebruikerType> GetGebruikerTypes()
         {
             return repository.GetGebruikerTypes();

@@ -1,10 +1,7 @@
 ﻿using DAL.Data;
 using DAL.Interfaces;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DAL
 {
@@ -17,6 +14,7 @@ namespace DAL
             _context = context;
         }
 
+        // ----- Opvragen moddatums -----
         public ModDatum GetModDatum()
         {
             return _context.ModData.Last();
