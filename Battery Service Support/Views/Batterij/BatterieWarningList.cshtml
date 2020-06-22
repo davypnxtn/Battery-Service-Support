@@ -1,10 +1,10 @@
 ﻿@model PaginatedList<ListBatteriesViewModel>
 @{
-    ViewData["NavTitle"] = "Lijst Batterijen";
+    ViewData["NavTitle"] = "Lijst Te Vervangen Batterijen";
 }
 <div class="container-fluid">
     <div class="h1 text-center text-danger">Volgende batterijen hebben uw aandacht nodig!</div>
-    <div class="card border-0 shadow col-10 offset-1">
+    <div class="card border-0 shadow col-12">
         <div class="row">
             <vc:list-batteries model="@Model"></vc:list-batteries>
         </div>
@@ -25,3 +25,6 @@
     </div>
 </div>
 
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

@@ -37,13 +37,19 @@ $(function () {
 });
 
 
-//Find element with id="datetrigger" and add class="alert-danger" when date is older then 3 years
+//Find element with class="datetrigger" and add class="alert-danger" when date is older then 3 years
 $(function () {
-	$('#datetrigger').each(function () {
-		let objDate = new Date($(this).html);
+	$('.datetrigger').each(function () {
+		let dateString = this.innerHTML;
+		let parts = dateString.split("/");
+		let objDate = new Date(
+			parseInt(parts[2], 10),
+			parseInt(parts[1], 10) - 1,
+			parseInt(parts[0], 10)
+		);
 		let dateNow = new Date();
 		if (dateNow.getFullYear() - objDate.getFullYear() > 3) {
-			$(this).parrent('tr').addClass('alert-danger');
+			$(this).addClass('alert-danger');
 		}
 	})
 })
